@@ -2,13 +2,14 @@ import './App.css';
 import { useEffect,useState } from 'react';
 
 import axios from 'axios'
+import Overview from './components/Overview';
 // Move to .env
 axios.defaults.baseURL = 'http://localhost:8080';
 
 function App() {
 
   const [data, setData] = useState('');
-  
+
   // hitting route of node js
   console.log("Initial Data:");
   useEffect(()=>{
@@ -22,7 +23,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Data Received: {data}</h1>
+      <Overview/>
     </div>
   );
 }
