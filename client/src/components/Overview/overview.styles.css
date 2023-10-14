@@ -1,6 +1,12 @@
 .overview{
-    width: 100%;
-    height: 100vh;
+    /* width: 80%; */
+    /* margin: auto; */
+    /* position: relative; */
+}
+
+.overview-first-imp{
+    height: 90%;
+    padding-top: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,7 +14,53 @@
 }
 
 .overview-header{
-    font-size: 100px;
+    font-size: 90px;
     font-weight: 900;
     line-height: 118%;
+}
+
+.overview-quote{
+    font-size: 20px;
+    margin:20px 0;
+    text-align: center;
+}
+
+.try-free-btn{
+    background-color: var(--primary-color);
+    cursor: pointer;
+    outline: none;
+    border: none;
+    padding: 15px 35px;
+    border-radius: 5px;
+    font-size: 20px;
+    color: white;
+}
+
+.animate-text{
+    background-image: linear-gradient(rgb(128, 12, 128),rgb(255, 0, 119));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: textAnimte 6s ease-in-out infinite;
+}
+
+
+.animate-text {
+    background-image: linear-gradient(rgb(128, 12, 128), rgb(255, 0, 119));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.preview-img{
+    padding-top: 50px;
+    height: 90%;
+    background: rgb(235, 235, 235);
+}
+
+/* Preview Features */
+.preview-features{
+    padding-top: 50px;
+    height: 90%;
+    background: rgb(209, 209, 209);
 }
