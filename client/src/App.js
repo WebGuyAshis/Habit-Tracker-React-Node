@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import axios from "axios";
 import Overview from "./components/Overview";
+import SignUp from "./components/SignUp";
 // Move to .env
 axios.defaults.baseURL = "http://localhost:8080";
 
@@ -14,7 +15,7 @@ function App() {
   console.log("Initial Data:");
   useEffect(() => {
     axios
-      .get("/api")
+      .get("/api/v1")
       .then((response) => {
         console.log(response.data);
         setData(response.data);
@@ -27,6 +28,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Overview />} />
+          <Route path="/sign-up" element={<SignUp/>}/>
         </Routes>
       </BrowserRouter>
     </div>
