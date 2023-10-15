@@ -1,4 +1,4 @@
-.signUp-container{
+.signin-container{
     width: 80%;
     height: 100vh;
     display: flex;
@@ -17,37 +17,37 @@
 }
 
 
-.signup-body{
-    width: 450px;
+.signin-body{
+    width: 400px;
     padding: 30px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 5px;
 }
-.signup-text p{
+.signin-text p{
 font-size: 14px;
 margin: 10px 0;
 }
 
-.form-data{
+/* .form-data{
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-top: 10px;
-}
-.signup-input-field{
+} */
+.signin-input-field{
     display: flex;
     flex-direction: column;
     width: 100%;
 }
-.signup-name-field{
+/* .signin-name-field{
     display: flex;
     gap: 20px;
-}
-.signup-input-field label{
+} */
+.signin-input-field label{
     margin: 5px 0;
     font-weight: 900;
 }
-.signup-input-field input{
+.signin-input-field input{
     height: 35px;
     border-radius: 5px;
     outline: none;
@@ -55,12 +55,12 @@ margin: 10px 0;
     padding: 0 10px;
     background-color: rgb(229, 229, 229);
 }
-.signup-input-field input::placeholder{
+.signin-input-field input::placeholder{
     color: rgb(154, 154, 154);
 }
 
-#sign-up-btn{
-    width: 180px;
+#sign-in-btn{
+    width: 100px;
     padding: 10px 20px;
     border: 0;
     outline: 0;
@@ -71,7 +71,7 @@ margin: 10px 0;
     cursor: pointer;
     margin-top: 20px;
 }
-.user-consent{
+/* .user-consent{
     display: flex;
     gap: 5px;
     align-items: flex-start;
@@ -79,7 +79,7 @@ margin: 10px 0;
 }
 .user-consent input{
     margin: 3px;
-}
-#sign-up-btn:hover{
+} */
+#sign-in-btn:hover{
     background-color: rgb(0, 153, 255);
 }

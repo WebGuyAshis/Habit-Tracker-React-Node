@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import axios from "axios";
 import Overview from "./components/Overview";
 import SignUp from "./components/SignUp";
+import SignIn from "./components/SignIn";
 // Move to .env
 axios.defaults.baseURL = "http://localhost:8080";
 
@@ -29,6 +30,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Overview />} />
           <Route path="/sign-up" element={<SignUp/>}/>
+          <Route path="/sign-in" element={<SignIn/>}/>
+          <Route path="/user/home" element={<SignIn/>}/>
+
         </Routes>
       </BrowserRouter>
     </div>

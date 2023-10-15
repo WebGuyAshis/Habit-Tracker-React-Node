@@ -1,9 +1,11 @@
 import express, { urlencoded } from "express";
 import cors from 'cors';
+import db from './config/mongoose.js'
+import route from './routes/index.js';
 
-import route from './routes/index.js'
 
 const app = express();
+
 
 app.use(cors());
 // we basically dont need urlencoded because we are parsing data usn=ing express.json

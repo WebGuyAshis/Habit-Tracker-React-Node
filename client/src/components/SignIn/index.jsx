@@ -1,4 +1,4 @@
-import "./signup.styles.css";
+import "./signIn.styles.css";
 // import authImg from "../../assets/images/auth.jpg";
 import axios from "axios";
 import { useState } from "react";
@@ -6,60 +6,58 @@ import {Link, useNavigate} from 'react-router-dom';
 
 let baseUrl = "http://localhost:8080";
 
-const SignUp = () => {
+const SignIn = () => {
   // handle form Submission
   let navigate = useNavigate();
-  let [formData, setformData] = useState({
-    firstName: "",
-    lastName: "",
+  let [signInformData, setsignInformData] = useState({
     email: "",
     password: "",
-    cnfPassword: "",
   });
-  const handleFormSubmission = async (e) => {
+  const handleSignInFormSubmission = async (e) => {
     e.preventDefault();
-    console.log("FormData:", formData);
+    console.log("FormData:", signInformData);
 
     try {
       let response = await axios.post(
-        `${baseUrl}/api/v1/user/create-user`,
-        formData
+        `${baseUrl}/api/v1/user/create-session`,
+        signInformData
       );
       console.log("Response Status:", response.data, response.status === 200);
       if (response.status === 200) {
-        console.log("Form Submitted!", formData, {
+        console.log("Sign In Successfull!!", signInformData, {
           headers: {
             "Content-Type": "application/json",
           },
         });
+        navigate('/user/home')
       }
     } catch (error) {
-        if(error.response.status===409){
-            console.log("Navigating to Sign In Route!");
-            navigate('/sign-in');
+        if(error.response.status===404){
+            console.log("Navigating to Sign Up Route!");
+            navigate('/sign-up');
             return;
         }
       console.log("Error Submitting Form!", error);
     }
   };
 
-  const handleInputChnage = (e) => {
+  const handleSigninInputChange = (e) => {
     const { name, value } = e.target;
 
-    setformData({
-      ...formData,
+    setsignInformData({
+      ...signInformData,
       [name]: value,
     });
   };
 
   return (
-    <div className="signUp-container">
+    <div className="signin-container">
       <div className="sign-up-logo">
         <span>Aacharan</span>
       </div>
-        <div className="signup-body">
-            <div className="signup-text">
-            <h1>Let's Gets Started!</h1>
+        <div className="signin-body">
+            <div className="signin-text">
+            <h1>Welcome Back!</h1>
             <p>
             Track your way to a better you. Join us and start building healthier habits today
             </p>
@@ -68,11 +66,11 @@ const SignUp = () => {
             className="form-data"
             action="/user/create-user"
             method="post"
-            onSubmit={handleFormSubmission}
+            onSubmit={handleSignInFormSubmission}
             >
-            <div className="signup-name-field">
+            {/* <div className="signin-name-field">
 
-            <div className="signup-input-field">
+            <div className="signin-input-field">
               <label htmlFor="user-firstName">First Name</label>
               <input
                 type="text"
@@ -84,7 +82,7 @@ const SignUp = () => {
               />
             </div>
 
-            <div className="signup-input-field">
+            <div className="signin-input-field">
               <label htmlFor="user-lastName">Last Name</label>
               <input
                 type="text"
@@ -95,33 +93,33 @@ const SignUp = () => {
                 onChange={handleInputChnage}
               />
             </div>
-          </div>
+          </div> */}
 
-          <div className="signup-input-field">
+          <div className="signin-input-field">
             <label htmlFor="user-email">Email</label>
             <input
               type="email"
               name="email"
-              id="user-email"
+              id="user-signin-email"
               placeholder="Enter your Email"
-              value={formData.email}
-              onChange={handleInputChnage}
+              value={signInformData.email}
+              onChange={handleSigninInputChange}
             />
           </div>
 
-          <div className="signup-input-field">
+          <div className="signin-input-field">
             <label htmlFor="user-password">Password</label>
             <input
               type="password"
               name="password"
-              id="user-password"
+              id="user-signin-password"
               placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleInputChnage}
+              value={signInformData.password}
+              onChange={handleSigninInputChange}
             />
           </div>
 
-          <div className="signup-input-field">
+          {/* <div className="signin-input-field">
             <label htmlFor="user-cnf-password">Confirm Password</label>
             <input
               type="password"
@@ -131,21 +129,21 @@ const SignUp = () => {
               value={formData.cnfPassword}
               onChange={handleInputChnage}
             />
-          </div>
+          </div> */}
 
-          <div className="user-consent">
+          {/* <div className="user-consent">
             <input type="checkbox"/>
             <p>Creating an account means you're okay with our<Link>Terms of Service, Privacy Policy</Link>, And our <Link>Default Notification Settings</Link>.</p>
-          </div>
+          </div> */}
 
-          <button id="sign-up-btn" type="submit">Create Your Account</button>
+          <button id="sign-in-btn" type="submit">Sign In</button>
             </form>
         </div>
-      {/* <div className="signup-page-image">
+      {/* <div className="signin-page-image">
         <img src={authImg} alt="" />
       </div> */}
     </div>
   );
 };
 
-export default SignUp;
+export default SignIn;
