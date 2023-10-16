@@ -1,4 +1,5 @@
 import "./signIn.styles.css";
+import signinImg from '../../assets/images/signin.jpg'
 import axios from "axios";
 import { useState } from "react";
 import {Link, useNavigate} from 'react-router-dom';
@@ -31,11 +32,11 @@ const SignIn = () => {
         navigate('/user/home')
       }
     } catch (error) {
-        if(error.response.status===404){
-            console.log("Navigating to Sign Up Route!");
-            navigate('/sign-up');
-            return;
-        }
+        // if(error.response.status===404){
+        //     console.log("Navigating to Sign Up Route!");
+        //     navigate('/sign-up');
+        //     return;
+        // }
       console.log("Error Submitting Form!", error);
     }
   };
@@ -51,93 +52,38 @@ const SignIn = () => {
 
   return (
     <div className="signin-container">
-      <div className="sign-up-logo">
-        <span>Aacharan</span>
+      <div className="signin-img-container">
+        <img src={signinImg} alt="" className="signin-img" />
       </div>
-        <div className="signin-body">
-            <div className="signin-text">
-            <h1>Welcome Back!</h1>
-            <p>
-            Track your way to a better you. Join us and start building healthier habits today
-            </p>
-            </div>
-            <form
-            className="form-data"
-            action="/user/create-user"
-            method="post"
-            onSubmit={handleSignInFormSubmission}
-            >
-            {/* <div className="signin-name-field">
+      <div className="signin-body">
+        <h1 className="signin-header">
+          Let's gets Started!
+        </h1>
+        {/* Social Login */}
+        <div className="additional-login-options">
+          <div className="google">
 
-            <div className="signin-input-field">
-              <label htmlFor="user-firstName">First Name</label>
-              <input
-                type="text"
-                name="firstName"
-                id="user-firstName"
-                placeholder="Enter your First Name"
-                value={formData.firstName}
-                onChange={handleInputChnage}
-              />
-            </div>
-
-            <div className="signin-input-field">
-              <label htmlFor="user-lastName">Last Name</label>
-              <input
-                type="text"
-                name="lastName"
-                id="user-lastName"
-                placeholder="Enter your Last Name"
-                value={formData.lastName}
-                onChange={handleInputChnage}
-              />
-            </div>
-          </div> */}
-
-          <div className="signin-input-field">
-            <label htmlFor="user-email">Email</label>
-            <input
-              type="email"
-              name="email"
-              id="user-signin-email"
-              placeholder="Enter your Email"
-              value={signInformData.email}
-              onChange={handleSigninInputChange}
-            />
           </div>
+          <div className="facebook">
 
-          <div className="signin-input-field">
-            <label htmlFor="user-password">Password</label>
-            <input
-              type="password"
-              name="password"
-              id="user-signin-password"
-              placeholder="Enter your password"
-              value={signInformData.password}
-              onChange={handleSigninInputChange}
-            />
           </div>
+          <div className="github">
 
-          {/* <div className="signin-input-field">
-            <label htmlFor="user-cnf-password">Confirm Password</label>
-            <input
-              type="password"
-              name="cnfPassword"
-              id="user-cnf-password"
-              placeholder="Enter Confirm Password"
-              value={formData.cnfPassword}
-              onChange={handleInputChnage}
-            />
-          </div> */}
-
-          {/* <div className="user-consent">
-            <input type="checkbox"/>
-            <p>Creating an account means you're okay with our<Link>Terms of Service, Privacy Policy</Link>, And our <Link>Default Notification Settings</Link>.</p>
-          </div> */}
-
-          <button id="sign-in-btn" type="submit">Sign In</button>
-            </form>
+          </div>
         </div>
+
+        <span className="or">or</span>
+        {/* Form */}
+        <form className="signin-form-data" onSubmit={handleSignInFormSubmission}>
+
+          <input type="email" id="signin-email" name="email" required placeholder="Email" onChange={handleSigninInputChange} />
+          <input type="password" id="signin-password" name="password" required placeholder="Password" onChange={handleSigninInputChange}/>
+          <div className="redirect-signin">
+            Don't have an Account? <Link to="/sign-up">Create Account</Link>
+          </div>
+          <button type="submit" className="signin-submit">Create Account</button>
+        </form>
+      </div>
     </div>
   );
 };
