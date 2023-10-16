@@ -1,8 +1,8 @@
 import "./signup.styles.css";
-// import authImg from "../../assets/images/auth.jpg";
+import signUpImg from '../../assets/images/signup.jpg'
 import axios from "axios";
 import { useState } from "react";
-import {Link, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 let baseUrl = "http://localhost:8080";
 
@@ -10,8 +10,7 @@ const SignUp = () => {
   // handle form Submission
   let navigate = useNavigate();
   let [formData, setformData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     password: "",
     cnfPassword: "",
@@ -32,18 +31,19 @@ const SignUp = () => {
             "Content-Type": "application/json",
           },
         });
+        navigate('/sign-in');
       }
     } catch (error) {
-        if(error.response.status===409){
-            console.log("Navigating to Sign In Route!");
-            navigate('/sign-in');
-            return;
-        }
+      if (error.response.status === 409) {
+        console.log("Navigating to Sign In Route!");
+        navigate('/sign-in');
+        return;
+      }
       console.log("Error Submitting Form!", error);
     }
   };
 
-  const handleInputChnage = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
 
     setformData({
@@ -54,96 +54,41 @@ const SignUp = () => {
 
   return (
     <div className="signUp-container">
-      <div className="sign-up-logo">
-        <span>Aacharan</span>
+      <div className="signup-img-container">
+        <img src={signUpImg} alt="" className="signup-img" />
       </div>
-        <div className="signup-body">
-            <div className="signup-text">
-            <h1>Let's Gets Started!</h1>
-            <p>
-            Track your way to a better you. Join us and start building healthier habits today
-            </p>
-            </div>
-            <form
-            className="form-data"
-            action="/user/create-user"
-            method="post"
-            onSubmit={handleFormSubmission}
-            >
-            <div className="signup-name-field">
+      <div className="signup-body">
+        <h1 className="signup-header">
+          Let's gets Started!
+        </h1>
+        {/* Social Login */}
+        <div className="additional-login-options">
+          <div className="google">
 
-            <div className="signup-input-field">
-              <label htmlFor="user-firstName">First Name</label>
-              <input
-                type="text"
-                name="firstName"
-                id="user-firstName"
-                placeholder="Enter your First Name"
-                value={formData.firstName}
-                onChange={handleInputChnage}
-              />
-            </div>
-
-            <div className="signup-input-field">
-              <label htmlFor="user-lastName">Last Name</label>
-              <input
-                type="text"
-                name="lastName"
-                id="user-lastName"
-                placeholder="Enter your Last Name"
-                value={formData.lastName}
-                onChange={handleInputChnage}
-              />
-            </div>
           </div>
+          <div className="facebook">
 
-          <div className="signup-input-field">
-            <label htmlFor="user-email">Email</label>
-            <input
-              type="email"
-              name="email"
-              id="user-email"
-              placeholder="Enter your Email"
-              value={formData.email}
-              onChange={handleInputChnage}
-            />
           </div>
+          <div className="github">
 
-          <div className="signup-input-field">
-            <label htmlFor="user-password">Password</label>
-            <input
-              type="password"
-              name="password"
-              id="user-password"
-              placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleInputChnage}
-            />
           </div>
-
-          <div className="signup-input-field">
-            <label htmlFor="user-cnf-password">Confirm Password</label>
-            <input
-              type="password"
-              name="cnfPassword"
-              id="user-cnf-password"
-              placeholder="Enter Confirm Password"
-              value={formData.cnfPassword}
-              onChange={handleInputChnage}
-            />
-          </div>
-
-          <div className="user-consent">
-            <input type="checkbox"/>
-            <p>Creating an account means you're okay with our<Link>Terms of Service, Privacy Policy</Link>, And our <Link>Default Notification Settings</Link>.</p>
-          </div>
-
-          <button id="sign-up-btn" type="submit">Create Your Account</button>
-            </form>
         </div>
-      {/* <div className="signup-page-image">
-        <img src={authImg} alt="" />
-      </div> */}
+
+        <span className="or">or</span>
+        {/* Form */}
+        <form className="signup-form-data" onSubmit={handleFormSubmission}>
+
+          <input type="text" id="signup-name" name="name" required placeholder="Enter your Name" onChange={handleInputChange}/>
+          <input type="email" id="signup-email" name="email" required placeholder="Email" onChange={handleInputChange} />
+          <input type="password" id="signup-password" name="password" required placeholder="Password" onChange={handleInputChange}/>
+          <input type="password" id="signup-email" name="cnfPassword" required placeholder="Confirm Password" onChange={handleInputChange}/>
+          <div className="redirect-signin">
+            Already have an Account? <Link to="/sign-in">Sign In</Link>
+          </div>
+          <button type="submit" className="signup-submit">Create Account</button>
+        </form>
+      </div>
+
     </div>
   );
 };

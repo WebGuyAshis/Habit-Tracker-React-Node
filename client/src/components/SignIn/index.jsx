@@ -1,5 +1,4 @@
 import "./signIn.styles.css";
-// import authImg from "../../assets/images/auth.jpg";
 import axios from "axios";
 import { useState } from "react";
 import {Link, useNavigate} from 'react-router-dom';
@@ -139,9 +138,6 @@ const SignIn = () => {
           <button id="sign-in-btn" type="submit">Sign In</button>
             </form>
         </div>
-      {/* <div className="signin-page-image">
-        <img src={authImg} alt="" />
-      </div> */}
     </div>
   );
 };

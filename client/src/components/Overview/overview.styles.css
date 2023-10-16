@@ -6,7 +6,8 @@
 
 .overview-first-imp{
     height: 90%;
-    padding-top: 150px;
+    /* padding-top: 150px; */
+    padding-top: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,13 +15,14 @@
 }
 
 .overview-header{
-    font-size: 90px;
+    /* font-size: 90px; */
+    font-size: 40px;
     font-weight: 900;
     line-height: 118%;
 }
 
 .overview-quote{
-    font-size: 20px;
+    font-size: 15px;
     margin:20px 0;
     text-align: center;
 }
@@ -30,7 +32,8 @@
     cursor: pointer;
     outline: none;
     border: none;
-    padding: 15px 35px;
+    /* padding: 15px 35px; */
+    padding: 10px 20px;
     border-radius: 5px;
     font-size: 20px;
     color: white;
