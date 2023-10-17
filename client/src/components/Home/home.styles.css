@@ -11,6 +11,71 @@
     overflow: auto;
 }
 .home-content{
-    
-    padding: 0 10px;
+    padding:10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+/* .wish-user{
+
+} */
+
+.todays-date{
+    font-size: 14px;
+}
+
+/* .todays-stats-container{
+    margin-top: 20px;
+} */
+.todays-stats-container h4{
+    margin-bottom: 5px;
+}
+.show-mini-stat{
+    height: 120px;
+    border-radius: 10px;
+    background-color: rgb(0, 179, 255);
+}
+
+/* .habits-list-container{
+
+} */
+
+.habit-list{
+display: flex;
+flex-direction: column;
+gap: 10px;
+padding: 10px 0;
+}
+
+.habit-list-items{
+    width: 100%;
+    border: 1px solid;
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    justify-content: space-between;
+}
+.habit-data{
+    display: flex;
+    gap: 10px;
+}
+
+.habit-img{
+    height: 50px;
+    width: 50px;
+    border-radius: 5px;
+}
+
+.habit-detail h5{
+font-size: 16px;
+}
+.habit-detail span{
+    font-size: 14px;
+}
+
+.habit-status{  
+    transform: scale(1.8);
+    margin-right:10px ;
 }

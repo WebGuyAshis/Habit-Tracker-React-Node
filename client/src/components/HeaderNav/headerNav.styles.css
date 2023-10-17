@@ -16,19 +16,26 @@
 .header-icons{
     display: flex;
     gap: 20px;
+    height: 100%;
+    align-items: center;
 }
-
 .user-img{
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
-    background-color: rgb(82, 82, 82);
+    height: 100%;
+    display: flex;
+    align-items: center;
     cursor: pointer;
     transition: all 0.4s;
     position: relative;
 }
+.user-img-profile{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background-color: rgb(82, 82, 82);
+}
 
-.user-img:hover{
+.user-img-profile:hover{
+
     outline: 2px solid rgb(189, 189, 189);
 }
 /* .user-img:hover .user-dialogue-box{
@@ -40,10 +47,10 @@
 .user-dialogue-box{
     position: absolute;
     bottom: 0px;
-    right: 0;
+    right: 0px;
     height: 250px;
     width: 250px;
-    transform: translateY(252px);
+    transform: translateY(248px);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     background-color: rgb(255, 255, 255);
     padding: 20px;
