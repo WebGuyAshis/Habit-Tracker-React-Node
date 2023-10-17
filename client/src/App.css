@@ -1,7 +1,11 @@
 .App {
   /* text-align: center; */
-  padding:0 10px;
+  /* padding:0 10px; */
   display: flex;
   justify-content: center;
 }
+.logo{font-family: 'Righteous', sans-serif;}
 
+::-webkit-scrollbar{
+  display: none;
+}

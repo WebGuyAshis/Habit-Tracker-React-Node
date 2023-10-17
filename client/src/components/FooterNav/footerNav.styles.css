@@ -1,0 +1,81 @@
+.footerNav-container{
+    /* background-color: burlywood; */
+    height: 7vh;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 0 10px;
+    border-top: 1px solid;
+    border-image: linear-gradient(to right, transparent, black, transparent);
+    border-image-slice: 1; /* This determines the border width */
+    background-color: white;
+    }
+
+.footerNav-container{
+    display: flex;
+    justify-content: space-between;
+}
+.footNav-item{
+    cursor: pointer;
+    transition: all 0.4s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+}
+.footnav-icons{
+    min-height: 5vh;
+    width: 5vh;
+    /* background-color: rgb(39, 194, 255); */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(80, 80, 80);
+    transition: all 0.4s;
+    margin-bottom: 5px;
+}
+
+.footNav-item-text{
+    font-size: 10px;
+    display: none;
+    transition: all 0.4s;
+}
+.footNav-item:hover{
+    transform: translateY(-3vh);
+}
+
+.footNav-item:hover .footnav-icons{
+    background-color: var(--primary-color);
+    outline: 2px solid rgb(255, 201, 214);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    color: white;
+}
+.footNav-item:hover .footnav-icon-add{
+    background-color: black;
+    outline: 2px solid rgb(176, 176, 176);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.footNav-item:hover .footNav-item-text{
+    display: block;
+    color: var(--primary-color);
+
+}
+
+.add-habit{
+    border-radius: 50%;
+    background-color: black;
+    height: 7vh;
+    width: 7vh;
+    color: white;
+    font-size: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footnav-icon-add{
+    border: 1px solid;
+}

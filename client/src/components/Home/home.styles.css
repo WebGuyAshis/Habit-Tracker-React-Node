@@ -1,0 +1,16 @@
+.home-container{
+    /* background-color: aquamarine; */
+    height: 100vh;
+    /* padding: 20px; */
+    width: 100%;
+    scroll-behavior: smooth;
+}
+
+.home-body{
+    height: 93vh;
+    overflow: auto;
+}
+.home-content{
+    
+    padding: 0 10px;
+}

@@ -6,6 +6,7 @@ import axios from "axios";
 import Overview from "./components/Overview";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
+import Home from "./components/Home";
 // Move to .env
 axios.defaults.baseURL = "http://localhost:8080";
 
@@ -31,7 +32,7 @@ function App() {
           <Route path="/" element={<Overview />} />
           <Route path="/sign-up" element={<SignUp/>}/>
           <Route path="/sign-in" element={<SignIn/>}/>
-          <Route path="/user/home" element={<SignIn/>}/>
+          <Route path="/user/home" element={<Home/>}/>
 
         </Routes>
       </BrowserRouter>
