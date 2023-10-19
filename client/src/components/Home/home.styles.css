@@ -78,4 +78,22 @@ font-size: 16px;
 .habit-status{  
     transform: scale(1.8);
     margin-right:10px ;
+    height: 0px;
+}
+
+.habit-target{
+    border-radius: 30px;
+    height: 30px;
+    overflow: hidden;
+    border: 0.5px solid grey;
+}
+.increase-target-count, .decrease-target-count{
+    width: 30px;
+    height: 100%;
+    border: none;
+    outline: none;
+}
+
+.completed-target-value , .total-target-value{
+    padding: 0 5px;
 }

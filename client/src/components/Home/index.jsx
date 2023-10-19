@@ -35,6 +35,13 @@ const Home = () => {
                                         <span>08:00AM</span>
                                     </div>
                                 </div>
+                                <div className="habit-target">
+                                    <button className="increase-target-count">+</button>
+                                    <span className="completed-target-value">0</span>
+                                    /
+                                    <span className="total-target-value">0</span>
+                                    <button className="decrease-target-count">-</button>
+                                </div>
                                 <Checkbox  className="habit-status"/>
                             </div>
                         </div>
