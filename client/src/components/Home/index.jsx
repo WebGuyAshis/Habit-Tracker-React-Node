@@ -3,7 +3,11 @@ import HeaderNav from "../HeaderNav";
 import { Checkbox } from 'antd';
 import "./home.styles.css";
 
+import { useSelector,useDispatch } from "react-redux";
+import { incHabitTarget,decHabitTarget } from "../../actions";
 const Home = () => {
+    const myState = useSelector((state)=>state.changeHabitTarget)
+    const dispatch = useDispatch();
     return (
         <div className="home-container">
             <div className="home-body">
@@ -36,11 +40,11 @@ const Home = () => {
                                     </div>
                                 </div>
                                 <div className="habit-target">
-                                    <button className="increase-target-count">+</button>
-                                    <span className="completed-target-value">0</span>
+                                    <button className="increase-target-count" onClick={()=>{dispatch(incHabitTarget())}}>+</button>
+                                    <span className="completed-target-value">{myState}</span>
                                     /
-                                    <span className="total-target-value">0</span>
-                                    <button className="decrease-target-count">-</button>
+                                    <span className="total-target-value">5</span>
+                                    <button className="decrease-target-count" onClick={()=>{dispatch(decHabitTarget())}}>-</button>
                                 </div>
                                 <Checkbox  className="habit-status"/>
                             </div>

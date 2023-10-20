@@ -81,7 +81,7 @@ const SignIn = () => {
           <div className="redirect-signin">
             Don't have an Account? <Link to="/sign-up">Create Account</Link>
           </div>
-          <button type="submit" className="signin-submit">Create Account</button>
+          <button type="submit" className="signin-submit">Sign In</button>
         </form>
       </div>
     </div>
