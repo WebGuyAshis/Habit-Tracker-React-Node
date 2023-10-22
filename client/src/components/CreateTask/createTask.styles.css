@@ -13,46 +13,54 @@
 .createTask-body{
     width: calc(100% - 20px);
     border-radius: 10px;
-    height: 600px;
+    max-height: 600px;
+    max-width: 600px;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: 20px;
+    overflow: auto;
+    position: relative;
 }
 
+.createTask-body h1{
+    border-bottom: 0.5px solid grey;
+    margin-bottom: 10px;
+}
+.close-create_box{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    color: red;
+}
+
+.form-item{
+    margin: 5px 0;
+    display: flex;
+
+}
+.form-item-label{
+    font-size: 17px !important;
+    font-weight: 700;
+    width: 120px;
+}
+.form-data{
+    flex:1;
+}
 
 /* Will Do time */
-/* .will-do-at{
-
-} */
+.will-do-at{
+    margin: 5px 0;
+}
 
 
 .time-options-container{
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-}
-label{
-    background-color: aquamarine;
-    /* margin: 0 !important; */
-    padding: 0 !important;
-    display: block;
-    width: 100%;
-}
-
-.custom-form-style{
-    /* padding: 0; */
-    margin: 0;
-    border: 1px solid;
-}
-.custom-form-style label{
-    display: inline-block;
-    width: auto;
-}
-
-.custom-form-style input{
-    width: auto;
-    background-color: aqua;
-    margin: 0 !important;
 }
 .time-options{
     min-width: 40%;
@@ -63,15 +71,12 @@ label{
     align-items: center;
     justify-content: center;
     border: 1px solid rgb(28, 28, 28);
+    margin-top: 5px;
 }
 .time-options:hover{
     border: 1px solid rgb(23, 119, 255);
 }
 
-/* Media Query */
-/* @media screen and (min-width:550px) {
-    .createTask-body{
-        width: 50%;
-        max-width: 500px;
-    }
-} */
+.create-btn{
+    text-align: center;
+}

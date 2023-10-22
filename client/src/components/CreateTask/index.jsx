@@ -1,59 +1,66 @@
 import React from "react";
-import { PlusOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 
 // import { Select, Space } from "antd";
 import {
     Button,
-    Cascader,
-    Checkbox,
-    DatePicker,
+    // Cascader,
+    // Checkbox,
+    // DatePicker,
     Form,
     Input,
     InputNumber,
-    Radio,
+    //   Radio,
     Select,
-    Slider,
+    // Slider,
     Space,
     Switch,
-    TreeSelect,
-    Upload,
+    // TreeSelect,
+    // Upload,
 } from "antd";
 import "./createTask.styles.css";
-import FormItem from "antd/es/form/FormItem";
+// import FormItem from "antd/es/form/FormItem";
 
 const CreateTask = () => {
     return (
         <div className="createTask-container">
             <div className="createTask-body">
-            <Form
-            breakpoint={200}
-      layout="horizontal"
-      labelCol={{ span: 6 }} // Set the number of columns for the labe// Set the number of columns for the form control
-    >
-                    <Form.Item className="custom-form-style" label="Habit Name:" labelCol={{ span: 6 }}>
-                        <Input />
-                    </Form.Item>
+                <h1>Create Habit</h1>
+                <CloseOutlined className="close-create_box" />
+                <Form>
 
-                    <Form.Item  label="Category">
-                        <Select>
+                    <div className="form-item">
+                        <label htmlFor="habit-name-input" className="form-item-label">Habit Name:</label>
+                        <Input className="form-data" id="create-select-category" />
+                    </div>
+                    {/* </Form.Item> */}
+
+                    {/* Category */}
+                    <div className="form-item">
+                        <label htmlFor="habit-name-input" className="form-item-label">Category:</label>
+                        <Select defaultValue="Select" id="create-select-category" className="form-data">
                             <Select.Option value="Select">Select</Select.Option>
                             <Select.Option value="Sports">Sports</Select.Option>
                             <Select.Option value="School">School</Select.Option>
                             <Select.Option value="Work">Work</Select.Option>
                         </Select>
+                    </div>
 
-                    </Form.Item>
                     {/* Repeat Habit */}
 
-                    <Form.Item label="Repeat Habit">
-                        <Radio.Group>
-                            <Radio value="everyday"> Everyday </Radio>
-                            <Radio value="weekly"> Weekly </Radio>
-                        </Radio.Group>
-                    </Form.Item>
+                    {/* <Form.Item className="form-item" label="Repeat Habit"> */}
+                    <div className="form-item">
+                        <label htmlFor="repHabit" className="form-item-label">Repeat:</label>
+                        <Select defaultValue="Select" id="create-select-repHabit" className="form-data">
+                            <Select.Option value="Select">Select</Select.Option>
+                            <Select.Option value="Sports">Everyday</Select.Option>
+                            <Select.Option value="School">Weekly</Select.Option>
+                        </Select>
+                    </div>
+                    {/* </Form.Item> */}
 
                     <div className="will-do-at">
-                        <label htmlFor="habit-time">Will Do At</label>
+                        <label htmlFor="repHabit" className="form-item-label">Habit Time:</label>
                         <div className="time-options-container">
                             <div className="time-options">
                                 <img src="" alt="" className="anytime" />
@@ -75,75 +82,49 @@ const CreateTask = () => {
                     </div>
 
 
-                    <Form.Item label="Goal">
-                        <Space wrap>
-
-                            <Select id="goal"
-                                defaultValue="Off"
-                                style={{
-                                    width: 120,
-                                }}
-                                allowClear
-                                options={[
-                                    {
-                                        value: "off",
-                                        label: "Off",
-                                    },
-                                    {
-                                        value: "duration",
-                                        label: "Duration",
-                                    },
-                                    {
-                                        value: "count",
-                                        label: "Count",
-                                    },
-                                ]}
-                            />
-                        </Space>
-                    </Form.Item>
+                    {/* Goal */}
+                    <div className="form-item">
+                        <label htmlFor="create-goal" className="form-item-label">Goal:</label>
+                        <Select defaultValue="Off" id="create-goal" className="form-data">
+                            <Select.Option value="off">Off</Select.Option>
+                            <Select.Option value="duration">Duration</Select.Option>
+                            <Select.Option value="count">Count</Select.Option>
+                        </Select>
+                    </div>
 
                     {/* If duration is selected */}
-
-                    <Form.Item label="Duration">
-                        <InputNumber />
-                        <Space wrap>
-                            <Select id="goal"
-                                defaultValue="Minute"
-                                style={{
-                                    width: 120,
-                                }}
-                                allowClear
-                                options={[
-                                    {
-                                        value: "min",
-                                        label: "Minute",
-                                    },
-                                    {
-                                        value: "hour",
-                                        label: "Hour",
-                                    },
-                                ]}
-                            />
-                        </Space>
-                    </Form.Item>
+                    <div className="form-item">
+                        <label htmlFor="create-duration" className="form-item-label">Duration:</label>
+                        <InputNumber defaultValue= "0"/>
+                        <Select defaultValue="min" id="create-duration" className="form-data">
+                            <Select.Option value="min">Minute</Select.Option>
+                            <Select.Option value="hour">Hour</Select.Option>
+                        </Select>
+                    </div>
 
                     {/* if Count is selected */}
-                    <Form.Item label="Count">
-                        <InputNumber />
-                    </Form.Item>
+                    <div className="form-item">
+                        <label htmlFor="create-count" className="form-item-label">Count:</label>
+                        <InputNumber defaultValue= "0" id="create-count"/>
+                    </div>
 
-                    <Form.Item label="Alert:" valuePropName="checked">
-                        <Switch />
-                    </Form.Item>
+                    {/* <Form.Item
+                        className="form-item"
+                        label="Alert:"
+                        valuePropName="checked"
+                    > */}
+                    <div className="form-item">
+                        <label htmlFor="create-alert" className="form-item-label">Alert: </label>
+                        <Switch defaultChecked id="create-alert" />
+                    </div>
+                    {/* </Form.Item> */}
 
-
-                    <Form.Item label=" ">
-                        <Button type="primary" htmlType="submit">
-                            Submit
-                        </Button>
-                    </Form.Item>
+                    <div className="create-btn">
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                    </div>
                 </Form>
-
             </div>
         </div>
     );
