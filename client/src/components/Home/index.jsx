@@ -5,6 +5,7 @@ import "./home.styles.css";
 
 import { useSelector,useDispatch } from "react-redux";
 import { incHabitTarget,decHabitTarget } from "../../actions";
+import CreateTask from "../CreateTask";
 const Home = () => {
     const myState = useSelector((state)=>state.changeHabitTarget)
     const dispatch = useDispatch();
@@ -51,6 +52,8 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
+            {/* Create Task Box */}
+            <CreateTask />
             </div>
             {/* Footer Part */}
             <FooterNav />

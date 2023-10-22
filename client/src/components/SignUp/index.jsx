@@ -9,7 +9,8 @@ let baseUrl = "http://localhost:8080";
 const SignUp = () => {
   // handle form Submission
   let navigate = useNavigate();
-  let [formData, setformData] = useState({
+  
+  let [signupFormData, setsignupFormData] = useState({
     name: "",
     email: "",
     password: "",
@@ -17,16 +18,16 @@ const SignUp = () => {
   });
   const handleFormSubmission = async (e) => {
     e.preventDefault();
-    console.log("FormData:", formData);
+    console.log("signupFormData:", signupFormData);
 
     try {
       let response = await axios.post(
         `${baseUrl}/api/v1/user/create-user`,
-        formData
+        signupFormData
       );
       console.log("Response Status:", response.data, response.status === 200);
       if (response.status === 200) {
-        console.log("Form Submitted!", formData, {
+        console.log("Form Submitted!", signupFormData, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -46,8 +47,8 @@ const SignUp = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    setformData({
-      ...formData,
+    setsignupFormData({
+      ...signupFormData,
       [name]: value,
     });
   };
