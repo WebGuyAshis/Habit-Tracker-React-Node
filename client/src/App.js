@@ -10,8 +10,13 @@ import Home from "./components/Home";
 // Move to .env
 axios.defaults.baseURL = "http://localhost:8080";
 
+// const ContextData = createContext();
 function App() {
   const [data, setData] = useState("");
+
+  // For opening and Closing of Create Habit box
+  const [openCreateHabit, setOpenCreateHabit] = useState(false);
+
 
   // hitting route of node js
   console.log("Initial Data:");
@@ -26,6 +31,7 @@ function App() {
   }, []);
 
   return (
+    // <ContextData.Provider value={{openCreateHabit,setOpenCreateHabit}}>
     <div className="App">
       <BrowserRouter>
         <Routes>
@@ -37,7 +43,9 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
+    // </ContextData.Provider>
   );
 }
 
 export default App;
+// export {ContextData} ;

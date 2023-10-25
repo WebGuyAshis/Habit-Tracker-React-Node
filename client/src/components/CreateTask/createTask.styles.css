@@ -70,8 +70,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgb(28, 28, 28);
+    border: 1px solid rgb(205, 205, 205);
     margin-top: 5px;
+    transition: all 0.3s;
+}
+.time-options img{
+    height: 60%;
+    margin-right: 5px;
 }
 .time-options:hover{
     border: 1px solid rgb(23, 119, 255);
@@ -79,4 +84,11 @@
 
 .create-btn{
     text-align: center;
+}
+
+/* Media Queries */
+@media screen and (min-width:575px) {
+    .createTask-body{
+        max-width: 500px;
+    }
 }

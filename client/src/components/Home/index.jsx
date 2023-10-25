@@ -6,9 +6,15 @@ import "./home.styles.css";
 import { useSelector,useDispatch } from "react-redux";
 import { incHabitTarget,decHabitTarget } from "../../actions";
 import CreateTask from "../CreateTask";
+
 const Home = () => {
+    const createBoxState = useSelector((state)=> state.openDialogueBoxes);
     const myState = useSelector((state)=>state.changeHabitTarget)
     const dispatch = useDispatch();
+
+    const createHabiState  = useSelector((state)=>state.CreateTask)
+
+
     return (
         <div className="home-container">
             <div className="home-body">
@@ -32,7 +38,7 @@ const Home = () => {
 
                         <div className="habit-list">
                             {/* Individual habits */}
-                            <div className="habit-list-items">
+                            {/* <div className="habit-list-items">
                                 <div className="habit-data">
                                     <img className="habit-img" src="" alt="" />
                                     <div className="habit-detail">
@@ -48,12 +54,15 @@ const Home = () => {
                                     <button className="decrease-target-count" onClick={()=>{dispatch(decHabitTarget())}}>-</button>
                                 </div>
                                 <Checkbox  className="habit-status"/>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
             {/* Create Task Box */}
-            <CreateTask />
+
+            {/* <CreateTask /> */}
+            {createBoxState && <CreateTask/>}
+
             </div>
             {/* Footer Part */}
             <FooterNav />
