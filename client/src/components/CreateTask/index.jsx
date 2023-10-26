@@ -7,6 +7,7 @@ import { createHabit } from "../../actions";
 
 import { Button, Input, InputNumber, Select, Switch } from "antd";
 import { closeCreateHabit } from "../../actions";
+import axios from 'axios';
 const CreateTask = () => {
 
     // const createBoxState = useSelector((state)=> state.openDialogueBoxes);
@@ -23,22 +24,40 @@ const CreateTask = () => {
         habitAlert: true,
     });
     const habitDataState = useSelector((state)=>state.createHabit)
+    // const closeCreateBox = useSelector((state)=>state.closeCreateHabit)
+
     useEffect(() => {
         console.log("Updated Habit Data:", habitDataState);
       }, [habitDataState]);
 
-    const handleFormSubmission = (e) => {
+    const handleFormSubmission = async(e) => {
         e.preventDefault();
-        console.log("Local Habit Data:", localhabitData);
-        console.log(habitDataState);
+
         dispatch(createHabit(localhabitData))
-        console.log("After Updating Store:", habitDataState);
+        dispatch(closeCreateHabit());
+
+        // Saving data in DB
+        let baseUrl = "http://localhost:8080";
+
+        try{
+            let response = await axios.post(
+                `${baseUrl}/api/v1/user/create-habit`,
+                localhabitData
+            );
+                if(response.status===200){
+                    console.log("Habit Saved in Database!");
+                    return;
+                }
+
+        }catch(error){
+            console.log("Error Saving HabitData to database!", error);
+            return;
+        }
     };
+
     const handleInputChange = (name, value) => {
         // Need to handle like this because antd select tags dont send event directly we need to send it using Form.item but it is not optimised under screen width 575px it automatically switches layout and other libraries are prettyu much boring so Im using antd and my custom design and little bit manual code
-        console.log("Name:", name, "Value:", value);
         setlocalHabitData({...localhabitData, [name]:value})
-
     };
     return (
         <div className="createTask-container">
@@ -186,9 +205,9 @@ const CreateTask = () => {
                             <Select.Option value="count">Count</Select.Option>
                         </Select>
                     </div>
-
                     {/* If duration is selected */}
-                    <div className="form-item">
+
+                    {localhabitData.habitGoal ==="duration" && (<div className="form-item">
                         <label htmlFor="create-duration" className="form-item-label">
                             Duration:
                         </label>
@@ -212,10 +231,12 @@ const CreateTask = () => {
                             <Select.Option value="min">Minute</Select.Option>
                             <Select.Option value="hour">Hour</Select.Option>
                         </Select>
-                    </div>
+                    </div>) }
+
 
                     {/* if Count is selected */}
-                    <div className="form-item">
+                    {localhabitData.habitGoal==="count" && (
+                        <div className="form-item">
                         <label htmlFor="create-count" className="form-item-label">
                             Count:
                         </label>
@@ -229,7 +250,8 @@ const CreateTask = () => {
                             min="0"
                         />
                     </div>
-
+                    )}
+                    
                     <div className="form-item">
                         <label htmlFor="create-alert" className="form-item-label">
                             Alert:{" "}

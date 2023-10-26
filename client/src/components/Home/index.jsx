@@ -8,11 +8,19 @@ import { incHabitTarget,decHabitTarget } from "../../actions";
 import CreateTask from "../CreateTask";
 
 const Home = () => {
-    const createBoxState = useSelector((state)=> state.openDialogueBoxes);
     const myState = useSelector((state)=>state.changeHabitTarget)
     const dispatch = useDispatch();
+    
+    // const createBoxState = useSelector((state)=> state.openDialogueBoxes);
+    // const myHabits  = useSelector((state)=>state.createHabit)
 
-    const createHabiState  = useSelector((state)=>state.CreateTask)
+    // Combined selectors
+    const {createBoxState, myHabits} = useSelector((state)=>({
+        createBoxState: state.openDialogueBoxes,
+        myHabits: state.createHabit
+    }));
+
+    console.log("My Habits:", myHabits);
 
 
     return (
@@ -38,6 +46,27 @@ const Home = () => {
 
                         <div className="habit-list">
                             {/* Individual habits */}
+                            {myHabits.map((habit)=>{
+                                return(
+                                    <div className="habit-list-items">
+                                <div className="habit-data">
+                                    <img className="habit-img" src="" alt="" />
+                                    <div className="habit-detail">
+                                        <h5>{habit.habitName}</h5>
+                                        <span>08:00AM</span>
+                                    </div>
+                                </div>
+                                <div className="habit-target">
+                                    <button className="increase-target-count" onClick={()=>{dispatch(incHabitTarget())}}>+</button>
+                                    <span className="completed-target-value">{myState}</span>
+                                    /
+                                    <span className="total-target-value">5</span>
+                                    <button className="decrease-target-count" onClick={()=>{dispatch(decHabitTarget())}}>-</button>
+                                </div>
+                                <Checkbox  className="habit-status"/>
+                            </div>
+                                )
+                            })}
                             {/* <div className="habit-list-items">
                                 <div className="habit-data">
                                     <img className="habit-img" src="" alt="" />
@@ -55,6 +84,7 @@ const Home = () => {
                                 </div>
                                 <Checkbox  className="habit-status"/>
                             </div> */}
+
                         </div>
                     </div>
                 </div>

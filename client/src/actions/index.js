@@ -10,6 +10,7 @@ export const decHabitTarget = ()=>{
     }
 }
 
+// For Habit Creation
 export const createHabit = (habitData)=>{
 
     return{
@@ -17,8 +18,7 @@ export const createHabit = (habitData)=>{
         payload: habitData,
     }
 }
-
-
+// Opening Closing habit dialogue box
 export const openCreateHabit = ()=>{
     console.log("Open Box");
 
@@ -31,5 +31,19 @@ export const closeCreateHabit = ()=>{
     console.log("Close BOx");
     return {
         type: "CLOSE_CREATE_HABIT"
+    }
+}
+
+// Login Logout
+export const userLogin = (user)=>{
+    return{
+        type: "LOGIN",
+        payload:user
+    }
+}
+
+export const userLogout = ()=>{
+    return{
+        type:"LOGOUT"
     }
 }
