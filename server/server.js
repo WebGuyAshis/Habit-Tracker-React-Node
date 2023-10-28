@@ -4,6 +4,9 @@ import db from './config/mongoose.js'
 import route from './routes/index.js';
 import session from 'express-session'
 import cookieParser from "cookie-parser";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Using Passport js
 import passport from "passport";
@@ -13,22 +16,31 @@ import passportLocal from './config/passport-local-strategy.js';
 const app = express();
 app.use(cookieParser());
 
-app.use(cors()); 
+// app.use(cors()); 
+
+const corsOptions = {
+    origin: 'http://localhost:3000', // Replace with your frontend URL
+    credentials: true
+};
+
+app.use(cors(corsOptions));
   
 // we basically dont need urlencoded because we are parsing data usning express.json
 // app.use(urlencoded({extended:true}))
 app.use(express.json());
 
 app.use(session({
+    name:"Habit_Tracker",
     secret: "I_need_a_job_so_can_fullFill_my_promises",
     resave: false,
     saveUninitialized: false,
     cookie: {
         maxAge: 24 * 60 * 60 * 1000, // 1 day=============
-        httpOnly:false,
-        // secure:true,
-        sameSite:"none",
-        domain:"localhost:3000"
+        // httpOnly:false,
+        // // secure:true,
+        // sameSite:"none",
+        // // domain:"localhost:3000",
+        // path:'/user'
 
     },
 }));
