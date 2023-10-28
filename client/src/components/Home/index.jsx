@@ -46,9 +46,9 @@ const Home = () => {
 
                         <div className="habit-list">
                             {/* Individual habits */}
-                            {myHabits.map((habit)=>{
+                            {myHabits.map((habit,index)=>{
                                 return(
-                                    <div className="habit-list-items">
+                                    <div className="habit-list-items" key={index}>
                                 <div className="habit-data">
                                     <img className="habit-img" src="" alt="" />
                                     <div className="habit-detail">

@@ -3,10 +3,15 @@ import signinImg from '../../assets/images/signin.jpg'
 import axios from "axios";
 import { useState } from "react";
 import {Link, useNavigate} from 'react-router-dom';
+import { useDispatch } from "react-redux";
+
+import { userLogin } from "../../actions";
+// import { connect } from "mongoose";
 
 let baseUrl = "http://localhost:8080";
 
 const SignIn = () => {
+  const dispatch = useDispatch()
   // handle form Submission
   let navigate = useNavigate();
   let [signInformData, setsignInformData] = useState({
@@ -20,11 +25,42 @@ const SignIn = () => {
     try {
       let response = await axios.post(
         `${baseUrl}/api/v1/user/create-session`,
-        signInformData
+        signInformData,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        }
       );
-      console.log("Response Status:", response.data, response.status === 200);
+      
+      console.log("Response Status:",response, response.data, response.status === 200);
+
+      // Handling 200 response
+
       if (response.status === 200) {
-        console.log("Sign In Successfull!!", signInformData, {
+        // test function
+
+        function getCookie(name) {
+          var cookieName = name + "=";
+          var decodedCookie = decodeURIComponent(document.cookie);
+          var cookieArray = decodedCookie.split(';');
+          for (var i = 0; i < cookieArray.length; i++) {
+              var cookie = cookieArray[i].trim();
+              if (cookie.indexOf(cookieName) === 0) {
+                  return cookie.substring(cookieName.length, cookie.length);
+              }
+          }
+          return null;
+      }
+
+      console.log("GetCookie:", getCookie("connect.sid"), "Document.cookie:", document.cookie);
+
+        // 
+        console.log("Response:", response.headers.setAccept);
+        console.log("React USER DATA:", response.data.userData);
+
+        dispatch(userLogin(response.data.userData))
+        console.log("Sign In Successfull!!", signInformData,   {
           headers: {
             "Content-Type": "application/json",
           },

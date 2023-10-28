@@ -99,7 +99,9 @@ const CreateTask = () => {
                             }}
                         >
                             <Select.Option value="Not Set">Select</Select.Option>
-                            <Select.Option value="Sports">Sports</Select.Option>
+                            <Select.Option value="Sports">
+                                <img src="" alt="" />
+                                Sports</Select.Option>
                             <Select.Option value="School">School</Select.Option>
                             <Select.Option value="Work">Work</Select.Option>
                         </Select>

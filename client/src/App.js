@@ -18,23 +18,16 @@ function App() {
   const userData = useSelector((state)=>state.userAuth);
   console.log("User Data:", userData);
 
-  // const [data, setData] = useState("");
-  
-  // For opening and Closing of Create Habit box
-  // const [openCreateHabit, setOpenCreateHabit] = useState(false);
+  let baseUrl = "http://localhost:8080";
 
+  // const fetchUserDetail=async()=>{
+  //   let response = await axios.get(`${baseUrl}/api/v1/user/active_user`)
+  //   console.log("User:", response.data);
+  // }
 
-  // hitting route of node js
-  // console.log("Initial Data:");
-  // useEffect(() => {
-  //   axios
-  //     .get("/api/v1")
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setData(response.data);
-  //     })
-  //     .catch((err) => setData("Error Fetching data from Api!"));
-  // }, []);
+  // if(userData.user === null){
+  //   fetchUserDetail();
+  // }
 
   return (
     // <ContextData.Provider value={{openCreateHabit,setOpenCreateHabit}}>
@@ -46,7 +39,8 @@ function App() {
           <Route path="/sign-up" element={<SignUp/>}/>
           <Route path="/sign-in" element={<SignIn/>}/>
 
-          <Route path="/user/home" element={userData.user?<Home/>:<AccessDeniedPage/>}/>
+          {/* <Route path="/user/home" element={userData.user?<Home/>:<AccessDeniedPage/>}/> */}
+          <Route path="/user/home" element={<Home/>}/>
         </Routes>
       </BrowserRouter>
     </div>
