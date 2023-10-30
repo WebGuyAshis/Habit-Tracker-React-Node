@@ -97,3 +97,26 @@ font-size: 16px;
 .completed-target-value , .total-target-value{
     padding: 0 5px;
 }
+
+
+
+/* For no data */
+.noData{
+    width: 200px;
+    /* width: 100%;
+    height: 300px; */
+    margin: auto;
+    overflow: hidden;
+}
+
+.noData img{
+    width: 100%;
+    /* height: 100%; */
+    object-fit: cover;
+    object-position: center;
+}
+
+.noData h1{
+    color: rgba(47, 47, 47, 0.223);
+    text-align: center;
+}

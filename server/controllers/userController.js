@@ -50,7 +50,10 @@ export const createUser = async (req, res) => {
 export const createSession =
 (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
+
     console.log("User From Controller", user);
+    console.log("Info From Controller", info);
+
     if (err) {
       // Handle unexpected errors
       console.log("Internal server error");

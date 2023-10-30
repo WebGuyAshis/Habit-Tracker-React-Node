@@ -1,11 +1,6 @@
-// const passport = require('passport');
-
-// const LocalStrategy = require('passport-local').Strategy;
-
-// const User = require('../model/User');
-
 import passport from "passport";
-import LocalStrategy from 'passport-local';
+// import LocalStrategy from 'passport-local';
+import { Strategy as LocalStrategy } from 'passport-local';
 import User from "../model/User.js";
 
 passport.use(new LocalStrategy({
@@ -34,7 +29,7 @@ passport.use(new LocalStrategy({
 passport.serializeUser((user,done)=>{
     console.log("User from Serialize", user);
     console.log("Serialize the user");
-    return done(null, user._id);
+    return done(null, user.id);
 })
 
 // Deserialize user
@@ -45,7 +40,7 @@ passport.deserializeUser((id,done)=>{
             if(!user){
                 return done(null,false);
             }
-            return done(null,employee);
+            return done(null,user);
         })
         .catch((err)=>{
             console.log("Error finding User!!");
@@ -56,12 +51,12 @@ passport.deserializeUser((id,done)=>{
 
 // check user authentication
 
-passport.checkAuthentication = (req,res,next)=>{
-    if(req.isAuthenticated()){
-        return next();
+passport.checkAuthentication = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return next(); // User is authenticated, continue to the next middleware or route
     }
-    return res.redirect('/authorization');
-}
+    return res.status(401).json({ error: "Not Authenticated" });
+};
 
 passport.setAuthenticatedUser = function(req,res,next){
     if(req.isAuthenticated()){
@@ -69,6 +64,4 @@ passport.setAuthenticatedUser = function(req,res,next){
     }
     next();
 }
-
-// module.exports = passport
 export default passport;

@@ -14,7 +14,6 @@ import passportLocal from './config/passport-local-strategy.js';
 
 
 const app = express();
-app.use(cookieParser());
 
 // app.use(cors()); 
 
@@ -24,9 +23,10 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-  
+
 // we basically dont need urlencoded because we are parsing data usning express.json
 // app.use(urlencoded({extended:true}))
+app.use(cookieParser());
 app.use(express.json());
 
 app.use(session({
@@ -36,12 +36,6 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         maxAge: 24 * 60 * 60 * 1000, // 1 day=============
-        // httpOnly:false,
-        // // secure:true,
-        // sameSite:"none",
-        // // domain:"localhost:3000",
-        // path:'/user'
-
     },
 }));
 
@@ -56,6 +50,18 @@ app.use(passport.session());
 app.use(passport.setAuthenticatedUser);
 
 // Setting route
+app.get('/protected-route', (req, res) => {
+    if (req.isAuthenticated()) {
+        let userData = req.user;
+        delete userData.password
+        console.log("User had active Session:",req.user,userData);
+      res.status(200).send(userData);
+    } else {
+        console.log("User dont have active Session:",userData);
+      res.status(401).json({ error: 'User session not found' });
+    }
+  });
+
 app.use('/', route)
 
 app.listen(8080, (err) => {

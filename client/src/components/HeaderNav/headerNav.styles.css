@@ -62,9 +62,15 @@
 .user-img-diag{
     height: 100px;
     width: 100px;
-    background-color: orange;
+    background-color: rgb(255, 182, 47);
     border-radius: 50%;
     overflow: hidden;
+}
+.user-img-diag img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* width: 100%; */
 }
 
 .diag-options{

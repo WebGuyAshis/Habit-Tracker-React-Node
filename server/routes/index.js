@@ -1,5 +1,6 @@
 import express from "express";
 import api from './api/index.js';
+import passport from "passport";
 
 let router = express.Router();
 

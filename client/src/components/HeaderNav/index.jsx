@@ -4,6 +4,7 @@ import { faGear,faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 import bellImg from '../../assets/images/bell.png'
 import {Link} from 'react-router-dom';
+import userImg from '../../assets/images/defaultUser.png'
 
 const HeaderNav = () => {
     return (
@@ -13,11 +14,11 @@ const HeaderNav = () => {
             <div className="header-icons">
 
                 <div className="user-img">
-                    <img className='user-img-profile' src="" alt="" />
+                    <img className='user-img-profile' src={userImg} alt="user" />
 
                     <div className="user-dialogue-box">
                         <div className="user-img-diag">
-                            <img className='user-img-profile-diag' src="" alt="" />
+                            <img className='user-img-profile-diag' src={userImg} alt="user" />
                         </div>
                         <h3 className="user-diag-name">
                             Ashis

@@ -1,7 +1,10 @@
+import { useEffect } from "react";
 import OverviewNav from "./OverviewNav";
 import "./overview.styles.css";
+import axios from "axios";
 
 const Overview = () => {
+  
   return (
     <div className="overview">
       <OverviewNav />
@@ -19,28 +22,23 @@ const Overview = () => {
         </p>
         <button className="try-free-btn">Try For Free</button>
       </div>
-{/* Preview Image */}
+      {/* Preview Image */}
       <div className="preview-img">
         <h1>Desktop / Mobile Preview</h1>
       </div>
 
-{/* Features Preview */}
-        <div className="preview-features">
-            <h1>Some Text</h1>
-            <p>Related Quote</p>
-            {/* Features */}
-        </div>
+      {/* Features Preview */}
+      <div className="preview-features">
+        <h1>Some Text</h1>
+        <p>Related Quote</p>
+        {/* Features */}
+      </div>
 
-        {/* Challenges Preview Show case */}
-        <div className="preview-challenge">
+      {/* Challenges Preview Show case */}
+      <div className="preview-challenge"></div>
 
-        </div>
-
-
-        {/* A Sexy Footer */}
-        <div className="overview-footer">
-            
-        </div>
+      {/* A Sexy Footer */}
+      <div className="overview-footer"></div>
     </div>
   );
 };
