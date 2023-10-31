@@ -1,0 +1,169 @@
+.habitDetail-container{
+    /* height: 100vh; */
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    padding: 10px;
+}
+.back-icon{
+    margin-bottom: 10px;
+}
+.habit-detail-cat-time{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    margin-bottom:7px;
+    
+}
+.habit-detail-cat-time div{
+    padding: 4px 10px;
+    background-color: rgba(128, 128, 128, 0.25);
+    border-radius: 20px;
+}
+
+/* .habit-time-everyday{
+    margin-left:10px;
+} */
+.habit-details-records{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    overflow: auto;
+}
+
+.habit-records-data{
+    /* width: 250px; */
+    min-width: 200px;
+    /* border: 1px solid; */
+    width: auto;
+    padding: 10px;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.798);
+    transition: all 0.4s;
+}
+.habit-records-data:hover{
+    color: rgb(255, 255, 255);
+}
+.current-streak{
+    background: linear-gradient(rgb(168, 88, 233), rgb(68, 121, 255));
+    box-shadow: 0px 20px 63px -31px rgb(97, 68, 255);
+}
+.habit-finished{
+    background: linear-gradient(rgb(61, 231, 96), rgb(29, 212, 149));
+    box-shadow: 0px 20px 63px -31px rgb(29, 212, 149);
+}
+.completion-rate{
+    background: linear-gradient(rgb(237, 49, 102), rgb(231, 68, 193));
+    box-shadow: 0px 20px 63px -31px rgb(188, 16, 148);
+}
+
+
+.todays-completition-stats{
+    margin-top: 10px;
+}
+
+.habit-completion-graph{
+    width: 100%;
+    max-width: 500px;
+    background-color: rgba(165, 165, 165, 0.134);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 7px;
+}
+
+
+/* .ant-progress-inner{
+    width: auto !important;
+    height: auto !important;
+} */
+.ant-progress-inner{
+    width:100% !important;
+    height: 100% !important;
+    /* max-width: 300px; */
+}
+.ant-progress-circle{
+    width: 100%;
+    max-height: 400px;
+}
+
+.ant-progress-outer .ant-progress-inner{
+    width: 100% !important;
+    height: 18px !important;
+}
+
+.ant-progress-outer .ant-progress-bg{
+    height: 100% !important;
+}
+.ant-progress-text{
+    font-size: 40px !important;
+}
+
+.mark-current-task-complete{
+    width: 150px;
+    background-color: rgb(5, 145, 35);
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 10px;
+    margin: 10px auto 0 auto;
+    color: white;
+    cursor: pointer;
+
+}
+
+
+.previous-data{
+    margin-top: 10px;
+}
+
+.previous-record{
+    border-radius: 10px;
+    background-color: rgba(165, 165, 165, 0.134);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.previous-day{
+    /* background: rgb(156, 156, 156); */
+    /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; */
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 10px;
+    padding: 10px;
+    color: rgb(40, 40, 40);
+    transition: all 0.4s;
+}
+.previous-day:hover{
+    background: rgb(0, 153, 255);
+    color: rgb(255, 255, 255);
+
+
+}
+.previous-date{
+    margin-bottom: 10px;
+}
+
+/* .previous-habit-status-cont{
+
+} */
+
+.previous-habit-status{
+    width: 120px;
+
+}
+
+.ant-select-selector{
+    background-color: rgba(255, 255, 255, 0.87) !important;
+    margin-left:10px !important;
+}
+.delete-habit{
+    /* width: 100px; */
+    margin: auto;
+    background-color: red;
+    color: white;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin:auto;
+    margin-top: 10px;
+    width: 150px;
+    text-align: center;
+}

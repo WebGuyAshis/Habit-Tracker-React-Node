@@ -8,6 +8,7 @@ import { createHabit } from "../../actions";
 import { Button, Input, InputNumber, Select, Switch } from "antd";
 import { closeCreateHabit } from "../../actions";
 import axios from 'axios';
+
 const CreateTask = () => {
 
     // const createBoxState = useSelector((state)=> state.openDialogueBoxes);
@@ -99,9 +100,7 @@ const CreateTask = () => {
                             }}
                         >
                             <Select.Option value="Not Set">Select</Select.Option>
-                            <Select.Option value="Sports">
-                                <img src="" alt="" />
-                                Sports</Select.Option>
+                            <Select.Option value="Sports">Sports</Select.Option>
                             <Select.Option value="School">School</Select.Option>
                             <Select.Option value="Work">Work</Select.Option>
                         </Select>

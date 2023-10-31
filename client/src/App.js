@@ -7,18 +7,19 @@ import Overview from "./components/Overview";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
 import Home from "./components/Home";
-import { useSelector } from "react-redux";
-import AccessDeniedPage from "./components/AccessDeniedPage";
+import HabitDetail from "./components/HabitDetail";
+// import { useSelector } from "react-redux";
+// import AccessDeniedPage from "./components/AccessDeniedPage";
 // Move to .env
-let baseURL = "http://localhost:8080";
+// let baseURL = "http://localhost:8080";
 
 
 // const ContextData = createContext();
 function App() {
   // let navigate = useNavigate();
 
-  const userData = useSelector((state)=>state.userAuth);
-  console.log("User Data:", userData);
+  // const userData = useSelector((state)=>state.userAuth);
+  // console.log("User Data:", userData);
 
 
   return (
@@ -33,6 +34,7 @@ function App() {
 
           {/* <Route path="/user/home" element={userData.user?<Home/>:<AccessDeniedPage/>}/> */}
           <Route path="/user/home" element={<Home/>}/>
+          <Route path="/user/habit-detail" element={<HabitDetail/>}/>
         </Routes>
       </Router>
     </div>

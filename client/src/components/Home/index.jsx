@@ -11,6 +11,11 @@ import axios from 'axios'
 import { useNavigate } from "react-router-dom";
 
 import noDataGif from '../../assets/images/noData.gif'
+import studyImg from '../../assets/images/study.png'
+import sportsImg  from '../../assets/images/sports.png'
+import workImg  from '../../assets/images/work.png'
+
+
 const Home = () => {
     const navigate = useNavigate()
     const myState = useSelector((state) => state.changeHabitTarget)
@@ -99,6 +104,10 @@ const Home = () => {
         return greeting;
     }
     const greeting = getGreetingBasedOnTime();
+
+    const showHabitDetails = ()=>{
+        navigate('/user/habit-detail')
+    }
     return (
         <div className="home-container">
             <div className="home-body">
@@ -123,10 +132,16 @@ const Home = () => {
                         <div className="habit-list">
                             {/* Individual habits */}
                             {myHabits.length >0 ? (myHabits.map((habit, index) => {
+                                let imgSrc =
+                                habit.habitCategory === "Sports"
+                                  ? sportsImg
+                                  : habit.habitCategory === "School"
+                                  ? studyImg
+                                  : workImg;
                                 return (
-                                    <div className="habit-list-items" key={index}>
+                                    <div className="habit-list-items" key={index} onClick={showHabitDetails}>
                                         <div className="habit-data">
-                                            <img className="habit-img" src="" alt="" />
+                                            <img className="habit-img" src={imgSrc} alt="" />
                                             <div className="habit-detail">
                                                 <h5>{habit.habitName}</h5>
                                                 <span>08:00AM</span>
