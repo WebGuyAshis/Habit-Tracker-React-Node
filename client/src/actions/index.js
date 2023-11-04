@@ -36,6 +36,7 @@ export const closeCreateHabit = ()=>{
 
 // Login Logout
 export const userLogin = (user)=>{
+    console.log("User From Actions:", user);
     return{
         type: "LOGIN",
         payload:user
@@ -45,5 +46,27 @@ export const userLogin = (user)=>{
 export const userLogout = ()=>{
     return{
         type:"LOGOUT"
+    }
+}
+
+// export const userAction = (userData)=>{
+// return{
+//     type:"USER_DATA",
+//     payload:userData
+// }
+// }
+
+export const userHabits = (userHabit)=>{
+    console.log("User Habit from Action:", userHabit);
+    return{
+type:"USER_HABIT",
+payload:userHabit
+    }
+}
+
+export const selectedHabitDetail =(habitDetail)=>{
+    return {
+        type: "SELECTED_HABIT_DETAIL",
+        payload:habitDetail
     }
 }

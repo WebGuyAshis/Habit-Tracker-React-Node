@@ -14,7 +14,11 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true
-    }
+    },
+    habitList:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Habit"
+    }]
 });
 
 const User = mongoose.model('User',userSchema);

@@ -1,6 +1,7 @@
 import User from "../model/User.js";
 import passport from 'passport';
 import cookieParser from "cookie-parser";
+import Habit from "../model/Habit.js";
 
 
 export const createUser = async (req, res) => {
@@ -82,6 +83,32 @@ export const createSession =
   })(req, res, next);
 };
 
-export const createHabit = async()=>{
+export const createHabit = async(req,res)=>{
     console.log("Will Create Later");
+
+    try {
+      console.log("Req.Body:", req.body);
+
+      let habit = await Habit.create(req.body);
+      console.log("Habit Created in Db:", habit);
+
+      return res.status(200).json({message:"Successfully Created Habit!"})
+    } catch (error) {
+      console.log("Error Creating task:", error);
+      return res.status(500).json({error:"  Internal Serever Error!"})
+
+    }
+
+}
+
+export const fetch_habits= async(req,res)=>{
+  try {
+    let userId = req.params.userId;
+    let habits = await Habit.find({habitUser: userId});
+    console.log("Found Habits of User!", habits);
+    return res.status(200).send(habits);
+  } catch (error) {
+    console.log("Error showing tasks!", error);
+    return res.status(500).json({error:"Error Fetching Songs!"})
+  }
 }

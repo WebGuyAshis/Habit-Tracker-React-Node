@@ -1,11 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Progress, Select } from "antd";
 
 import "./habitDetail.styles.css";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const HabitDetail = () => {
-    // For Ant D chart
+    const navigate = useNavigate();
+    console.log("Go back to home!!!!!!!!!!!!!!!!!!!!!!!!!");
+    // navigate("/user/home");
+    const selectedHabitData = useSelector((state)=>state.selectedHabitDetail)
     const [percent, setPercent] = useState(0);
+
+    useEffect(()=>{
+        console.log("After Refresh Data:",selectedHabitData);
+        console.log("typer of", typeof(selectedHabitData));
+        if(!selectedHabitData){
+            console.log("Navigate to home");
+            navigate("/user/home");
+        }     
+    },[])
+    
+
+    if (!selectedHabitData) {
+        return null;
+    }
+
+    console.log("Selected Habit Dataasdsadaqw:",selectedHabitData);
+    // For Ant D chart
     const increase = () => {
         setPercent((prevPercent) => {
             const newPercent = parseFloat((prevPercent + 100 / 7).toFixed(2));
@@ -24,16 +46,17 @@ const HabitDetail = () => {
             return newPercent;
         });
     };
+
     return (
         <div className="habitDetail-container">
             <div className="back-icon">
                 Back
             </div>
             <div className="habit-details">
-                <h1>Habit Name</h1>
+                <h1>{selectedHabitData.habitName}</h1>
                 <div className="habit-detail-cat-time">
-                    <div className="habit-time-anytime">AnyTime</div>
-                    <div className="habit-time-everyday">Everyday</div>
+                    <div className="habit-time-anytime">{selectedHabitData.habitTimeOptions}</div>
+                    <div className="habit-time-everyday">{selectedHabitData.habitRepeat}</div>
                 </div>
 
                 <div className="habit-details-records">
@@ -65,14 +88,11 @@ const HabitDetail = () => {
                                 textAlign: "center",
                             }}
                         >
-                            {/* <Progress percent={percent} /> */}
                             <Progress type="circle" percent={percent} format={() => percent === 0 ? "Not Started" : percent === 100 ? "Done" : `${percent}%`} />
                         </div>
-                        {/* <Button.Group style={{textAlign:"center"}}>5 */}
                         <Button onClick={decline} icon={<MinusOutlined />} />
                         <span>Completed: 0/10</span>
                         <Button onClick={increase} icon={<PlusOutlined />} />
-                        {/* </Button.Group> */}
 
                         <div className="mark-current-task-complete" onClick={() => {
                             setPercent(100);
@@ -85,9 +105,12 @@ const HabitDetail = () => {
                 <div className="previous-data">
                     <h2>Previous Habit Record</h2>
                     <div className="previous-record">
-                        <div className="previous-day">
+
+                        {selectedHabitData ? selectedHabitData.prevRecord.map((prevDays,index)=>{
+                            return(
+                                <div className="previous-day" key={index}>
                             <h3 className="previous-date">
-                                31st October, 2023
+                                {prevDays.date}
                             </h3>
                             <div className="previous-habit-status-cont">
                                 Status:
@@ -102,49 +125,15 @@ const HabitDetail = () => {
                             </div>
 
                         </div>
-
-                        <div className="previous-day">
-                            <h3 className="previous-date">
-                                31st October, 2023
-                            </h3>
-                            <div className="previous-habit-status-cont">
-                                Status:
-                                <Select
-                                    defaultValue="None"
-                                    className="previous-habit-status"
-                                >
-                                    <Select.Option value="Done">Done</Select.Option>
-                                    <Select.Option value="Not Done">Not Done</Select.Option>
-                                    <Select.Option value="None">None</Select.Option>
-                                </Select>
-                            </div>
-
-                        </div>
-
-                        <div className="previous-day">
-                            <h3 className="previous-date">
-                                31st October, 2023
-                            </h3>
-                            <div className="previous-habit-status-cont">
-                                Status:
-                                <Select
-                                    defaultValue="None"
-                                    className="previous-habit-status"
-                                >
-                                    <Select.Option value="Done">Done</Select.Option>
-                                    <Select.Option value="Not Done">Not Done</Select.Option>
-                                    <Select.Option value="None">None</Select.Option>
-                                </Select>
-                            </div>
-
-                        </div>
-
+                            )
+                        }):<h1>Not Found! or Error</h1>}
                     </div>
                 </div>
                 <div className="delete-habit">
                     Delete Habit
                 </div>
             </div>
+            Hola   
         </div>
     );
 };

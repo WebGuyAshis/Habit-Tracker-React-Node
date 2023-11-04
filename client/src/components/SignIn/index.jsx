@@ -5,7 +5,7 @@ import { useState } from "react";
 import {Link, useNavigate} from 'react-router-dom';
 import { useDispatch } from "react-redux";
 
-import { userLogin } from "../../actions";
+import { userLogin, userAction } from "../../actions";
 // import { connect } from "mongoose";
 
 let baseUrl = "http://localhost:8080";
@@ -41,25 +41,25 @@ const SignIn = () => {
       if (response.status === 200) {
         // test function
 
-        function getCookie(name) {
-          var cookieName = name + "=";
-          var decodedCookie = decodeURIComponent(document.cookie);
-          var cookieArray = decodedCookie.split(';');
-          for (var i = 0; i < cookieArray.length; i++) {
-              var cookie = cookieArray[i].trim();
-              if (cookie.indexOf(cookieName) === 0) {
-                  return cookie.substring(cookieName.length, cookie.length);
-              }
-          }
-          return null;
-      }
+      //   function getCookie(name) {
+      //     var cookieName = name + "=";
+      //     var decodedCookie = decodeURIComponent(document.cookie);
+      //     var cookieArray = decodedCookie.split(';');
+      //     for (var i = 0; i < cookieArray.length; i++) {
+      //         var cookie = cookieArray[i].trim();
+      //         if (cookie.indexOf(cookieName) === 0) {
+      //             return cookie.substring(cookieName.length, cookie.length);
+      //         }
+      //     }
+      //     return null;
+      // }
 
-      console.log("GetCookie:", getCookie("connect.sid"), "Document.cookie:", document.cookie);
+      // console.log("GetCookie:", getCookie("connect.sid"), "Document.cookie:", document.cookie);
 
         // 
-        console.log("Response:", response.headers.setAccept);
+        // console.log("Response:", response.headers.setAccept);
         console.log("React USER DATA:", response.data.userData);
-
+    
         dispatch(userLogin(response.data.userData))
         console.log("Sign In Successfull!!", signInformData,   {
           headers: {

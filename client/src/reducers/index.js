@@ -4,6 +4,9 @@ import changeHabitTarget from './incDecHabitTarget.js';
 import createHabit from './createHabit.js';
 import openDialogueBoxes from './openDialogueBoxes.js';
 import userAuth from './userAuth.js';
+import userHabitData from './userHabit.js';
+import selectedHabitDetail from './selectedHabitDetail.js';
+
 
 import {combineReducers} from 'redux';
 
@@ -12,7 +15,9 @@ const rootReducer = combineReducers({
     changeHabitTarget,
     createHabit,
     openDialogueBoxes,
-    userAuth
+    userAuth,
+    userHabitData,
+    selectedHabitDetail
 })
 
 export default rootReducer;

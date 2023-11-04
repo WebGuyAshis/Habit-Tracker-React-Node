@@ -11,9 +11,12 @@ import axios from 'axios';
 
 const CreateTask = () => {
 
+    const userData = useSelector((state)=>state.userAuth)
+    console.log("hola hola",userData);
     // const createBoxState = useSelector((state)=> state.openDialogueBoxes);
     const dispatch = useDispatch()
     let [localhabitData, setlocalHabitData] = useState({
+        habitUser:userData.user.id,
         habitName: "",
         habitCategory: "Not Set",
         habitRepeat: "Everyday",
@@ -24,16 +27,16 @@ const CreateTask = () => {
         habitGoalCount: 0,
         habitAlert: true,
     });
-    const habitDataState = useSelector((state)=>state.createHabit)
+    // const habitDataState = useSelector((state)=>state.createHabit)
     // const closeCreateBox = useSelector((state)=>state.closeCreateHabit)
 
-    useEffect(() => {
-        console.log("Updated Habit Data:", habitDataState);
-      }, [habitDataState]);
+    // useEffect(() => {
+    //     console.log("Updated Habit Data:", habitDataState);
+    //   }, [habitDataState]);
 
     const handleFormSubmission = async(e) => {
         e.preventDefault();
-
+        // setlocalHabitData({...localhabitData,habitUser:4567})
         dispatch(createHabit(localhabitData))
         dispatch(closeCreateHabit());
 

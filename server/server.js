@@ -40,11 +40,11 @@ app.use(
   })
 );
 
-app.use((req, res, next) => {
-  console.log("Request Session ID:", req.sessionID);
-  console.log("Session Data:", req.session);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log("Request Session ID:", req.sessionID);
+//   console.log("Session Data:", req.session);
+//   next();
+// });
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -59,10 +59,10 @@ app.get("/protected-route", (req, res) => {
         name,
         email
     }
-    console.log("User had active Session:", req.user, userData);
+    // console.log("User had active Session:", req.user, userData);
     res.status(200).send(userData);
   } else {
-    console.log("User dont have active Session:", userData);
+    // console.log("User dont have active Session:", userData);
     res.status(401).json({ error: "User session not found" });
   }
 });
