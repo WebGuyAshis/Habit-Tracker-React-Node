@@ -1,13 +1,13 @@
-let initialState = null;
+// let initialState = null;
 
-const userData = (state=initialState, action)=>{
+// const userData = (state=initialState, action)=>{
 
-    switch (action.type) {
-        case "USER_DATA":
-            return action.payload;
+//     switch (action.type) {
+//         case "USER_DATA":
+//             return action.payload;
                 
-        default:
-            return state;
-    }
+//         default:
+//             return state;
+//     }
 
-}
+// }

@@ -4,7 +4,12 @@ import { Checkbox } from "antd";
 import "./home.styles.css";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { userHabits, selectedHabitDetail } from "../../actions";
+import {
+  userHabits,
+  selectedHabitDetail,
+  setUserData,
+  fetchUserHabitsFunction,
+} from "../../actions";
 import CreateTask from "../CreateTask";
 import axios from "axios";
 // import { faL } from "@fortawesome/free-solid-svg-icons";
@@ -17,24 +22,30 @@ import workImg from "../../assets/images/work.png";
 
 const Home = () => {
   const navigate = useNavigate();
-  const myState = useSelector((state) => state.changeHabitTarget);
+  //   const myState = useSelector((state) => state.changeHabitTarget);
 
+  const { createBoxState, myHabits, activeUser } = useSelector((state) => ({
+    createBoxState: state.openDialogueBoxes,
+    myHabits: state.userHabitData,
+    activeUser: state.userAuth,
+  }));
   // const myHabits = useSelector((state)=>state.userHabitData)
   const dispatch = useDispatch();
 
-  const [activeUserData, setactiveUserData] = useState(null);
+  //   const [activeUserData, setactiveUserData] = useState(null);
   let baseUrl = "http://localhost:8080";
 
   useEffect(() => {
+    console.log("Checking Session!");
     checkSession();
   }, []);
 
   useEffect(() => {
-    console.log("active data", activeUserData);
-    if (activeUserData) {
-        fetchUserHabits()
+    console.log("active data", activeUser);
+    if (activeUser) {
+      fetchUserHabits();
     }
-  }, [activeUserData]);
+  }, [activeUser]);
 
   const checkSession = async () => {
     try {
@@ -44,11 +55,13 @@ const Home = () => {
 
       if (response.status === 200) {
         console.log("User session exists.", response.data);
-        setactiveUserData(response.data);
+        // setactiveUserData(response.data);
+        dispatch(setUserData(response.data));
       }
       if (response.status === 401) {
         console.log("User Session Expired!");
-        setactiveUserData(null);
+        // setactiveUserData(null);
+        dispatch(setUserData(null));
       }
     } catch (error) {
       console.log("User session not found.");
@@ -61,13 +74,8 @@ const Home = () => {
 
   // const createBoxState = useSelector((state)=> state.openDialogueBoxes);
   // const myHabits  = useSelector((state)=>state.createHabit)
-  const { createBoxState, myHabits, activeUser } = useSelector((state) => ({
-    createBoxState: state.openDialogueBoxes,
-    myHabits: state.userHabitData,
-    activeUser: state.userAuth,
-  }));
 
-  console.log("My Habits Initially:", myHabits);
+  //   console.log("My Habits Initially:", myHabits);
   console.log("Active User:", activeUser);
 
   function getCurrentFormattedDate() {
@@ -118,26 +126,35 @@ const Home = () => {
   }
   const greeting = getGreetingBasedOnTime();
 
-  
   const showHabitDetails = (habitId) => {
-    let selectedHabit = myHabits.filter((habit)=> habit._id === habitId);
+    let selectedHabit = myHabits.filter((habit) => habit._id === habitId);
     console.log("Selected Habit:", selectedHabit[0]);
-    dispatch(selectedHabitDetail(selectedHabit[0]))
+    dispatch(selectedHabitDetail(selectedHabit[0]));
     navigate("/user/habit-detail");
   };
 
   async function fetchUserHabits() {
-    console.log("ACtive USer DAta++++++++++++++++", activeUserData);
-    let response = await axios.get(
-      `${baseUrl}/api/v1/user/fetch_habits/${activeUserData._id}`
-    );
-    // let habits = [];
-    if (response.status === 200) {
-      // habits =
-      console.log("Response data", response.data);
-      dispatch(userHabits(response.data));
+    console.log("ACtive USer DAta++++++++++++++++", activeUser);
+    try {
+      let response = await axios.get(
+        `${baseUrl}/api/v1/user/fetch_habits/${activeUser._id}`
+      );
+      if (response.status === 200) {
+        // habits =
+        console.log("Response data", response.data);
+        dispatch(userHabits(response.data));
+      }
+      if(response.status === 500){
+        console.log("Internal Server Error!");
+      }
+    } catch (error) {
+      console.log("Error Fetching Habits!");
     }
   }
+
+  useEffect(() => {
+    createBoxState && dispatch(fetchUserHabitsFunction(fetchUserHabits));
+  }, [createBoxState]);
 
   // setInterval(() => {
   //     console.log("MyHabit!!!", myHabits);
@@ -153,8 +170,7 @@ const Home = () => {
         <div className="home-content">
           <div className="wish-user">
             <h2>
-              {greeting},{" "}
-              {activeUserData ? activeUserData.name : "Fetching Data..."}!
+              {greeting}, {activeUser ? activeUser.name : "Fetching Data..."}!
             </h2>
             <span className="todays-date">{formattedDate}</span>
           </div>
@@ -181,7 +197,9 @@ const Home = () => {
                     <div
                       className="habit-list-items"
                       key={index}
-                      onClick={()=>{showHabitDetails(habit._id)}}
+                      onClick={() => {
+                        showHabitDetails(habit._id);
+                      }}
                     >
                       <div className="habit-data">
                         <img className="habit-img" src={imgSrc} alt="" />

@@ -11,12 +11,16 @@ import axios from 'axios';
 
 const CreateTask = () => {
 
-    const userData = useSelector((state)=>state.userAuth)
-    console.log("hola hola",userData);
+    // const userData = useSelector((state)=>state.userAuth)
+    const fetchUserHabits = useSelector((state)=>state.userHabits)
+    const activeUser = useSelector((state)=>state.userAuth);
+
+
+    console.log("hola hola--------------",activeUser);
     // const createBoxState = useSelector((state)=> state.openDialogueBoxes);
     const dispatch = useDispatch()
     let [localhabitData, setlocalHabitData] = useState({
-        habitUser:userData.user.id,
+        habitUser:activeUser._id,
         habitName: "",
         habitCategory: "Not Set",
         habitRepeat: "Everyday",
@@ -37,7 +41,10 @@ const CreateTask = () => {
     const handleFormSubmission = async(e) => {
         e.preventDefault();
         // setlocalHabitData({...localhabitData,habitUser:4567})
+        console.log("Meowwww");
         dispatch(createHabit(localhabitData))
+        console.log("Meowwww2222222");
+
         dispatch(closeCreateHabit());
 
         // Saving data in DB
@@ -50,6 +57,9 @@ const CreateTask = () => {
             );
                 if(response.status===200){
                     console.log("Habit Saved in Database!");
+                    console.log("User Habits Fetch::::", fetchUserHabits);
+                    console.log("Active USer Before Refresh:", activeUser);
+                    fetchUserHabits()
                     return;
                 }
 

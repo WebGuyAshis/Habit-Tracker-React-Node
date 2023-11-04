@@ -73,7 +73,7 @@ export const createSession =
       // Authentication successful
       console.log("Authentication successful");
       let userData = {
-        id:user._id,
+        _id:user._id,
         name:user.name,
         email:user.email
       }
