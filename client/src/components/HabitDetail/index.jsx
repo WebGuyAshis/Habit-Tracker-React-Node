@@ -3,15 +3,22 @@ import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Progress, Select } from "antd";
 
 import "./habitDetail.styles.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { selectedHabitDetail } from "../../actions";
 import axios from "axios";
 const HabitDetail = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     console.log("Go back to home!!!!!!!!!!!!!!!!!!!!!!!!!");
     // navigate("/user/home");
     const selectedHabitData = useSelector((state)=>state.selectedHabitDetail)
-    const [percent, setPercent] = useState(0);
+    let chartValue = 0;
+    if(selectedHabitData && selectedHabitData.prevRecord[0].status === "Done"){
+        chartValue = 100;
+    }
+
+    const [percent, setPercent] = useState(chartValue);  //For antd Chart
 
     useEffect(()=>{
         console.log("After Refresh Data:",selectedHabitData);
@@ -22,6 +29,8 @@ const HabitDetail = () => {
         }     
     },[])
     
+
+    // Add each 
 
     if (!selectedHabitData) {
         return null;
@@ -61,6 +70,25 @@ const HabitDetail = () => {
             console.log("Error Deleting Habit!");
         }
     }
+
+// Lets Update/Change Status of Tasks
+    const changeTaskStatus = async(prevHabitId,status)=>{
+        console.log("Previous Habit Id:", prevHabitId, status);
+
+        try {
+            let updateData = {prevHabitId, status}
+            const response = await axios.post(`${baseUrl}/api/v1/user/habitupdate/${selectedHabitData._id}`, updateData);
+            if(response.status === 200){
+                console.log("Habit Updated Successfully!!", response.data);
+                // Updating the stored redux 
+                dispatch(selectedHabitDetail(response.data));
+            }
+        } catch (error) {
+            console.log("Error Updating Habit!");
+        }
+        return;
+    }
+
 
     return (
         <div className="habitDetail-container">
@@ -112,6 +140,7 @@ const HabitDetail = () => {
 
                         <div className="mark-current-task-complete" onClick={() => {
                             setPercent(100);
+                            changeTaskStatus(selectedHabitData.prevRecord[0]._id, "Done")
                         }}>
                             Mark As Complete
                         </div>
@@ -123,25 +152,28 @@ const HabitDetail = () => {
                     <div className="previous-record">
 
                         {selectedHabitData ? selectedHabitData.prevRecord.map((prevDays,index)=>{
-                            return(
-                                <div className="previous-day" key={index}>
-                            <h3 className="previous-date">
-                                {prevDays.date}
-                            </h3>
-                            <div className="previous-habit-status-cont">
-                                Status:
-                                <Select
-                                    defaultValue="None"
-                                    className="previous-habit-status"
-                                >
-                                    <Select.Option value="Done">Done</Select.Option>
-                                    <Select.Option value="Not Done">Not Done</Select.Option>
-                                    <Select.Option value="None">None</Select.Option>
-                                </Select>
+                            if(index > 0){  // Will make sure that latest task should not be present in the list of previous days
+                                return(
+                                    <div className="previous-day" key={index}>
+                                <h3 className="previous-date">
+                                    {prevDays.date}
+                                </h3>
+                                <div className="previous-habit-status-cont">
+                                    Status:
+                                    <Select
+                                        defaultValue={prevDays.status}
+                                        className="previous-habit-status"
+                                        onChange={(value)=>{changeTaskStatus(prevDays._id, value )}}
+                                    >
+                                        <Select.Option value="Done">Done</Select.Option>
+                                        <Select.Option value="Not Done">Not Done</Select.Option>
+                                        <Select.Option value="None">None</Select.Option>
+                                    </Select>
+                                </div>
+    
                             </div>
-
-                        </div>
-                            )
+                                )
+                            }
                         }):<h1>Not Found! or Error</h1>}
                     </div>
                 </div>

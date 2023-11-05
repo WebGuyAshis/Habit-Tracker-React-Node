@@ -129,3 +129,38 @@ export const delete_habit = async (req, res) => {
     return res.status(500).json({ error: "Error deleting Habit" })
   }
 }
+
+export const habit_update = async(req,res)=>{
+  const habitId = req.params.habitId;
+const { prevHabitId, status } = req.body;
+
+try {
+  console.log("Let's Update this Habit having Id:", habitId, "&&", prevHabitId, "&&", status);
+
+  // Find the habit by its ID
+  const updateHabit = await Habit.findById(habitId);
+
+  if (!updateHabit) {
+    return res.status(404).json({ error: "Habit Not Found!" });
+  }
+
+  // Find the previous record to update (.id() mongoose method to find easily)
+  const prevRecordToUpdate = updateHabit.prevRecord.id(prevHabitId);
+
+  if (!prevRecordToUpdate) {
+    return res.status(404).json({ error: "Previous Record Not Found!" });
+  }
+
+  // Update the status
+  prevRecordToUpdate.status = status;
+
+  // Save the habit document
+  await updateHabit.save();
+
+  return res.status(200).json(updateHabit);
+} catch (error) {
+  console.log("Error Updating!", error);
+  return res.status(500).json({ error: "Internal Server Error!" });
+}
+
+}

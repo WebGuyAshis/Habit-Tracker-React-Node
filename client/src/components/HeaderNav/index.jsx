@@ -10,7 +10,6 @@ const HeaderNav = () => {
     return (
         <div className="headernav-container">
             <h3 className='logo'>HabitBuddy</h3>
-
             <div className="header-icons">
 
                 <div className="user-img">

@@ -54,7 +54,7 @@ const habitSchema = new mongoose.Schema({
     default: function () {
       const currentDate = moment();
       let dates = [];
-      for (let i = 1; i < 7; i++) {
+      for (let i = 0; i < 7; i++) {
         // Subtract a day and format it as a string
         const formattedDate = currentDate
           .clone()

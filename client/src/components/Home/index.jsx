@@ -130,6 +130,7 @@ const Home = () => {
     let selectedHabit = myHabits.filter((habit) => habit._id === habitId);
     console.log("Selected Habit:", selectedHabit[0]);
     dispatch(selectedHabitDetail(selectedHabit[0]));
+    
     navigate("/user/habit-detail");
   };
 
