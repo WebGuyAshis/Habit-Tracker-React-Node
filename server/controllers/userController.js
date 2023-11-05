@@ -4,6 +4,33 @@ import cookieParser from "cookie-parser";
 import Habit from "../model/Habit.js";
 
 
+// Formatted Date
+function getCurrentFormattedDate() {
+  const currentDate = new Date();
+  const day = currentDate.getDate();
+  const month = currentDate.toLocaleString("default", { month: "long" });
+  const year = currentDate.getFullYear();
+
+  // Function to add ordinal suffix to day (e.g., 1st, 2nd, 3rd, 4th)
+  const getDayWithOrdinal = (day) => {
+    if (day >= 11 && day <= 13) {
+      return day + "th";
+    }
+    switch (day % 10) {
+      case 1:
+        return day + "st";
+      case 2:
+        return day + "nd";
+      case 3:
+        return day + "rd";
+      default:
+        return day + "th";
+    }
+  };
+  const formattedDate = `${getDayWithOrdinal(day)} ${month} ${year}`;
+  return formattedDate;
+}
+
 export const createUser = async (req, res) => {
   try {
     if (req.body.password !== req.body.cnfPassword) {
@@ -105,15 +132,41 @@ export const createHabit = async (req, res) => {
 
 export const fetch_habits = async (req, res) => {
   try {
-    let userId = req.params.userId;
-    let habits = await Habit.find({ habitUser: userId });
-    console.log("Found Habits of User!", habits);
-    return res.status(200).send(habits);
+    const userId = req.params.userId;
+    const habits = await Habit.find({ habitUser: userId });
+
+    if (habits) {
+      console.log("Found Habits of User!", habits);
+
+      // Get today's formatted date
+      const currentDate = getCurrentFormattedDate();
+
+      for (const habit of habits) {
+        // Check if today's date already exists in the prevRecord array
+        const dateExists = habit.prevRecord.some(record => record.date === currentDate);
+
+        if (!dateExists) {
+          console.log("Date Doesnt Exists");
+          // If today's date doesn't exist, add a new date field
+          habit.prevRecord = [{
+            date: currentDate,
+            status: "Not Done",
+          }, ...habit.prevRecord];
+
+          // Save the updated habit
+          await habit.save();
+        }
+      }
+
+      return res.status(200).send(habits);
+    }
   } catch (error) {
     console.log("Error showing tasks!", error);
-    return res.status(500).json({ error: "Error Fetching Songs!" })
+    return res.status(500).json({ error: "Error Fetching Songs!" });
   }
 }
+
+
 
 export const delete_habit = async (req, res) => {
   const habitId = req.params.habitId;

@@ -97,7 +97,7 @@ const HabitDetail = () => {
             </div>
             <div className="habit-details">
                 <h1>{selectedHabitData.habitName}</h1>
-                    <p>TOdays Date</p>
+                    <p>{selectedHabitData.prevRecord[0].date}</p>
                 <div className="habit-detail-cat-time">
                     <div className="habit-time-anytime">{selectedHabitData.habitTimeOptions}</div>
                     <div className="habit-time-everyday">{selectedHabitData.habitRepeat}</div>

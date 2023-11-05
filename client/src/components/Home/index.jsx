@@ -130,10 +130,11 @@ const Home = () => {
     let selectedHabit = myHabits.filter((habit) => habit._id === habitId);
     console.log("Selected Habit:", selectedHabit[0]);
     dispatch(selectedHabitDetail(selectedHabit[0]));
-    
+
     navigate("/user/habit-detail");
   };
 
+  // Fetching User HAbit List
   async function fetchUserHabits() {
     console.log("ACtive USer DAta++++++++++++++++", activeUser);
     try {
@@ -146,6 +147,8 @@ const Home = () => {
         // habits =
         console.log("Response data", response.data);
         dispatch(userHabits(response.data));
+
+        
       }
       if(response.status === 500){
         console.log("Internal Server Error!");
