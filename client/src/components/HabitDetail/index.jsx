@@ -8,6 +8,11 @@ import { useNavigate } from "react-router-dom";
 import { selectedHabitDetail } from "../../actions";
 import axios from "axios";
 const HabitDetail = () => {
+    const [totalFinished, setTotalFinished] = useState(0);
+const [weekFinished, setWeekFinished] = useState(0);
+const [finishedPercent, setFinishedPercent] = useState(0)
+
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     console.log("Go back to home!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -26,8 +31,12 @@ const HabitDetail = () => {
         if(!selectedHabitData){
             console.log("Navigate to home");
             navigate("/user/home");
-        }     
-    },[])
+        } 
+        if(selectedHabitData){
+            calculateFinishedCount()
+            calculateFinishedPercent()
+        }    
+    },[selectedHabitData])
     
 
     // Add each 
@@ -83,13 +92,50 @@ const HabitDetail = () => {
                 // Updating the stored redux 
                 dispatch(selectedHabitDetail(response.data));
             }
+            // calculateFinishedCount()
         } catch (error) {
             console.log("Error Updating Habit!");
         }
+// Update Finished Tasks Count
         return;
     }
 
+    async function calculateFinishedCount (){
 
+        if(selectedHabitData){
+            let count = 0;
+            let lastSeven = 0;
+            // selectedHabitData.prevRecord.forEach((prevDays)=>{
+            //     if(prevDays.status === "Done");
+            //     count += 1;
+            // })
+                let prevRecords = [...selectedHabitData.prevRecord]
+            for(let i=0; i< prevRecords.length; i++){
+                if(i<7 && prevRecords[i].status === "Done"){
+                    lastSeven+=1;
+                }
+                if(prevRecords[i].status === "Done"){
+                    count += 1;
+                }
+            }
+
+            setTotalFinished(count);
+            setWeekFinished(lastSeven);
+
+
+        }
+    }
+    // let finishedPercent = 0;
+    function calculateFinishedPercent(){
+        if(selectedHabitData){
+            let totalHabitDays = selectedHabitData.prevRecord.length;
+            let finished = selectedHabitData.prevRecord.filter((days)=>days.status === "Done")
+            let percent = parseFloat((finished.length/totalHabitDays)*100).toFixed(2);
+            console.log("Percent:",percent, totalHabitDays,finished.length );
+            setFinishedPercent(percent)
+        }
+
+    }
     return (
         <div className="habitDetail-container">
             <div className="back-icon">
@@ -97,7 +143,7 @@ const HabitDetail = () => {
             </div>
             <div className="habit-details">
                 <h1>{selectedHabitData.habitName}</h1>
-                    <p>{selectedHabitData.prevRecord[0].date}</p>
+                    <p className="habit-detail-current-date">{selectedHabitData.prevRecord[0].date}</p>
                 <div className="habit-detail-cat-time">
                     <div className="habit-time-anytime">{selectedHabitData.habitTimeOptions}</div>
                     <div className="habit-time-everyday">{selectedHabitData.habitRepeat}</div>
@@ -112,14 +158,14 @@ const HabitDetail = () => {
 
                     <div className="habit-finished habit-records-data">
                         <h3>Habit Finished</h3>
-                        <h1>0</h1>
-                        <span>This Week: 0</span>
+                        <h1>{totalFinished}</h1>
+                        <span>Last Seven Days:{weekFinished}</span>
                     </div>
 
                     <div className="completion-rate habit-records-data">
                         <h3>Completition Rate</h3>
-                        <h1>100%</h1>
-                        <span>1/1 habits</span>
+                        <h1>{finishedPercent}%</h1>
+                        <span>{totalFinished}/{selectedHabitData.prevRecord.length} Days</span>
                     </div>
                 </div>
 
