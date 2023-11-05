@@ -59,7 +59,7 @@ app.get("/protected-route", (req, res) => {
         name,
         email
     }
-    // console.log("User had active Session:", req.user, userData);
+    console.log("User had active Session!");
     res.status(200).send(userData);
   } else {
     // console.log("User dont have active Session:", userData);

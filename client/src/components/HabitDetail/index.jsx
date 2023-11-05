@@ -5,6 +5,7 @@ import { Button, Progress, Select } from "antd";
 import "./habitDetail.styles.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const HabitDetail = () => {
     const navigate = useNavigate();
     console.log("Go back to home!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -47,6 +48,20 @@ const HabitDetail = () => {
         });
     };
 
+    let baseUrl = 'http://127.0.0.1:8080'
+    const deleteHabit= async(habitId)=>{
+        try {
+            let response = await axios.get(`${baseUrl}/api/v1/user/delete-habit/${habitId}`)
+
+        if(response.status === 200){
+            console.log("Successfully Deleted Habit!");
+            navigate('/user/home');
+        }
+        } catch (error) {
+            console.log("Error Deleting Habit!");
+        }
+    }
+
     return (
         <div className="habitDetail-container">
             <div className="back-icon">
@@ -54,6 +69,7 @@ const HabitDetail = () => {
             </div>
             <div className="habit-details">
                 <h1>{selectedHabitData.habitName}</h1>
+                    <p>TOdays Date</p>
                 <div className="habit-detail-cat-time">
                     <div className="habit-time-anytime">{selectedHabitData.habitTimeOptions}</div>
                     <div className="habit-time-everyday">{selectedHabitData.habitRepeat}</div>
@@ -129,11 +145,10 @@ const HabitDetail = () => {
                         }):<h1>Not Found! or Error</h1>}
                     </div>
                 </div>
-                <div className="delete-habit">
+                <div className="delete-habit" onClick={()=>{deleteHabit(selectedHabitData._id)}}>
                     Delete Habit
                 </div>
             </div>
-            Hola   
         </div>
     );
 };

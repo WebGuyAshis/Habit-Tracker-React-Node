@@ -126,7 +126,7 @@
 .previous-day{
     /* background: rgb(156, 156, 156); */
     /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; */
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     border-radius: 10px;
     padding: 10px;
     color: rgb(40, 40, 40);
@@ -158,12 +158,21 @@
 .delete-habit{
     /* width: 100px; */
     margin: auto;
-    background-color: red;
-    color: white;
+    /* background-color: red; */
+    /* color: white; */
+    color: red;
+    border: 1px solid red;
     border-radius: 10px;
     padding: 10px 15px;
     margin:auto;
     margin-top: 10px;
     width: 150px;
     text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.delete-habit:hover{
+    background-color: red;
+    color: white;
 }

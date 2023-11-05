@@ -136,9 +136,11 @@ const Home = () => {
   async function fetchUserHabits() {
     console.log("ACtive USer DAta++++++++++++++++", activeUser);
     try {
+        console.log("Fetching Habits!!!!!!!!!!!!!!!!!!");
       let response = await axios.get(
         `${baseUrl}/api/v1/user/fetch_habits/${activeUser._id}`
       );
+
       if (response.status === 200) {
         // habits =
         console.log("Response data", response.data);
