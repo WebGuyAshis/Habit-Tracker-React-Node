@@ -1,6 +1,6 @@
 import FooterNav from "../FooterNav";
 import HeaderNav from "../HeaderNav";
-import { Checkbox } from "antd";
+import { Checkbox, Progress } from "antd";
 import "./home.styles.css";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,6 +11,7 @@ import {
   fetchUserHabitsFunction,
 } from "../../actions";
 import CreateTask from "../CreateTask";
+// import confettiAnimation from '../../assets/animation/confetti.json'
 import axios from "axios";
 // import { faL } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +20,7 @@ import noDataGif from "../../assets/images/noData.gif";
 import studyImg from "../../assets/images/study.png";
 import sportsImg from "../../assets/images/sports.png";
 import workImg from "../../assets/images/work.png";
+import statBotImg from '../../assets/images/statbot.png'
 
 const Home = () => {
   const navigate = useNavigate();
@@ -32,6 +34,75 @@ const Home = () => {
   // const myHabits = useSelector((state)=>state.userHabitData)
   const dispatch = useDispatch();
 
+  const [completedHabits, setCompletedHabits] = useState(0);
+  const [completionPercent, setCompletionPercent] = useState(0);
+  const [totalHabits, setTotalHabits] = useState(0);
+  useEffect(() => {
+    let compHabits = myHabits.filter(habit => habit.prevRecord[0].status === "Done")
+    setCompletedHabits(compHabits.length);
+    setTotalHabits(myHabits.length)
+    const compPercent = parseFloat(((compHabits.length / myHabits.length) * 100).toFixed(2));
+    setCompletionPercent(compPercent);
+  }, [myHabits])
+
+// For user stats as per performance
+  let statQuote = [
+    "Let's start doing habits!",
+    "Great start, keep it up!",
+    "Well done, you're on track!",
+    "One-third there, keep going strong!",
+    "Fantastic progress, stay motivated!",
+    "Halfway point, you've got this!",
+    "On fire, keep pushing forward!",
+    "Amazing work, keep the momentum!",
+    "Almost there, keep it up!",
+    "So close, don't give up now!",
+    "Outstanding, you're making it happen!",
+    "Congratulations, you're a champion!"
+  ];
+
+  const [quoteStat, setQuoteStat] = useState(statQuote[0]);
+
+  useEffect(() => {
+    switch (true) {
+      case completionPercent === 0:
+        setQuoteStat(statQuote[0]);
+        break;
+      case completionPercent <= 10:
+        setQuoteStat(statQuote[1]);
+        break;
+      case completionPercent <= 20:
+        setQuoteStat(statQuote[2]);
+        break;
+      case completionPercent <= 30:
+        setQuoteStat(statQuote[3]);
+        break;
+      case completionPercent <= 40:
+        setQuoteStat(statQuote[4]);
+        break;
+      case completionPercent <= 50:
+        setQuoteStat(statQuote[5]);
+        break;
+      case completionPercent <= 60:
+        setQuoteStat(statQuote[6]);
+        break;
+      case completionPercent <= 70:
+        setQuoteStat(statQuote[7]);
+        break;
+      case completionPercent <= 80:
+        setQuoteStat(statQuote[8]);
+        break;
+      case completionPercent <= 90:
+        setQuoteStat(statQuote[9]);
+        break;
+      case completionPercent <= 99.9:
+        setQuoteStat(statQuote[10]);
+        break;
+      default:
+        setQuoteStat(statQuote[11]);
+        break;
+    }
+  }, [completionPercent]);
   //   const [activeUserData, setactiveUserData] = useState(null);
   let baseUrl = "http://localhost:8080";
 
@@ -138,7 +209,7 @@ const Home = () => {
   async function fetchUserHabits() {
     console.log("ACtive USer DAta++++++++++++++++", activeUser);
     try {
-        console.log("Fetching Habits!!!!!!!!!!!!!!!!!!");
+      console.log("Fetching Habits!!!!!!!!!!!!!!!!!!");
       let response = await axios.get(
         `${baseUrl}/api/v1/user/fetch_habits/${activeUser._id}`
       );
@@ -148,9 +219,9 @@ const Home = () => {
         console.log("Response data", response.data);
         dispatch(userHabits(response.data));
 
-        
+
       }
-      if(response.status === 500){
+      if (response.status === 500) {
         console.log("Internal Server Error!");
       }
     } catch (error) {
@@ -168,6 +239,9 @@ const Home = () => {
   console.log("My Habits:", myHabits);
   return (
     <div className="home-container">
+      {/* <div className="confetti-file">
+
+      </div> */}
       <div className="home-body">
         {/* Header Part */}
         <HeaderNav />
@@ -183,7 +257,20 @@ const Home = () => {
 
           <div className="todays-stats-container">
             <h4>Today's Stats</h4>
-            <div className="show-mini-stat"></div>
+            <div className="show-mini-stat">
+
+              {/* Img */}
+              <img className="statbot-img" src={statBotImg} alt="" />
+              <div className="mini-stat-details">
+                <h3>{quoteStat}</h3>
+                <p>Completed: {completedHabits}/{totalHabits}</p>
+              </div>
+              {/* AntD graph */}
+              <div className="antd-stat-progress">
+
+                <Progress type="circle" percent={completionPercent} />
+              </div>
+            </div>
           </div>
 
           <div className="habits-list-container">
@@ -197,24 +284,23 @@ const Home = () => {
                     habit.habitCategory === "Sports"
                       ? sportsImg
                       : habit.habitCategory === "School"
-                      ? studyImg
-                      : workImg;
+                        ? studyImg
+                        : workImg;
                   return (
                     <div
                       className="habit-list-items"
                       key={index}
-                      onClick={() => {
-                        showHabitDetails(habit._id);
-                      }}
                     >
-                      <div className="habit-data">
+                      <div className="habit-data" onClick={() => {
+                        showHabitDetails(habit._id);
+                      }}>
                         <img className="habit-img" src={imgSrc} alt="" />
                         <div className="habit-detail">
                           <h5>{habit.habitName}</h5>
                           <span>08:00AM</span>
                         </div>
                       </div>
-                      <Checkbox className="habit-status" />
+                      <Checkbox className="habit-status"  />
                     </div>
                   );
                 })
