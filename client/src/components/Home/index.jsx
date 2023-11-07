@@ -38,7 +38,7 @@ const Home = () => {
   const [completedHabits, setCompletedHabits] = useState(0);
   const [completionPercent, setCompletionPercent] = useState(0);
   const [totalHabits, setTotalHabits] = useState(0);
-  
+
   useEffect(() => {
     let compHabits = myHabits.filter(habit => habit.prevRecord[0].status === "Done")
     setCompletedHabits(compHabits.length);

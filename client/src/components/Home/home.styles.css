@@ -41,7 +41,9 @@
 }
 
 .antd-stat-progress{
-    width: 90px;
+    min-width: 90px;
+    max-width: 90px;
+    margin: 0 10px;
 }
 .antd-stat-progress span{
     font-size: 20px !important;

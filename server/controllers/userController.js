@@ -222,3 +222,18 @@ try {
 }
 
 }
+
+
+export const userLogout = (req,res)=>{
+  console.log("Lets Throw User Out");
+    req.logout((err)=>{
+      if(err){
+        console.log("Error logging Out!",err);
+        console.log("Users Session", req.session);
+
+        return res.status(500).json({error:"Internal Server Error!"});
+      }
+      console.log("Successfully Logged out!");
+      return res.status(200).json({message:"Successfullly Logged Out!"});
+    });
+}

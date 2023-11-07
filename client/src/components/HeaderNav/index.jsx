@@ -5,8 +5,24 @@ import { faGear,faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import bellImg from '../../assets/images/bell.png'
 import {Link} from 'react-router-dom';
 import userImg from '../../assets/images/defaultUser.png'
+import axios from 'axios';
 
 const HeaderNav = () => {
+    let baseUrl = "http://127.0.0.1:8080"
+    const logOutUser = async(req,res)=>{
+        console.log("Lets logout user");
+        try {
+            let response = await axios.get(`${baseUrl}/api/v1/user/sign-out`,{
+                withCredentials:'include',
+            });
+            if(response.status===200){
+                console.log("Successfully Logout!");
+            }
+
+        } catch (error) {
+            console.log("Internal Server Error!",error);
+        }        
+    }
     return (
         <div className="headernav-container">
             <h3 className='logo'>HabitBuddy</h3>
@@ -27,7 +43,7 @@ const HeaderNav = () => {
                             <Link className='diag-links' to=''>
                             <FontAwesomeIcon icon={faGear} />
                                 Settings</Link>
-                            <Link className='diag-links' to=''>
+                            <Link className='diag-links' to='/' onClick={logOutUser}>
                             <FontAwesomeIcon icon={faRightFromBracket} />
                                 LogOut</Link>
                         </div>
