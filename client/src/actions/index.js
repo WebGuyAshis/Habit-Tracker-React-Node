@@ -64,6 +64,7 @@ export const userHabits = (userHabit) => {
 };
 
 export const selectedHabitDetail = (habitDetail) => {
+  console.log("Selected Habit Detail! actions", habitDetail);
   return {
     type: "SELECTED_HABIT_DETAIL",
     payload: habitDetail,

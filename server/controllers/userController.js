@@ -185,6 +185,9 @@ export const delete_habit = async (req, res) => {
 
 export const habit_update = async(req,res)=>{
   const habitId = req.params.habitId;
+  // here prevId is actually used for the date where we need to update
+  // habit id is habits id and prevId is the todays or particular day where needs update
+
 const { prevHabitId, status } = req.body;
 
 try {
@@ -210,7 +213,9 @@ try {
   // Save the habit document
   await updateHabit.save();
 
-  return res.status(200).json(updateHabit);
+  let habits = await Habit.find({habitUser: updateHabit.habitUser});
+  console.log("This is the updated Habit!",updateHabit);
+  return res.status(200).json(habits);
 } catch (error) {
   console.log("Error Updating!", error);
   return res.status(500).json({ error: "Internal Server Error!" });

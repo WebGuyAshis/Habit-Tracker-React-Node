@@ -5,7 +5,7 @@ import { Button, Progress, Select } from "antd";
 import "./habitDetail.styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectedHabitDetail } from "../../actions";
+import { selectedHabitDetail, userHabits } from "../../actions";
 import axios from "axios";
 const HabitDetail = () => {
     const [totalFinished, setTotalFinished] = useState(0);
@@ -90,7 +90,9 @@ const [finishedPercent, setFinishedPercent] = useState(0)
             if(response.status === 200){
                 console.log("Habit Updated Successfully!!", response.data);
                 // Updating the stored redux 
-                dispatch(selectedHabitDetail(response.data));
+                // dispatch(selectedHabitDetail(response.data));
+                // Updating myHbaits
+                dispatch(userHabits(response.data))
             }
             // calculateFinishedCount()
         } catch (error) {

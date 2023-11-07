@@ -61,66 +61,7 @@ gap: 10px;
 padding: 10px 0;
 }
 
-.habit-list-items{
-    width: 100%;
-    /* border: 1px solid; */
-    background-color: rgb(241, 241, 241);
-    border-radius: 10px;
 
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    justify-content: space-between;
-    transition: all 0.3s;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
-.habit-data{
-    display: flex;
-    gap: 10px;
-    flex: 1;
-    cursor: pointer;
-}
-.habit-list-items:hover{
-    background-color: rgb(220, 220, 220)
- 
-}
-
-.habit-img{
-    height: 50px;
-    width: 50px;
-    border-radius: 5px;
-    background-color: aliceblue;
-}
-
-.habit-detail h5{
-font-size: 16px;
-}
-.habit-detail span{
-    font-size: 14px;
-}
-
-.habit-status{  
-    transform: scale(1.8);
-    margin-right:10px ;
-    height: 0px;
-}
-
-.habit-target{
-    border-radius: 30px;
-    height: 30px;
-    overflow: hidden;
-    border: 0.5px solid grey;
-}
-.increase-target-count, .decrease-target-count{
-    width: 30px;
-    height: 100%;
-    border: none;
-    outline: none;
-}
-
-.completed-target-value , .total-target-value{
-    padding: 0 5px;
-}
 
 
 

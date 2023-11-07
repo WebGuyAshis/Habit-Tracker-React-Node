@@ -21,6 +21,7 @@ import studyImg from "../../assets/images/study.png";
 import sportsImg from "../../assets/images/sports.png";
 import workImg from "../../assets/images/work.png";
 import statBotImg from '../../assets/images/statbot.png'
+import Habit from "./Habit/index.jsx";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ const Home = () => {
   const [completedHabits, setCompletedHabits] = useState(0);
   const [completionPercent, setCompletionPercent] = useState(0);
   const [totalHabits, setTotalHabits] = useState(0);
+  
   useEffect(() => {
     let compHabits = myHabits.filter(habit => habit.prevRecord[0].status === "Done")
     setCompletedHabits(compHabits.length);
@@ -197,13 +199,13 @@ const Home = () => {
   }
   const greeting = getGreetingBasedOnTime();
 
-  const showHabitDetails = (habitId) => {
-    let selectedHabit = myHabits.filter((habit) => habit._id === habitId);
-    console.log("Selected Habit:", selectedHabit[0]);
-    dispatch(selectedHabitDetail(selectedHabit[0]));
+  // const showHabitDetails = (habitId) => {
+  //   let selectedHabit = myHabits.filter((habit) => habit._id === habitId);
+  //   console.log("Selected Habit:", selectedHabit[0]);
+  //   dispatch(selectedHabitDetail(selectedHabit[0]));
 
-    navigate("/user/habit-detail");
-  };
+  //   navigate("/user/habit-detail");
+  // };
 
   // Fetching User HAbit List
   async function fetchUserHabits() {
@@ -286,23 +288,7 @@ const Home = () => {
                       : habit.habitCategory === "School"
                         ? studyImg
                         : workImg;
-                  return (
-                    <div
-                      className="habit-list-items"
-                      key={index}
-                    >
-                      <div className="habit-data" onClick={() => {
-                        showHabitDetails(habit._id);
-                      }}>
-                        <img className="habit-img" src={imgSrc} alt="" />
-                        <div className="habit-detail">
-                          <h5>{habit.habitName}</h5>
-                          <span>08:00AM</span>
-                        </div>
-                      </div>
-                      <Checkbox className="habit-status"  />
-                    </div>
-                  );
+                  return <Habit key={index} habit={habit} imgSrc={imgSrc}/>
                 })
               ) : (
                 <div className="noData">
