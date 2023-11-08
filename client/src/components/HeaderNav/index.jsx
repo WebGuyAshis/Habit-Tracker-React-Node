@@ -3,12 +3,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear,faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 import bellImg from '../../assets/images/bell.png'
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import userImg from '../../assets/images/defaultUser.png'
 import axios from 'axios';
+import { logoutUser, setUserData } from '../../actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const HeaderNav = () => {
+    const showNotification = useSelector((state)=>state.showNotification);
+    const activeUser = useSelector((state)=>state.userAuth);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     let baseUrl = "http://127.0.0.1:8080"
+    console.log(activeUser, "Active User----------------------------------------------------------");
+    
     const logOutUser = async(req,res)=>{
         console.log("Lets logout user");
         try {
@@ -17,12 +26,21 @@ const HeaderNav = () => {
             });
             if(response.status===200){
                 console.log("Successfully Logout!");
+                showNotification('success','SuccessFully Logged Out!!','')
+                navigate('/')
+                dispatch(setUserData(null))
             }
-
+            
         } catch (error) {
             console.log("Internal Server Error!",error);
+            showNotification('error','Logout Failed!!','')
+
         }        
     }
+    useEffect(()=>{
+        dispatch(logoutUser(logOutUser));
+
+    },[])
     return (
         <div className="headernav-container">
             <h3 className='logo'>HabitBuddy</h3>
@@ -36,7 +54,7 @@ const HeaderNav = () => {
                             <img className='user-img-profile-diag' src={userImg} alt="user" />
                         </div>
                         <h3 className="user-diag-name">
-                            Ashis
+                            {activeUser.name}
                         </h3>
                         
                         <div className="diag-options">

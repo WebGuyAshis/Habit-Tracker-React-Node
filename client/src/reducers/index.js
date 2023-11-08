@@ -6,6 +6,8 @@ import userAuth from './userAuth.js';
 import userHabitData from './userHabit.js';
 import selectedHabitDetail from './selectedHabitDetail.js';
 import userHabits from './fetchUserHabits.js';
+import showNotification from './showNotification.js';
+import logoutUser from './logout.js';
 
 
 import {combineReducers} from 'redux';
@@ -17,7 +19,9 @@ const rootReducer = combineReducers({
     userAuth,
     userHabitData,
     selectedHabitDetail,
-    userHabits
+    userHabits,
+    showNotification,
+    logoutUser
 })
 
 export default rootReducer;

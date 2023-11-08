@@ -1,0 +1,92 @@
+.user-profile-container{
+    width: 100vw;
+    height: 100vh;
+    background:linear-gradient(to right, rgb(255,0,133),rgb(140, 0, 77)) ;
+}
+
+
+.user-profile-details{
+    background-color: rgb(255, 255, 255);
+    height: calc(100% - 200px);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 0 20px;
+    margin-top: 200px;
+    position: relative;
+}
+
+.user-profile-image{
+    background-color: rgb(255, 206, 206);
+    height: 130px;
+    width: 130px;
+    border-radius: 50%;
+    position: absolute;
+    top: -65px;
+    left: 20px;
+    outline: 5px solid rgb(255, 237, 243);
+    z-index: 1;
+}
+.user-profile-image img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.user-profile-data{
+    /* height: 100%; */
+    /* padding-top: 75px; */
+    margin-left: 140px;
+    padding-top: 5px;
+}
+.user-profession{
+    font-size: 14px;
+    color: rgb(167, 167, 167);
+    font-weight: 600;
+}
+
+.user-profile-options{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 30px;
+}
+.user-profile-options .profile-btn{
+    padding: 15px 20px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    transition: all 0.3s;
+    outline: 1px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.user-profile-options .profile-btn:hover{
+    outline: 1px solid var(--primary-color);
+    background-color: rgb(255, 242, 244);
+}
+
+.profile-btn span{
+    margin-left:10px;
+}
+
+
+/* Logout */
+.user-profile-logout{
+    position: fixed;
+    bottom: 10px;
+    border-radius: 10px;
+    background-color:rgb(255, 239, 243);
+
+    cursor: pointer;
+    padding: 15px 20px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    width: calc(100% - 40px);
+    transition: all 0.3s;
+    color: red;
+}
+.user-profile-logout span{
+    margin-right:10px;
+}
+.user-profile-logout:hover{
+    color: aliceblue;
+
+    background-color: var(--primary-color);
+}
+

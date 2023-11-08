@@ -50,6 +50,7 @@ export const createUser = async (req, res) => {
     }
 
     let user = await User.create(req.body);
+
     if (user) {
       return res.status(200).json({ "message": "User Created Successfully!" });
     }

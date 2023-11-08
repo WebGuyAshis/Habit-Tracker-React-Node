@@ -12,14 +12,28 @@ import HabitDetail from "./components/HabitDetail";
 // import AccessDeniedPage from "./components/AccessDeniedPage";
 // Move to .env
 // let baseURL = "http://localhost:8080";
+import {notification } from 'antd';
+import { useDispatch } from "react-redux";
+import { showNotification } from "./actions";
+import Profile from "./components/Profile";
+
 
 
 // const ContextData = createContext();
 function App() {
+  const dispatch = useDispatch();
   // let navigate = useNavigate();
 
   // const userData = useSelector((state)=>state.userAuth);
   // console.log("User Data:", userData);
+  const openNotification = (type, title, description) => {
+    notification[type]({
+      message: title,
+      description,
+    });
+  };
+
+  dispatch(showNotification(openNotification));
 
 
   return (
@@ -35,6 +49,7 @@ function App() {
           {/* <Route path="/user/home" element={userData.user?<Home/>:<AccessDeniedPage/>}/> */}
           <Route path="/user/home" element={<Home/>}/>
           <Route path="/user/habit-detail" element={<HabitDetail/>}/>
+          <Route path="/user/profile" element={<Profile/>} />
         </Routes>
       </Router>
     </div>

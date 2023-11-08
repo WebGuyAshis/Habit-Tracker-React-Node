@@ -79,3 +79,25 @@ export const fetchUserHabitsFunction = (func)=>{
         payload: func
     }
 }
+
+
+
+// Show Notification
+
+export const showNotification = (func)=>{
+  console.log("Show Notification Function!", func);
+  return{
+    type:"SHOW_NOTIFICATION",
+    payload: func
+  }
+}
+
+
+export const logoutUser = (func)=>{
+  console.log("Logout Function from Action:", func);
+
+  return {
+    type:"LOGOUT_USER",
+    payload: func
+  }
+}

@@ -3,7 +3,7 @@ import signinImg from '../../assets/images/signin.jpg'
 import axios from "axios";
 import { useState } from "react";
 import {Link, useNavigate} from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { userLogin, userAction } from "../../actions";
 // import { connect } from "mongoose";
@@ -12,6 +12,7 @@ let baseUrl = "http://localhost:8080";
 
 const SignIn = () => {
   const dispatch = useDispatch()
+  const showNotification = useSelector((state)=>state.showNotification);
   // handle form Submission
   let navigate = useNavigate();
   let [signInformData, setsignInformData] = useState({
@@ -23,59 +24,29 @@ const SignIn = () => {
     console.log("FormData:", signInformData);
 
     try {
-      let response = await axios.post(
-        `${baseUrl}/api/v1/user/create-session`,
-        signInformData,
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          withCredentials:'include'// JAb hum cross origin mein cookies recieve kr rhe toh iss particular field ko incude krna mandatory hai wrna cookies set nhi honge
-        }
-      );
-      
-      console.log("Response Status:",response, response.data, response.status === 200);
+      let response = await axios.post(`${baseUrl}/api/v1/user/create-session`, signInformData, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        withCredentials: 'include'
+      });
 
-      // Handling 200 response
-
-      if (response.status === 200) {
-        // test function
-
-      //   function getCookie(name) {
-      //     var cookieName = name + "=";
-      //     var decodedCookie = decodeURIComponent(document.cookie);
-      //     var cookieArray = decodedCookie.split(';');
-      //     for (var i = 0; i < cookieArray.length; i++) {
-      //         var cookie = cookieArray[i].trim();
-      //         if (cookie.indexOf(cookieName) === 0) {
-      //             return cookie.substring(cookieName.length, cookie.length);
-      //         }
-      //     }
-      //     return null;
-      // }
-
-      // console.log("GetCookie:", getCookie("connect.sid"), "Document.cookie:", document.cookie);
-
-        // 
-        // console.log("Response:", response.headers.setAccept);
-        console.log("React USER DATA:", response.data.userData);
+      console.log("This is response.status:", response.status);
     
-        dispatch(userLogin(response.data.userData))
-        console.log("Sign In Successfull!!", signInformData,   {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        navigate('/user/home')
+      if (response.status === 200) {
+        dispatch(userLogin(response.data.userData));
+        showNotification('success', `Welcome ${response.data.userData.name}!`, "Let's Complete your scheduled Habits!");
+        navigate('/user/home');
+        return;
+      } else if (response.status === 401) {
+        showNotification('error', "Oops! Something Went Wrong!", "Incorrect Username or Password!");
+        return
       }
     } catch (error) {
-        // if(error.response.status===404){
-        //     console.log("Navigating to Sign Up Route!");
-        //     navigate('/sign-up');
-        //     return;
-        // }
+      showNotification('error', "Oops! Something Went Wrong!", "Error Logging In Please retry or Check Internet!");
       console.log("Error Submitting Form!", error);
     }
+    
   };
 
   const handleSigninInputChange = (e) => {

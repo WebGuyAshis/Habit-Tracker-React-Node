@@ -7,15 +7,18 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 const Habit =({ habit, imgSrc })=>{
 
-    const myHabits = useSelector((state)=>state.userHabitData)
+    const myHabits = useSelector((state)=>state.userHabitData);
+    const showNotification = useSelector((state)=>state.showNotification);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    let baseUrl = 'http://127.0.0.1:8080'
 // To show habit details on click
     const showHabitDetails = (habitId) => {
         let selectedHabit = myHabits.filter((habit) => habit._id === habitId);
         console.log("Selected Habit:", selectedHabit[0]);
         dispatch(selectedHabitDetail(selectedHabit[0]));
-    
+        
         navigate("/user/habit-detail");
       };
 
@@ -26,8 +29,7 @@ const Habit =({ habit, imgSrc })=>{
         setIsChecked(tempStatus);
         console.log("My Habits--------After Update!", myHabits);
       },[])
-      let baseUrl = 'http://127.0.0.1:8080'
-
+// Change STatus
       async function changeHabitStatus(habitId){
         let status = habit.prevRecord[0].status;
         let prevHabitId = habit.prevRecord[0]._id;
@@ -42,9 +44,12 @@ const Habit =({ habit, imgSrc })=>{
                 console.log("Habit Updated Successfully!!", response.data);
                 // Updating the stored redux 
                 // dispatch(selectedHabitDetail(response.data));
+                showNotification('success','Congratulations!','Habit Updated Successfully!!!')
                 dispatch(userHabits(response.data))
             }            // calculateFinishedCount()
         } catch (error) {
+          showNotification('error','Oops Something Went Wrong!','Habit Updation Failed!')
+
             console.log("Error Updating Habit!");
         }
 // Update Finished Tasks Count

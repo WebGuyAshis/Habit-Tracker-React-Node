@@ -239,6 +239,11 @@ const Home = () => {
   //     console.log("MyHabit!!!", myHabits);
   // }, 10000);
   console.log("My Habits:", myHabits);
+
+  if(!activeUser){
+    navigate('/');
+    return null;
+}
   return (
     <div className="home-container">
       {/* <div className="confetti-file">

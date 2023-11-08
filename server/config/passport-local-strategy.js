@@ -55,7 +55,7 @@ passport.checkAuthentication = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next(); // User is authenticated, continue to the next middleware or route
     }
-    return res.status(401).json({ error: "Not Authenticated" });
+    return res.status(401).json({ message: "Not Authenticated" });
 };
 
 passport.setAuthenticatedUser = function(req,res,next){
