@@ -4,14 +4,21 @@
     background:linear-gradient(to right, rgb(255,0,133),rgb(140, 0, 77)) ;
 }
 
-
+.profile-ranking{
+    font-size: 100px;
+    font-weight: 900;
+    height: 200px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.264);
+    line-height: 200px;
+}
 .user-profile-details{
     background-color: rgb(255, 255, 255);
     height: calc(100% - 200px);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     padding: 0 20px;
-    margin-top: 200px;
+    /* margin-top: 200px; */
     position: relative;
 }
 
@@ -37,10 +44,10 @@
     margin-left: 140px;
     padding-top: 5px;
 }
-.user-profession{
+.user-email{
     font-size: 14px;
     color: rgb(167, 167, 167);
-    font-weight: 600;
+    /* font-weight: 600; */
 }
 
 .user-profile-options{

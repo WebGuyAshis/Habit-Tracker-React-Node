@@ -48,8 +48,12 @@ export const createUser = async (req, res) => {
           "message": "User with this Email already Exists!"
         });
     }
+    let allUsers = await User.find();
+    let rank = allUsers.length + 1;
+    let memberSince = getCurrentFormattedDate();
 
-    let user = await User.create(req.body);
+    let newData = {...req.body,rank,memberSince};
+    let user = await User.create(newData);
 
     if (user) {
       return res.status(200).json({ "message": "User Created Successfully!" });
@@ -102,10 +106,13 @@ export const createSession =
         }
         // Authentication successful
         console.log("Authentication successful");
+        
         let userData = {
           _id: user._id,
           name: user.name,
-          email: user.email
+          email: user.email,
+          rank:user.rank,
+          memberSince:user.memberSince
         }
         console.log("Cookie:",);
         return res.status(200).json({ message: 'Authentication successful', userData });
@@ -184,57 +191,57 @@ export const delete_habit = async (req, res) => {
   }
 }
 
-export const habit_update = async(req,res)=>{
+export const habit_update = async (req, res) => {
   const habitId = req.params.habitId;
   // here prevId is actually used for the date where we need to update
   // habit id is habits id and prevId is the todays or particular day where needs update
 
-const { prevHabitId, status } = req.body;
+  const { prevHabitId, status } = req.body;
 
-try {
-  console.log("Let's Update this Habit having Id:", habitId, "&&", prevHabitId, "&&", status);
+  try {
+    console.log("Let's Update this Habit having Id:", habitId, "&&", prevHabitId, "&&", status);
 
-  // Find the habit by its ID
-  const updateHabit = await Habit.findById(habitId);
+    // Find the habit by its ID
+    const updateHabit = await Habit.findById(habitId);
 
-  if (!updateHabit) {
-    return res.status(404).json({ error: "Habit Not Found!" });
+    if (!updateHabit) {
+      return res.status(404).json({ error: "Habit Not Found!" });
+    }
+
+    // Find the previous record to update (.id() mongoose method to find easily)
+    const prevRecordToUpdate = updateHabit.prevRecord.id(prevHabitId);
+
+    if (!prevRecordToUpdate) {
+      return res.status(404).json({ error: "Previous Record Not Found!" });
+    }
+
+    // Update the status
+    prevRecordToUpdate.status = status;
+
+    // Save the habit document
+    await updateHabit.save();
+
+    let habits = await Habit.find({ habitUser: updateHabit.habitUser });
+    console.log("This is the updated Habit!", updateHabit);
+    return res.status(200).json(habits);
+  } catch (error) {
+    console.log("Error Updating!", error);
+    return res.status(500).json({ error: "Internal Server Error!" });
   }
 
-  // Find the previous record to update (.id() mongoose method to find easily)
-  const prevRecordToUpdate = updateHabit.prevRecord.id(prevHabitId);
-
-  if (!prevRecordToUpdate) {
-    return res.status(404).json({ error: "Previous Record Not Found!" });
-  }
-
-  // Update the status
-  prevRecordToUpdate.status = status;
-
-  // Save the habit document
-  await updateHabit.save();
-
-  let habits = await Habit.find({habitUser: updateHabit.habitUser});
-  console.log("This is the updated Habit!",updateHabit);
-  return res.status(200).json(habits);
-} catch (error) {
-  console.log("Error Updating!", error);
-  return res.status(500).json({ error: "Internal Server Error!" });
-}
-
 }
 
 
-export const userLogout = (req,res)=>{
+export const userLogout = (req, res) => {
   console.log("Lets Throw User Out");
-    req.logout((err)=>{
-      if(err){
-        console.log("Error logging Out!",err);
-        console.log("Users Session", req.session);
+  req.logout((err) => {
+    if (err) {
+      console.log("Error logging Out!", err);
+      console.log("Users Session", req.session);
 
-        return res.status(500).json({error:"Internal Server Error!"});
-      }
-      console.log("Successfully Logged out!");
-      return res.status(200).json({message:"Successfullly Logged Out!"});
-    });
+      return res.status(500).json({ error: "Internal Server Error!" });
+    }
+    console.log("Successfully Logged out!");
+    return res.status(200).json({ message: "Successfullly Logged Out!" });
+  });
 }

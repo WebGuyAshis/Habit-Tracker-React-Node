@@ -13,32 +13,26 @@ import { useNavigate } from "react-router-dom";
 const Profile = () => {
     const logoutFunc = useSelector((state)=>state.logoutUser)
     const activeUser = useSelector((state)=>state.userAuth);
-    const navigate = useNavigate();
 
     if(logoutFunc){
         console.log("********", logoutFunc);
     }
     console.log("********************", logoutFunc);
-
-
-
-    if(!activeUser){
-        navigate('/');
-        return null;
-    }
     
     return (
         <div className="user-profile-container">
             {/* <div className="user-profile-background"></div> */}
-
+            <div className="profile-ranking">
+                #{activeUser?activeUser.rank:"..."}
+            </div>
             <div className="user-profile-details">
                 <div className="user-profile-image">
                     {/* Img */}
                     <img src={userImg} alt="" />
                 </div>
                 <div className="user-profile-data">
-                    <h2 className="user-profile-name">{activeUser.name}</h2>
-                    <span className="user-profession">Student,Coding Ninjas</span>
+                    <h2 className="user-profile-name">{activeUser?activeUser.name:"Fetching Name..."}</h2>
+                    <span className="user-email">{activeUser? activeUser.email:"Fetching Email..."}</span>
                 </div>
 
                 <div className="user-profile-options">

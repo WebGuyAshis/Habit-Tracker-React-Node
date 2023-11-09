@@ -53,11 +53,13 @@ app.use(passport.setAuthenticatedUser);
 // Setting route
 app.get("/protected-route", (req, res) => {
   if (req.isAuthenticated()) {
-    const {_id,name,email} = req.user;
+    const {_id,name,email,rank,memberSince} = req.user;
     const userData = {
         _id,
         name,
-        email
+        email,
+        rank,
+        memberSince
     }
     console.log("User had active Session!");
     res.status(200).send(userData);

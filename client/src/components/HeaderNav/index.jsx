@@ -28,7 +28,7 @@ const HeaderNav = () => {
                 console.log("Successfully Logout!");
                 showNotification('success','SuccessFully Logged Out!!','')
                 navigate('/')
-                dispatch(setUserData(null))
+                // dispatch(setUserData(null))
             }
             
         } catch (error) {
@@ -54,7 +54,7 @@ const HeaderNav = () => {
                             <img className='user-img-profile-diag' src={userImg} alt="user" />
                         </div>
                         <h3 className="user-diag-name">
-                            {activeUser.name}
+                            {activeUser ? activeUser.name: "Fetching Data..."}
                         </h3>
                         
                         <div className="diag-options">

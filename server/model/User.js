@@ -18,7 +18,17 @@ const userSchema = new mongoose.Schema({
     habitList:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Habit"
-    }]
+    }],
+    memberSince:{
+        type:String,
+        required:true
+    },
+    rank:{
+        type:Number,
+        required: true
+    }
+},{
+    timestamps:true
 });
 
 const User = mongoose.model('User',userSchema);

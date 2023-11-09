@@ -108,10 +108,7 @@ const Home = () => {
   //   const [activeUserData, setactiveUserData] = useState(null);
   let baseUrl = "http://localhost:8080";
 
-  useEffect(() => {
-    console.log("Checking Session!");
-    checkSession();
-  }, []);
+
 
   useEffect(() => {
     console.log("active data", activeUser);
@@ -122,6 +119,7 @@ const Home = () => {
 
   const checkSession = async () => {
     try {
+      console.log("Checking User Session");
       const response = await axios.get(`${baseUrl}/protected-route`, {
         withCredentials: true,
       });
@@ -142,6 +140,11 @@ const Home = () => {
       // Handle the case where the user is not authenticated or the session has expired.
     }
   };
+
+  useEffect(() => {
+    console.log("Checking Session!");
+    checkSession();
+  }, []);
 
   // checkSession();
 
@@ -240,10 +243,11 @@ const Home = () => {
   // }, 10000);
   console.log("My Habits:", myHabits);
 
-  if(!activeUser){
-    navigate('/');
-    return null;
-}
+//   if(!activeUser){
+//     console.log("User Lost");
+//     navigate('/');
+//     return null;
+// }
   return (
     <div className="home-container">
       {/* <div className="confetti-file">
