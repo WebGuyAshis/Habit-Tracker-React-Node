@@ -16,6 +16,7 @@ import {notification } from 'antd';
 import { useDispatch } from "react-redux";
 import { showNotification } from "./actions";
 import Profile from "./components/Profile";
+import Community from "./components/Community";
 
 
 
@@ -49,6 +50,7 @@ function App() {
           {/* <Route path="/user/home" element={userData.user?<Home/>:<AccessDeniedPage/>}/> */}
           <Route path="/user/home" element={<Home/>}/>
           <Route path="/user/habit-detail" element={<HabitDetail/>}/>
+          <Route path="/user/community" element={<Community/>}/>
           <Route path="/user/profile" element={<Profile/>} />
         </Routes>
       </Router>

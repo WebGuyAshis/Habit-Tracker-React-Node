@@ -5,15 +5,17 @@ import {
     faPalette,
     faFileLines,
     faHeadset,
+    faArrowLeft
 } from "@fortawesome/free-solid-svg-icons";
 import "./profile.styles.css";
 import userImg from "../../assets/images/defaultUser.png";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 const Profile = () => {
     const logoutFunc = useSelector((state)=>state.logoutUser)
     const activeUser = useSelector((state)=>state.userAuth);
-
+    const navigate = useNavigate();
     if(logoutFunc){
         console.log("********", logoutFunc);
     }
@@ -21,6 +23,11 @@ const Profile = () => {
     
     return (
         <div className="user-profile-container">
+            <div className="back-btn" onClick={()=>{navigate(-1)}}>
+
+            <FontAwesomeIcon icon={faArrowLeft} />
+            <span>Back</span>
+            </div>
             {/* <div className="user-profile-background"></div> */}
             <div className="profile-ranking">
                 #{activeUser?activeUser.rank:"..."}

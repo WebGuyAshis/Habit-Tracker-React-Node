@@ -26,7 +26,11 @@ const userSchema = new mongoose.Schema({
     rank:{
         type:Number,
         required: true
-    }
+    },
+    posts:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Post'
+    }]
 },{
     timestamps:true
 });

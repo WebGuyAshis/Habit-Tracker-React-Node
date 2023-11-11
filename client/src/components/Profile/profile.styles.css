@@ -97,3 +97,18 @@
     background-color: var(--primary-color);
 }
 
+.back-btn{
+    cursor: pointer;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    color: white;
+    transition: all 0.2s;
+}
+.back-btn:hover{
+    transform: scale(1.2);
+    left: 15px;
+}
+.back-btn span{
+    margin-left: 8px;
+}

@@ -2,6 +2,8 @@ import User from "../model/User.js";
 import passport from 'passport';
 import cookieParser from "cookie-parser";
 import Habit from "../model/Habit.js";
+// import Post from "../model/Post.js";
+import Post from '../model/Post.js'
 
 
 // Formatted Date
@@ -106,7 +108,7 @@ export const createSession =
         }
         // Authentication successful
         console.log("Authentication successful");
-        
+
         let userData = {
           _id: user._id,
           name: user.name,
@@ -244,4 +246,39 @@ export const userLogout = (req, res) => {
     console.log("Successfully Logged out!");
     return res.status(200).json({ message: "Successfullly Logged Out!" });
   });
+}
+
+
+export const createPost = async(req,res)=>{
+  const {status, userId} = req.body;
+  console.log("Datat to be Posted!",req.body);
+
+  try {
+    const post = await Post.create({
+      postStatus:status,
+      userData: userId
+    })
+    if(post){
+      console.log("Post Created Successfully!", post);
+      return res.status(200).send(post)
+    }
+  } catch (error) {
+    console.log("Error Creating Post!");
+    return res.status(500).json({error:"Internal Server Error!"})
+  }
+}
+
+export const fetchPosts = async (req, res) => {
+  console.log("Getch Inside");
+  try {
+    console.log("Let's Fetch Posts!");
+    let allPosts = await Post.find().populate('userData')
+    .sort({createdAt: -1})
+
+    console.log("All Posts:", allPosts);
+    return res.status(200).send(allPosts);
+  } catch (error) {
+    console.log("Error Fetching!", error);
+    return res.status(500).json({ error: "Error Occurred while Fetching!" });
+  }
 }

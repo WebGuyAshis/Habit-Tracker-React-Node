@@ -4,8 +4,29 @@
     background-color: rgb(255, 255, 255);
     padding: 10px;
 }
-.back-icon{
-    margin-bottom: 10px;
+.back-btn-icon{
+    cursor: pointer;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    /* color: white; */
+    transition: all 0.2s;
+    background-color: rgba(207, 207, 207, 0.3);
+    width: 100%;
+    z-index: 2;
+    backdrop-filter: blur(5px);
+    padding: 10px;
+}
+.back-btn-icon:hover{
+    color: var(--primary-color);
+}
+.back-btn-icon span{
+    margin-left: 8px;
+}
+
+
+.habit-details{
+    margin-top: 30px;
 }
 .habit-detail-cat-time{
     display: flex;
@@ -80,7 +101,7 @@
     height: auto !important;
 } */
 .ant-progress-inner{
-    width:100% !important;
+    width:90% !important;
     height: 100% !important;
     /* max-width: 300px; */
 }
@@ -88,17 +109,17 @@
     width: 100%;
     max-height: 400px;
 }
-
+/* 
 .ant-progress-outer .ant-progress-inner{
     width: 100% !important;
-    height: 18px !important;
-}
+    height: 10px !important;
+} */
 
 .ant-progress-outer .ant-progress-bg{
     height: 100% !important;
 }
 .ant-progress-text{
-    font-size: 40px !important;
+    font-size: 35px !important;
 }
 
 .mark-current-task-complete{
@@ -125,6 +146,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    max-height: 100%;
+    overflow: auto;
 }
 
 .previous-day{
@@ -139,8 +162,6 @@
 .previous-day:hover{
     background: rgb(0, 153, 255);
     color: rgb(255, 255, 255);
-
-
 }
 .previous-date{
     margin-bottom: 10px;
@@ -152,7 +173,6 @@
 
 .previous-habit-status{
     width: 120px;
-
 }
 
 .ant-select-selector{
