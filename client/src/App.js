@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { showNotification } from "./actions";
 import Profile from "./components/Profile";
 import Community from "./components/Community";
+import Leaderboard from "./components/Leaderboard";
 
 
 
@@ -52,6 +53,7 @@ function App() {
           <Route path="/user/habit-detail" element={<HabitDetail/>}/>
           <Route path="/user/community" element={<Community/>}/>
           <Route path="/user/profile" element={<Profile/>} />
+          <Route path="/user/leaderboard" element={<Leaderboard/>}/>
         </Routes>
       </Router>
     </div>

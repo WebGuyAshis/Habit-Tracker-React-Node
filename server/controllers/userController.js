@@ -1,10 +1,9 @@
 import User from "../model/User.js";
-import passport from 'passport';
+import passport from "passport";
 import cookieParser from "cookie-parser";
 import Habit from "../model/Habit.js";
 // import Post from "../model/Post.js";
-import Post from '../model/Post.js'
-
+import Post from "../model/Post.js";
 
 // Formatted Date
 function getCurrentFormattedDate() {
@@ -43,26 +42,24 @@ export const createUser = async (req, res) => {
     }
     let userExists = await User.findOne({ email: req.body.email });
     if (userExists) {
-      return res
-        .status(409)
-        .json({
-          "error": "User already registered!",
-          "message": "User with this Email already Exists!"
-        });
+      return res.status(409).json({
+        error: "User already registered!",
+        message: "User with this Email already Exists!",
+      });
     }
     let allUsers = await User.find();
     let rank = allUsers.length + 1;
     let memberSince = getCurrentFormattedDate();
 
-    let newData = {...req.body,rank,memberSince};
+    let newData = { ...req.body, rank, memberSince };
     let user = await User.create(newData);
 
     if (user) {
-      return res.status(200).json({ "message": "User Created Successfully!" });
+      return res.status(200).json({ message: "User Created Successfully!" });
     }
   } catch (error) {
     console.log("Error while registering User!", error);
-    return res.status(500).json({ "error": "Error while registering User!" });
+    return res.status(500).json({ error: "Error while registering User!" });
   }
 };
 
@@ -84,43 +81,44 @@ export const createUser = async (req, res) => {
 //     return res.status(500).json({ "message": "Error while Signin In User!" });
 //   }
 // };
-export const createSession =
-  (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
+export const createSession = (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    console.log("User From Controller", user);
+    console.log("Info From Controller", info);
 
-      console.log("User From Controller", user);
-      console.log("Info From Controller", info);
-
-      if (err) {
-        // Handle unexpected errors
-        console.log("Internal server error");
-        return res.status(500).json({ message: 'Internal server error' });
+    if (err) {
+      // Handle unexpected errors
+      console.log("Internal server error");
+      return res.status(500).json({ message: "Internal server error" });
+    }
+    if (!user) {
+      // Authentication failed
+      console.log("Authentication failed");
+      return res.status(401).json({ message: "Authentication failed" });
+    }
+    req.logIn(user, (loginErr) => {
+      if (loginErr) {
+        console.log("Login error!", loginErr);
+        return res.status(500).json({ message: "Login error" });
       }
-      if (!user) {
-        // Authentication failed
-        console.log("Authentication failed");
-        return res.status(401).json({ message: 'Authentication failed' });
-      }
-      req.logIn(user, (loginErr) => {
-        if (loginErr) {
-          console.log("Login error!", loginErr);
-          return res.status(500).json({ message: 'Login error' });
-        }
-        // Authentication successful
-        console.log("Authentication successful");
+      // Authentication successful
+      console.log("Authentication successful");
 
-        let userData = {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          rank:user.rank,
-          memberSince:user.memberSince
-        }
-        console.log("Cookie:",);
-        return res.status(200).json({ message: 'Authentication successful', userData });
-      });
-    })(req, res, next);
-  };
+      let userData = {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        rank: user.rank,
+        memberSince: user.memberSince,
+        totalPoints: user.totalPoints,
+      };
+      console.log("Cookie:");
+      return res
+        .status(200)
+        .json({ message: "Authentication successful", userData });
+    });
+  })(req, res, next);
+};
 
 export const createHabit = async (req, res) => {
   console.log("Will Create Later");
@@ -131,14 +129,12 @@ export const createHabit = async (req, res) => {
     let habit = await Habit.create(req.body);
     console.log("Habit Created in Db:", habit);
 
-    return res.status(200).json({ message: "Successfully Created Habit!" })
+    return res.status(200).json({ message: "Successfully Created Habit!" });
   } catch (error) {
     console.log("Error Creating task:", error);
-    return res.status(500).json({ error: "  Internal Serever Error!" })
-
+    return res.status(500).json({ error: "  Internal Serever Error!" });
   }
-
-}
+};
 
 export const fetch_habits = async (req, res) => {
   try {
@@ -153,15 +149,20 @@ export const fetch_habits = async (req, res) => {
 
       for (const habit of habits) {
         // Check if today's date already exists in the prevRecord array
-        const dateExists = habit.prevRecord.some(record => record.date === currentDate);
+        const dateExists = habit.prevRecord.some(
+          (record) => record.date === currentDate
+        );
 
         if (!dateExists) {
           console.log("Date Doesnt Exists");
           // If today's date doesn't exist, add a new date field
-          habit.prevRecord = [{
-            date: currentDate,
-            status: "Not Done",
-          }, ...habit.prevRecord];
+          habit.prevRecord = [
+            {
+              date: currentDate,
+              status: "Not Done",
+            },
+            ...habit.prevRecord,
+          ];
 
           // Save the updated habit
           await habit.save();
@@ -174,9 +175,7 @@ export const fetch_habits = async (req, res) => {
     console.log("Error showing tasks!", error);
     return res.status(500).json({ error: "Error Fetching Songs!" });
   }
-}
-
-
+};
 
 export const delete_habit = async (req, res) => {
   const habitId = req.params.habitId;
@@ -184,14 +183,19 @@ export const delete_habit = async (req, res) => {
   try {
     const deletedHabit = await Habit.findByIdAndDelete(habitId);
     if (deletedHabit) {
-      console.log("Successfully Deleted Habit and Previous data!", deletedHabit);
-      return res.status(200).json({ message: "Successfully Deleted Habit and Previous data!" })
+      console.log(
+        "Successfully Deleted Habit and Previous data!",
+        deletedHabit
+      );
+      return res
+        .status(200)
+        .json({ message: "Successfully Deleted Habit and Previous data!" });
     }
   } catch (error) {
     console.log("Error Deleting Habit!", error);
-    return res.status(500).json({ error: "Error deleting Habit" })
+    return res.status(500).json({ error: "Error deleting Habit" });
   }
-}
+};
 
 export const habit_update = async (req, res) => {
   const habitId = req.params.habitId;
@@ -201,12 +205,21 @@ export const habit_update = async (req, res) => {
   const { prevHabitId, status } = req.body;
 
   try {
-    console.log("Let's Update this Habit having Id:", habitId, "&&", prevHabitId, "&&", status);
+    console.log(
+      "Let's Update this Habit having Id:",
+      habitId,
+      "&&",
+      prevHabitId,
+      "&&",
+      status
+    );
 
     // Find the habit by its ID
     const updateHabit = await Habit.findById(habitId);
+    const userId = updateHabit.habitUser;
+    const user = await User.findById(userId);
 
-    if (!updateHabit) {
+    if (!updateHabit || !user) {
       return res.status(404).json({ error: "Habit Not Found!" });
     }
 
@@ -219,9 +232,14 @@ export const habit_update = async (req, res) => {
 
     // Update the status
     prevRecordToUpdate.status = status;
-
+    if (status === "Done") {
+      user.totalPoints += 50;
+    } else {
+      user.totalPoints -= 50;
+    }
     // Save the habit document
     await updateHabit.save();
+    await user.save();
 
     let habits = await Habit.find({ habitUser: updateHabit.habitUser });
     console.log("This is the updated Habit!", updateHabit);
@@ -230,9 +248,7 @@ export const habit_update = async (req, res) => {
     console.log("Error Updating!", error);
     return res.status(500).json({ error: "Internal Server Error!" });
   }
-
-}
-
+};
 
 export const userLogout = (req, res) => {
   console.log("Lets Throw User Out");
@@ -246,34 +262,34 @@ export const userLogout = (req, res) => {
     console.log("Successfully Logged out!");
     return res.status(200).json({ message: "Successfullly Logged Out!" });
   });
-}
+};
 
-
-export const createPost = async(req,res)=>{
-  const {status, userId} = req.body;
-  console.log("Datat to be Posted!",req.body);
+export const createPost = async (req, res) => {
+  const { status, userId } = req.body;
+  console.log("Datat to be Posted!", req.body);
 
   try {
     const post = await Post.create({
-      postStatus:status,
-      userData: userId
-    })
-    if(post){
+      postStatus: status,
+      userData: userId,
+    });
+    if (post) {
       console.log("Post Created Successfully!", post);
-      return res.status(200).send(post)
+      return res.status(200).send(post);
     }
   } catch (error) {
     console.log("Error Creating Post!");
-    return res.status(500).json({error:"Internal Server Error!"})
+    return res.status(500).json({ error: "Internal Server Error!" });
   }
-}
+};
 
 export const fetchPosts = async (req, res) => {
   console.log("Getch Inside");
   try {
     console.log("Let's Fetch Posts!");
-    let allPosts = await Post.find().populate('userData')
-    .sort({createdAt: -1})
+    let allPosts = await Post.find()
+      .populate("userData")
+      .sort({ createdAt: -1 });
 
     console.log("All Posts:", allPosts);
     return res.status(200).send(allPosts);
@@ -281,4 +297,28 @@ export const fetchPosts = async (req, res) => {
     console.log("Error Fetching!", error);
     return res.status(500).json({ error: "Error Occurred while Fetching!" });
   }
-}
+};
+
+export const fetchUserPoints = async (req, res) => {
+  try {
+    let users = await User.find();
+    if (!users) {
+      return res.status(404).json({
+        error: "Error finding User!",
+      });
+    }
+    let newArr = [...users];
+    // This will basically sort the arr in descending order as per the totalpoints
+    newArr.sort((a, b) => b.totalPoints - a.totalPoints);
+    let sortedArr = newArr.map((user) => {
+      return {
+        name: user.name,
+        totalPoints: user.totalPoints,
+      };
+    });
+    console.log("Sorted User Array!", sortedArr);
+    return res.status(200).send(sortedArr);
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error!" });
+  }
+};

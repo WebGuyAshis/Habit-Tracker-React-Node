@@ -289,7 +289,7 @@ const Home = () => {
 
             <div className="habit-list">
               {/* Individual habits */}
-              {myHabits ? (
+              {myHabits.length > 0 ? (
                 myHabits.map((habit, index) => {
                   let imgSrc =
                     habit.habitCategory === "Sports"

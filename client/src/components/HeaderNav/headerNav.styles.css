@@ -16,7 +16,7 @@
 }
 .header-icons{
     display: flex;
-    gap: 20px;
+    gap: 10px;
     height: 100%;
     align-items: center;
 }
@@ -106,8 +106,8 @@
     position: relative;
 }
 .notification-count{
-    position: fixed;
-    right: 10px;
+    position: absolute;
+    right: 0px;
     /* height: 15px; */
     border-radius:20px ;
     /* width: 15px; */
@@ -121,4 +121,26 @@
     cursor: pointer;
     height: 100%;
     /* background-color: aqua; */
+}
+
+.user-totalCoins{
+    /* height: 30px; */
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    padding: 3px;
+    padding-right: 10px;
+    background-color: rgb(237, 237, 237);
+    transition: 0.3s all;
+}
+
+.user-totalCoins:hover{
+    background-color: white;
+    cursor: pointer;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.nav-coins{
+    height: 25px;
+    margin-right: 5px;
 }

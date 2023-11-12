@@ -30,7 +30,11 @@ const userSchema = new mongoose.Schema({
     posts:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Post'
-    }]
+    }],
+    totalPoints:{
+        type:Number,
+        default:0
+    }
 },{
     timestamps:true
 });

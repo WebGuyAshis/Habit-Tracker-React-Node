@@ -9,7 +9,7 @@ import axios from 'axios';
 import { logoutUser, setUserData } from '../../actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-
+import coin from '../../assets/images/coin.png'
 const HeaderNav = () => {
     const showNotification = useSelector((state)=>state.showNotification);
     const activeUser = useSelector((state)=>state.userAuth);
@@ -73,6 +73,11 @@ const HeaderNav = () => {
                         1
                     </div>
                     <img className='bell-img' src={bellImg} alt="" />
+                </div>
+
+                <div className="user-totalCoins">
+                    <img src={coin} alt="" className='nav-coins' />
+                    {activeUser? activeUser.totalPoints:0}
                 </div>
             </div>
         </div>

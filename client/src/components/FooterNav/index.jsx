@@ -21,11 +21,11 @@ const FooterNav = ()=>{
                 <div className='footNav-item-text'>Home</div>
             </Link>
 
-            <Link to="/user/stats" className="Stats footNav-item">
+            <Link to="/user/leaderboard" className="Stats footNav-item">
                 <div className="footnav-icons footnav-icon-Stats">
                 <FontAwesomeIcon icon={faChartSimple} />
                 </div>
-                <div className='footNav-item-text'>Stats</div>
+                <div className='footNav-item-text'>Leaderboard</div>
             </Link>
 
             <div className="add footNav-item" onClick={()=>{dispatch(openCreateHabit())}}>
