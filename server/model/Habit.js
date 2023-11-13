@@ -49,6 +49,10 @@ const habitSchema = new mongoose.Schema({
           type: String,
           default: "Not Done",
         },
+        countCompleted:{
+          type:Number,
+          default:0
+        }
       },
     ],
     default: function () {

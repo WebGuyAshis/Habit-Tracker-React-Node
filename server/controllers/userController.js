@@ -202,7 +202,7 @@ export const habit_update = async (req, res) => {
   // here prevId is actually used for the date where we need to update
   // habit id is habits id and prevId is the todays or particular day where needs update
 
-  const { prevHabitId, status } = req.body;
+  const { prevHabitId, status, totalCount } = req.body;
 
   try {
     console.log(
@@ -211,7 +211,8 @@ export const habit_update = async (req, res) => {
       "&&",
       prevHabitId,
       "&&",
-      status
+      status,
+      totalCount
     );
 
     // Find the habit by its ID
@@ -232,10 +233,17 @@ export const habit_update = async (req, res) => {
 
     // Update the status
     prevRecordToUpdate.status = status;
+    prevRecordToUpdate.countCompleted = totalCount;
     if (status === "Done") {
       user.totalPoints += 50;
     } else {
-      user.totalPoints -= 50;
+      if(user.totalPoints <= 0){
+         user.totalPoints = 0;
+      }
+      else{
+        console.log("Inised Else");
+        user.totalPoints -= 50;
+      }
     }
     // Save the habit document
     await updateHabit.save();

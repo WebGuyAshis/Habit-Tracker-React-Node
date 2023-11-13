@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Progress, Select } from "antd";
 
@@ -14,11 +14,18 @@ const HabitDetail = () => {
     const [weekFinished, setWeekFinished] = useState(0);
     const [finishedPercent, setFinishedPercent] = useState(0);
 
+    // const [targetCompleted, setTargetCompleted] = useState(0);
+    let timeOutRef = useRef(null);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     console.log("Go back to home!!!!!!!!!!!!!!!!!!!!!!!!!");
     // navigate("/user/home");
     const selectedHabitData = useSelector((state) => state.selectedHabitDetail);
+    let [changeVal, setChangeVal] = useState(
+        selectedHabitData ? selectedHabitData.prevRecord[0].countCompleted : 0
+    );
+
     let chartValue = 0;
     if (selectedHabitData && selectedHabitData.prevRecord[0].status === "Done") {
         chartValue = 100;
@@ -40,6 +47,43 @@ const HabitDetail = () => {
     }, [selectedHabitData]);
 
     // Add each
+    useEffect(() => {
+
+        if (selectedHabitData) {
+            if (percent === 0) {
+                changeTaskStatus(selectedHabitData.prevRecord[0]._id, "None");
+            } else if (percent === 100) {
+                changeTaskStatus(selectedHabitData.prevRecord[0]._id, "Done");
+            } else {
+                changeTaskStatus(selectedHabitData.prevRecord[0]._id, "Not Done");
+            }
+        }
+    }, [percent]);
+
+
+    // To Update Habit Completed Count after sometime when user completes the clicking did like this to handle ultiple function call and multiple time hitting same route so this will basically update only the fainal value after 3.5s
+    useEffect(() => {
+        if (selectedHabitData) {
+            clearTimeout(timeOutRef.current);
+
+            timeOutRef.current = setTimeout(() => {
+                // Will Handle Api Call
+                let id = selectedHabitData.prevRecord[0]._id;
+                let status =
+                    changeVal === selectedHabitData.totalIterationCount
+                        ? "Done"
+                        : changeVal === 0
+                            ? "None"
+                            : "Not Done";
+                console.log("sending for updation:", id, status, changeVal);
+                changeTaskStatus(id, status, changeVal);
+
+                console.log("Hola");
+            }, 3500);
+        }
+    }, [changeVal]);
+
+
 
     if (!selectedHabitData) {
         return null;
@@ -47,21 +91,43 @@ const HabitDetail = () => {
 
     console.log("Selected Habit Dataasdsadaqw:", selectedHabitData);
     // For Ant D chart
+    let totalIterationCount =
+        selectedHabitData.habitGoalDurationNum > 0
+            ? selectedHabitData.habitGoalDurationNum
+            : selectedHabitData.habitGoalCount;
+
     const increase = () => {
+        setChangeVal((prevValue) => {
+            if (prevValue === totalIterationCount) {
+                return totalIterationCount;
+            }
+            return prevValue + 1;
+        });
         setPercent((prevPercent) => {
-            const newPercent = parseFloat((prevPercent + 100 / 7).toFixed(2));
-            if (newPercent > 100) {
+            const newPercent = parseFloat(
+                (prevPercent + 100 / totalIterationCount).toFixed(2)
+            );
+            if (newPercent > 99) {
                 return 100;
             }
             return newPercent;
         });
     };
     const decline = () => {
-        setPercent((prevPercent) => {
-            const newPercent = prevPercent - 10;
-            if (newPercent < 0) {
+        setChangeVal((prevValue) => {
+            if (prevValue === 0) {
                 return 0;
             }
+            return prevValue - 1;
+        });
+        setPercent((prevPercent) => {
+            const newPercent = parseFloat(
+                (prevPercent - 100 / totalIterationCount).toFixed(2)
+            );
+            if (newPercent < 1) {
+                return 0;
+            }
+
             return newPercent;
         });
     };
@@ -83,11 +149,11 @@ const HabitDetail = () => {
     };
 
     // Lets Update/Change Status of Tasks
-    const changeTaskStatus = async (prevHabitId, status) => {
+    async function changeTaskStatus(prevHabitId, status, totalCount = 0) {
         console.log("Previous Habit Id:", prevHabitId, status);
 
         try {
-            let updateData = { prevHabitId, status };
+            let updateData = { prevHabitId, status, totalCount };
             const response = await axios.post(
                 `${baseUrl}/api/v1/user/habitupdate/${selectedHabitData._id}`,
                 updateData
@@ -105,7 +171,7 @@ const HabitDetail = () => {
         }
         // Update Finished Tasks Count
         return;
-    };
+    }
 
     async function calculateFinishedCount() {
         if (selectedHabitData) {
@@ -212,11 +278,33 @@ const HabitDetail = () => {
                                 }
                             />
                         </div>
-                        <Button onClick={decline} icon={<MinusOutlined />} />
-                        <span>Completed: 0/10</span>
-                        <Button onClick={increase} icon={<PlusOutlined />} />
-
-                        <div
+                        {/* If there is nop Goal count then therer is no need to show increase decrease
+             */}
+                        {selectedHabitData.habitGoalCount ||
+                            (selectedHabitData.habitGoalDurationNum > 0 && (
+                                <div className="complete-task-count">
+                                    Completed:
+                                    <div>
+                                        <Button
+                                            onClick={decline}
+                                            icon={<MinusOutlined />}
+                                            className="dec-count-btn"
+                                        />
+                                        <span>
+                                            {changeVal}/
+                                            {selectedHabitData && selectedHabitData.habitGoalCount > 0
+                                                ? selectedHabitData.habitGoalCount
+                                                : selectedHabitData.habitGoalDurationNum}
+                                        </span>
+                                        <Button
+                                            onClick={increase}
+                                            icon={<PlusOutlined />}
+                                            className="inc-count-btn"
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        {/* <div
                             className="mark-current-task-complete"
                             onClick={() => {
                                 setPercent(100);
@@ -224,6 +312,22 @@ const HabitDetail = () => {
                             }}
                         >
                             Mark As Complete
+                        </div> */}
+
+                        <div className="current-task-status">
+                            Status:
+                            <Select
+                                defaultValue={selectedHabitData.prevRecord[0].status}
+                                className="todays-habit-status"
+                                onChange={(value) => {
+                                    changeTaskStatus(selectedHabitData.prevRecord[0]._id, value);
+                                    value === "Done" ? setPercent(100) : setPercent(0);
+                                }}
+                            >
+                                <Select.Option value="Done">Done</Select.Option>
+                                <Select.Option value="Not Done">Not Done</Select.Option>
+                                <Select.Option value="None">None</Select.Option>
+                            </Select>
                         </div>
                     </div>
                 </div>

@@ -52,3 +52,38 @@ font-size: 16px;
     margin-left:10px;
     margin-right: 5px;
 }
+
+
+/* For Progressbar */
+.show-habit-progress{
+    /* background-color: aqua; */
+    width: 100%;
+    min-width: 240px;
+    margin-top: 4px;
+    /* display: flex; */
+}
+
+.show-habit-progress .ant-progress-outer{
+    height: 10px !important;
+    /* background-color: aqua; */
+    display: flex;
+    align-items: center;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.show-habit-progress .ant-progress{
+    display: flex;
+    align-items: center;
+    height: 5px;
+}
+
+.show-habit-progress .ant-progress-inner{
+    height: 5px !important;
+}
+
+.show-habit-progress .ant-progress-text{
+    width: 5px;
+    font-size: 12px !important;
+    margin: 0 !important;
+}

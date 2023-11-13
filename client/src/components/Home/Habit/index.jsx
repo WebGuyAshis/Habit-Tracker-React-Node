@@ -6,10 +6,12 @@ import "./habit.styles.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import coin from "../../../assets/images/coin.png";
+import { Progress } from "antd";
+
 const Habit = ({ habit, imgSrc }) => {
   const myHabits = useSelector((state) => state.userHabitData);
   const showNotification = useSelector((state) => state.showNotification);
-  const activeUser = useSelector((state)=>state.userAuth);
+  const activeUser = useSelector((state) => state.userAuth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -72,6 +74,11 @@ const Habit = ({ habit, imgSrc }) => {
     return;
   }
 
+  let totalIterationCount =
+    habit.habitGoalDurationNum > 0
+      ? habit.habitGoalDurationNum
+      : habit.habitGoalCount;
+
   return (
     <div className="habit-list-items">
       <div
@@ -84,9 +91,24 @@ const Habit = ({ habit, imgSrc }) => {
         <div className="habit-detail">
           <h5>{habit.habitName}</h5>
           <div className="habit-extra-det">
-          <span>08:00AM</span>
+            <span>08:00AM</span>
             <img src={coin} alt="" className="habit-coin-symbol" />
             <span>+50</span>
+          </div>
+          <div className="show-habit-progress">
+            <Progress
+              percent={
+                habit.prevRecord[0].status === "Done"?100:
+                  totalIterationCount === 0
+                  ? 0
+                  : Math.round(
+                    (habit.prevRecord[0].countCompleted /
+                      totalIterationCount) *
+                    100
+                  )
+              }
+              size="small"
+            />
           </div>
         </div>
       </div>
