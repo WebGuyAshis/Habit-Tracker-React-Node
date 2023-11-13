@@ -48,7 +48,6 @@ const HabitDetail = () => {
 
     // Add each
     useEffect(() => {
-
         if (selectedHabitData) {
             if (percent === 0) {
                 changeTaskStatus(selectedHabitData.prevRecord[0]._id, "None");
@@ -59,7 +58,6 @@ const HabitDetail = () => {
             }
         }
     }, [percent]);
-
 
     // To Update Habit Completed Count after sometime when user completes the clicking did like this to handle ultiple function call and multiple time hitting same route so this will basically update only the fainal value after 3.5s
     useEffect(() => {
@@ -79,11 +77,9 @@ const HabitDetail = () => {
                 changeTaskStatus(id, status, changeVal);
 
                 console.log("Hola");
-            }, 3500);
+            }, 1500);
         }
     }, [changeVal]);
-
-
 
     if (!selectedHabitData) {
         return null;
@@ -280,8 +276,8 @@ const HabitDetail = () => {
                         </div>
                         {/* If there is nop Goal count then therer is no need to show increase decrease
              */}
-                        {selectedHabitData.habitGoalCount ||
-                            (selectedHabitData.habitGoalDurationNum > 0 && (
+                        {(selectedHabitData.habitGoalDurationNum > 0 ||
+                            selectedHabitData.habitGoalCount > 0) && (
                                 <div className="complete-task-count">
                                     Completed:
                                     <div>
@@ -303,7 +299,7 @@ const HabitDetail = () => {
                                         />
                                     </div>
                                 </div>
-                            ))}
+                            )}
                         {/* <div
                             className="mark-current-task-complete"
                             onClick={() => {

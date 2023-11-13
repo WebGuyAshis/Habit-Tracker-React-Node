@@ -48,10 +48,12 @@ const Leaderboard = () => {
 
             <div className="top-three-users">
 
-                <div className="rank2 sp-rank">
+                {leadData.length > 1 && (
+                    <div className="rank2 sp-rank">
                     <img src="https://i.pinimg.com/originals/a5/a3/44/a5a3444e0a5bfc872efa334110fe3ed5.png" alt="" className='rank1-user-img' />
                     <p>{leadData.length > 0?leadData[1].name:"Fetching..."}({leadData.length > 0?leadData[1].totalPoints:"Fetching..."})</p>
                 </div>
+                )}
                 <div className="rank1">
                     {/* <div className="user-img-crown"> */}
                     {/* Crown Icon */}
@@ -61,10 +63,12 @@ const Leaderboard = () => {
                     <p>{leadData.length > 0?leadData[0].name:"Fetching..."}({leadData.length > 0?leadData[0].totalPoints:"Fetching..."})</p>
                     {/* </div> */}
                 </div>
-                <div className="rank3 sp-rank">
+                {leadData.length > 2 && (
+                    <div className="rank3 sp-rank">
                     <img src="https://i.pinimg.com/originals/a5/a3/44/a5a3444e0a5bfc872efa334110fe3ed5.png" alt="" className='rank1-user-img' />
                     <p>{leadData.length > 0?leadData[2].name:"Fetching..."}({leadData.length > 0?leadData[2].totalPoints:"Fetching..."})</p>
                 </div>
+                )}
             </div>
 
             <div className='user-rankings-count'>
