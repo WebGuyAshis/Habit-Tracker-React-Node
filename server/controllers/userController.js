@@ -231,25 +231,38 @@ export const habit_update = async (req, res) => {
       return res.status(404).json({ error: "Previous Record Not Found!" });
     }
 
+    console.log("Changed Data:", "Status:",prevRecordToUpdate.status, status, "Total:",prevRecordToUpdate.countCompleted, totalCount  );
+
     // Update the status
-    prevRecordToUpdate.status = status;
-    prevRecordToUpdate.countCompleted = totalCount;
-    if (status === "Done") {
-      user.totalPoints += 50;
-    } else {
-      if(user.totalPoints <= 0){
-         user.totalPoints = 0;
-      }
-      else{
-        console.log("Inised Else");
-        user.totalPoints -= 50;
+
+    if(prevRecordToUpdate.status === status && prevRecordToUpdate.countCompleted === totalCount ){//no changes made
+
+      return res.status(200).json({message:"No Change in Data!"})
+    }
+    console.log("Data Chnaged or updated");
+    if(prevRecordToUpdate.status !== status){
+      console.log("Update points");
+      if (status === "Done") {
+        user.totalPoints += 50;
+      } else {
+        if(user.totalPoints <= 0){
+           user.totalPoints = 0;
+        }
+        else{
+          console.log("Inised Else");
+          user.totalPoints -= 50;
+        }
       }
     }
+    
+    prevRecordToUpdate.status = status;
+    prevRecordToUpdate.countCompleted = totalCount;
     // Save the habit document
+
     await updateHabit.save();
     await user.save();
 
-    let habits = await Habit.find({ habitUser: updateHabit.habitUser });
+    let habits = await Habit.find({ habitUser:userId });
     console.log("This is the updated Habit!", updateHabit);
     return res.status(200).json(habits);
   } catch (error) {

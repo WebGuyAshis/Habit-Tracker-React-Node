@@ -9,6 +9,7 @@ import { selectedHabitDetail, userHabits } from "../../actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import PrevDays from "./PrevDays";
 const HabitDetail = () => {
     const [totalFinished, setTotalFinished] = useState(0);
     const [weekFinished, setWeekFinished] = useState(0);
@@ -19,14 +20,49 @@ const HabitDetail = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    console.log("Go back to home!!!!!!!!!!!!!!!!!!!!!!!!!");
-    // navigate("/user/home");
     const selectedHabitData = useSelector((state) => state.selectedHabitDetail);
+
+    console.log("Go back to home!!!!!!!!!!!!!!!!!!!!!!!!!");
+       
+    let totalIterationCount =
+       selectedHabitData ? ( selectedHabitData.habitGoalDurationNum > 0
+        ? selectedHabitData.habitGoalDurationNum
+        : selectedHabitData.habitGoalCount
+): 0;
+
+// To Change values as per the progress will implemet later
+
+
+// let currentStatus = "None";
+
+// let [currentStatus,setCurrentStatus] = useState("None")
+//     useEffect(()=>{
+//         if(selectedHabitData){
+//             if(selectedHabitData.prevRecord[0].status === "Done"){
+//             setChangeVal(100)
+//         } 
+    
+//         if(selectedHabitData.prevRecord[0].countCompleted === totalIterationCount){
+//             setCurrentStatus("Done");
+//         }
+//         if(selectedHabitData.prevRecord[0].countCompleted > 0){
+//             setCurrentStatus("Not Done")
+//         }
+//         }
+//     },[])
+    // navigate("/user/home");
     let [changeVal, setChangeVal] = useState(
         selectedHabitData ? selectedHabitData.prevRecord[0].countCompleted : 0
     );
 
     let chartValue = 0;
+    if(selectedHabitData && (selectedHabitData.habitGoalCount > 0 || selectedHabitData.habitGoalDurationNum > 0)){
+        chartValue = Math.round(
+            (selectedHabitData.prevRecord[0].countCompleted /
+              totalIterationCount) *
+            100
+          )
+    }
     if (selectedHabitData && selectedHabitData.prevRecord[0].status === "Done") {
         chartValue = 100;
     }
@@ -67,8 +103,11 @@ const HabitDetail = () => {
             timeOutRef.current = setTimeout(() => {
                 // Will Handle Api Call
                 let id = selectedHabitData.prevRecord[0]._id;
+                console.log("---------------------------------------------------------------");
+                console.log(changeVal,totalIterationCount);
+
                 let status =
-                    changeVal === selectedHabitData.totalIterationCount
+                    changeVal === totalIterationCount && selectedHabitData.prevRecord[0].status === "Done"
                         ? "Done"
                         : changeVal === 0
                             ? "None"
@@ -77,7 +116,7 @@ const HabitDetail = () => {
                 changeTaskStatus(id, status, changeVal);
 
                 console.log("Hola");
-            }, 1500);
+            }, 1000);
         }
     }, [changeVal]);
 
@@ -87,14 +126,11 @@ const HabitDetail = () => {
 
     console.log("Selected Habit Dataasdsadaqw:", selectedHabitData);
     // For Ant D chart
-    let totalIterationCount =
-        selectedHabitData.habitGoalDurationNum > 0
-            ? selectedHabitData.habitGoalDurationNum
-            : selectedHabitData.habitGoalCount;
-
+    
     const increase = () => {
         setChangeVal((prevValue) => {
             if (prevValue === totalIterationCount) {
+                changeTaskStatus(selectedHabitData.prevRecord[0]._id,"Done",totalIterationCount)
                 return totalIterationCount;
             }
             return prevValue + 1;
@@ -112,6 +148,8 @@ const HabitDetail = () => {
     const decline = () => {
         setChangeVal((prevValue) => {
             if (prevValue === 0) {
+                changeTaskStatus(selectedHabitData.prevRecord[0]._id,"None",0)
+
                 return 0;
             }
             return prevValue - 1;
@@ -159,7 +197,9 @@ const HabitDetail = () => {
                 // Updating the stored redux
                 // dispatch(selectedHabitDetail(response.data));
                 // Updating myHbaits
-                dispatch(userHabits(response.data));
+                if(response.data){
+                    dispatch(userHabits(response.data));
+                }
             }
             // calculateFinishedCount()
         } catch (error) {
@@ -316,8 +356,9 @@ const HabitDetail = () => {
                                 defaultValue={selectedHabitData.prevRecord[0].status}
                                 className="todays-habit-status"
                                 onChange={(value) => {
-                                    changeTaskStatus(selectedHabitData.prevRecord[0]._id, value);
                                     value === "Done" ? setPercent(100) : setPercent(0);
+                                    value === "Done" && setChangeVal(totalIterationCount)
+                                    changeTaskStatus(selectedHabitData.prevRecord[0]._id, value);
                                 }}
                             >
                                 <Select.Option value="Done">Done</Select.Option>
@@ -334,28 +375,35 @@ const HabitDetail = () => {
                         {selectedHabitData ? (
                             selectedHabitData.prevRecord.map((prevDays, index) => {
                                 if (index > 0) {
+                                    return <PrevDays prevDays={prevDays} key={index} totalIterationCount={totalIterationCount}/>
                                     // Will make sure that latest task should not be present in the list of previous days
-                                    return (
-                                        <div className="previous-day" key={index}>
-                                            <h3 className="previous-date">{prevDays.date}</h3>
-                                            <div className="previous-habit-status-cont">
-                                                Status:
-                                                <Select
-                                                    defaultValue={prevDays.status}
-                                                    className="previous-habit-status"
-                                                    onChange={(value) => {
-                                                        changeTaskStatus(prevDays._id, value);
-                                                    }}
-                                                >
-                                                    <Select.Option value="Done">Done</Select.Option>
-                                                    <Select.Option value="Not Done">
-                                                        Not Done
-                                                    </Select.Option>
-                                                    <Select.Option value="None">None</Select.Option>
-                                                </Select>
-                                            </div>
-                                        </div>
-                                    );
+                                    // return (
+                                    //     <div className="previous-day" key={index}>
+                                    //         <div className="prev-record-data">
+                                    //         <h3 className="previous-date">{prevDays.date}</h3>
+                                    //         <div className="previous-habit-status-cont">
+                                    //             Status:
+                                    //             <Select
+                                    //                 defaultValue={prevDays.status}
+                                    //                 className="previous-habit-status"
+                                    //                 onChange={(value) => {
+                                    //                     changeTaskStatus(prevDays._id, value);
+                                    //                 }}
+                                    //             >
+                                    //                 <Select.Option value="Done">Done</Select.Option>
+                                    //                 <Select.Option value="Not Done">
+                                    //                     Not Done
+                                    //                 </Select.Option>
+                                    //                 <Select.Option value="None">None</Select.Option>
+                                    //             </Select>
+                                    //         </div>
+                                    //         </div>
+
+                                    //         <div className="prevrecord-antDProgress">
+                                    //         <Progress type="circle" percent={100} className="antD-progress"/>
+                                    //         </div>
+                                    //     </div>
+                                    // );
                                 }
                             })
                         ) : (

@@ -209,6 +209,8 @@
     padding: 10px;
     color: rgb(40, 40, 40);
     transition: all 0.4s;
+    display: flex;
+    justify-content: space-between;
 }
 .previous-day:hover{
     background: rgb(255, 72, 103);
@@ -224,6 +226,22 @@
 
 .previous-habit-status{
     width: 120px;
+}
+.prevrecord-antDProgress{
+
+}
+.antD-progress .ant-progress-circle{
+    height: 50px;
+}
+.antD-progress .ant-progress-text{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px !important;
+}
+
+.antD-progress .ant-progress-text svg{
+    height: 20px;
 }
 
 .ant-select-selector{

@@ -35,8 +35,9 @@ const Habit = ({ habit, imgSrc }) => {
     setIsChecked(tempStatus);
     console.log("My Habits--------After Update!", myHabits);
   }, []);
+
   // Change STatus
-  async function changeHabitStatus(habitId) {
+  async function changeHabitStatus(habitId,totalCount = 0) {
     let status = habit.prevRecord[0].status;
     let prevHabitId = habit.prevRecord[0]._id;
     // let totalPoints = status==="Done" ?   ;
@@ -44,7 +45,7 @@ const Habit = ({ habit, imgSrc }) => {
     console.log("Previous Habit Id:", habitId, status);
 
     try {
-      let updateData = { prevHabitId, status };
+      let updateData = { prevHabitId, status,totalCount };
       const response = await axios.post(
         `${baseUrl}/api/v1/user/habitupdate/${habit._id}`,
         updateData
