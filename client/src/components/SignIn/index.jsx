@@ -4,13 +4,12 @@ import axios from "axios";
 import { useState } from "react";
 import {Link, useNavigate} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
+import { getConfig } from "../../config.js";
 
 import { userLogin, userAction } from "../../actions";
-// import { connect } from "mongoose";
-
-let baseUrl = "http://localhost:8080";
 
 const SignIn = () => {
+  let baseUrl = getConfig();
   const dispatch = useDispatch()
   const showNotification = useSelector((state)=>state.showNotification);
   // handle form Submission
@@ -21,20 +20,20 @@ const SignIn = () => {
   });
   const handleSignInFormSubmission = async (e) => {
     e.preventDefault();
-    console.log("FormData:", signInformData);
 
     try {
       let response = await axios.post(`${baseUrl}/api/v1/user/create-session`, signInformData, {
         headers: {
           'Content-Type': 'application/json'
         },
-        withCredentials: 'include'
+        // withCredentials: 'include'
       });
 
-      console.log("This is response.status:", response.status);
     
       if (response.status === 200) {
         dispatch(userLogin(response.data.userData));
+        console.log("Setting Data in Local Storage");
+        localStorage.setItem('activeUser', JSON.stringify(response.data.userData));
         showNotification('success', `Welcome ${response.data.userData.name}!`, "Let's Complete your scheduled Habits!");
         navigate('/user/home');
         return;

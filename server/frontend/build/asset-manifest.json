@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.9b12db29.css",
+    "main.js": "/static/js/main.e5bcdc96.js",
+    "static/media/signup.jpg": "/static/media/signup.682f79e4bfc76926b4f4.jpg",
+    "static/media/noData.gif": "/static/media/noData.dc329f08bd9c79ca3c45.gif",
+    "static/media/signin.jpg": "/static/media/signin.91a15292ab8074595d0f.jpg",
+    "static/media/crown.gif": "/static/media/crown.6ae88c781296889f21c5.gif",
+    "static/media/confetti.png": "/static/media/confetti.cbf54c20ce219a022238.png",
+    "static/media/work.png": "/static/media/work.47749fd74e822a8f3390.png",
+    "static/media/sports.png": "/static/media/sports.805c923efe99c9099d32.png",
+    "static/media/statbot.png": "/static/media/statbot.b29d02124737dbcf2bd2.png",
+    "static/media/defaultUser.png": "/static/media/defaultUser.41e689b92dd349fd8b6b.png",
+    "static/media/study.png": "/static/media/study.87aa22cf810885d06c70.png",
+    "index.html": "/index.html",
+    "main.9b12db29.css.map": "/static/css/main.9b12db29.css.map",
+    "main.e5bcdc96.js.map": "/static/js/main.e5bcdc96.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9b12db29.css",
+    "static/js/main.e5bcdc96.js"
+  ]
+}

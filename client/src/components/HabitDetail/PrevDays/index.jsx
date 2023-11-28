@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { userHabits } from "../../../actions";
 import axios from "axios";
 import { useState } from "react";
+import { getConfig } from "../../../config.js";
 
 
 const PrevDays = ({prevDays, totalIterationCount}) => {
-    let baseUrl = `http://127.0.0.1:8080`
+    let baseUrl = getConfig();
+
     const [dayPercent, setDayPercent] = useState(prevDays.status==="Done"?100: Math.round((prevDays.countCompleted/totalIterationCount)*100))
     const dispatch = useDispatch()
     const selectedHabitData = useSelector((state) => state.selectedHabitDetail);

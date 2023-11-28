@@ -14,7 +14,10 @@ import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
     const logoutFunc = useSelector((state)=>state.logoutUser)
-    const activeUser = useSelector((state)=>state.userAuth);
+    let activeUser = useSelector((state)=>state.userAuth);
+    if(!activeUser){
+        activeUser = JSON.parse(localStorage.getItem('activeUser'))
+    }
     const navigate = useNavigate();
     if(logoutFunc){
         console.log("********", logoutFunc);

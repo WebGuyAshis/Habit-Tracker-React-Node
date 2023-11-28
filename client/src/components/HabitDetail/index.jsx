@@ -5,12 +5,16 @@ import { Button, Progress, Select } from "antd";
 import "./habitDetail.styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectedHabitDetail, userHabits } from "../../actions";
+import { userHabits } from "../../actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import PrevDays from "./PrevDays";
+import { getConfig } from "../../config.js";
+
 const HabitDetail = () => {
+    let baseUrl = getConfig();
+
     const [totalFinished, setTotalFinished] = useState(0);
     const [weekFinished, setWeekFinished] = useState(0);
     const [finishedPercent, setFinishedPercent] = useState(0);
@@ -23,45 +27,50 @@ const HabitDetail = () => {
     const selectedHabitData = useSelector((state) => state.selectedHabitDetail);
 
     console.log("Go back to home!!!!!!!!!!!!!!!!!!!!!!!!!");
-       
-    let totalIterationCount =
-       selectedHabitData ? ( selectedHabitData.habitGoalDurationNum > 0
-        ? selectedHabitData.habitGoalDurationNum
-        : selectedHabitData.habitGoalCount
-): 0;
 
-// To Change values as per the progress will implemet later
+    let totalIterationCount = selectedHabitData
+        ? selectedHabitData.habitGoalDurationNum > 0
+            ? selectedHabitData.habitGoalDurationNum
+            : selectedHabitData.habitGoalCount
+        : 0;
 
+    // To Change values as per the progress will implemet later
 
-// let currentStatus = "None";
+    // let currentStatus = "None";
 
-// let [currentStatus,setCurrentStatus] = useState("None")
-//     useEffect(()=>{
-//         if(selectedHabitData){
-//             if(selectedHabitData.prevRecord[0].status === "Done"){
-//             setChangeVal(100)
-//         } 
-    
-//         if(selectedHabitData.prevRecord[0].countCompleted === totalIterationCount){
-//             setCurrentStatus("Done");
-//         }
-//         if(selectedHabitData.prevRecord[0].countCompleted > 0){
-//             setCurrentStatus("Not Done")
-//         }
-//         }
-//     },[])
+    // let [currentStatus,setCurrentStatus] = useState("None")
+    //     useEffect(()=>{
+    //         if(selectedHabitData){
+    //             if(selectedHabitData.prevRecord[0].status === "Done"){
+    //             setChangeVal(100)
+    //         }
+
+    //         if(selectedHabitData.prevRecord[0].countCompleted === totalIterationCount){
+    //             setCurrentStatus("Done");
+    //         }
+    //         if(selectedHabitData.prevRecord[0].countCompleted > 0){
+    //             setCurrentStatus("Not Done")
+    //         }
+    //         }
+    //     },[])
     // navigate("/user/home");
     let [changeVal, setChangeVal] = useState(
-        selectedHabitData ? selectedHabitData.prevRecord[0].countCompleted : 0
+        selectedHabitData && selectedHabitData.prevRecord[0].countCompleted
     );
-
+    let [changeStatus, setChangeStatus] = useState(
+        selectedHabitData && selectedHabitData.prevRecord[0].status
+    );
+    console.log("CHange Val:", changeVal);
     let chartValue = 0;
-    if(selectedHabitData && (selectedHabitData.habitGoalCount > 0 || selectedHabitData.habitGoalDurationNum > 0)){
+    if (
+        selectedHabitData &&
+        (selectedHabitData.habitGoalCount > 0 ||
+            selectedHabitData.habitGoalDurationNum > 0)
+    ) {
         chartValue = Math.round(
-            (selectedHabitData.prevRecord[0].countCompleted /
-              totalIterationCount) *
+            (selectedHabitData.prevRecord[0].countCompleted / totalIterationCount) *
             100
-          )
+        );
     }
     if (selectedHabitData && selectedHabitData.prevRecord[0].status === "Done") {
         chartValue = 100;
@@ -83,41 +92,91 @@ const HabitDetail = () => {
     }, [selectedHabitData]);
 
     // Add each
-    useEffect(() => {
-        if (selectedHabitData) {
-            if (percent === 0) {
-                changeTaskStatus(selectedHabitData.prevRecord[0]._id, "None");
-            } else if (percent === 100) {
-                changeTaskStatus(selectedHabitData.prevRecord[0]._id, "Done");
-            } else {
-                changeTaskStatus(selectedHabitData.prevRecord[0]._id, "Not Done");
-            }
-        }
-    }, [percent]);
+    // useEffect(() => {
+    //     if (selectedHabitData) {
+    //         if (percent === 0) {
+    //             changeTaskStatus(selectedHabitData.prevRecord[0]._id, "None");
+    //         } else if (percent === 100) {
+    //             changeTaskStatus(selectedHabitData.prevRecord[0]._id, "Done");
+    //         } else {
+    //             changeTaskStatus(selectedHabitData.prevRecord[0]._id, "Not Done");
+    //         }
+    //     }
+    // }, [percent]);
 
     // To Update Habit Completed Count after sometime when user completes the clicking did like this to handle ultiple function call and multiple time hitting same route so this will basically update only the fainal value after 3.5s
+    // useEffect(() => {
+    //     if (selectedHabitData) {
+    //         // clearTimeout(timeOutRef.current);
+
+    //         // timeOutRef.current = setTimeout(() => {
+    //             // Will Handle Api Call
+    //             let id = selectedHabitData.prevRecord[0]._id;
+    //             console.log("---------------------------------------------------------------");
+    //             console.log("Data For Change:", );
+    //             console.log(changeVal,totalIterationCount);
+
+    //             let status =
+    //                 changeVal === totalIterationCount
+    //                     ? "Done"
+    //                     : changeVal === 0
+    //                         ? "None"
+    //                         : "Not Done";
+    //             console.log("sending for updation:", id, status, changeVal);
+    //             changeTaskStatus(id, status, changeVal);
+
+    //             console.log("Hola");
+    //         // }, 1000);
+    //     }
+    // }, [changeVal]);
     useEffect(() => {
+        console.log("Hello");
         if (selectedHabitData) {
-            clearTimeout(timeOutRef.current);
-
-            timeOutRef.current = setTimeout(() => {
-                // Will Handle Api Call
-                let id = selectedHabitData.prevRecord[0]._id;
-                console.log("---------------------------------------------------------------");
-                console.log(changeVal,totalIterationCount);
-
-                let status =
-                    changeVal === totalIterationCount && selectedHabitData.prevRecord[0].status === "Done"
-                        ? "Done"
-                        : changeVal === 0
-                            ? "None"
-                            : "Not Done";
-                console.log("sending for updation:", id, status, changeVal);
-                changeTaskStatus(id, status, changeVal);
-
-                console.log("Hola");
-            }, 1000);
+            if (changeVal === totalIterationCount) {
+                console.log(
+                    "Data For Updation:",
+                    selectedHabitData.prevRecord[0]._id,
+                    "Done",
+                    changeVal
+                );
+                changeTaskStatus(
+                    selectedHabitData.prevRecord[0]._id,
+                    "Done",
+                    changeVal
+                );
+                setChangeStatus("Done");
+            } else if (changeVal === 0) {
+                console.log(
+                    "Data For Updation:",
+                    selectedHabitData.prevRecord[0]._id,
+                    "None",
+                    changeVal
+                );
+                changeTaskStatus(
+                    selectedHabitData.prevRecord[0]._id,
+                    "None",
+                    changeVal
+                );
+                setChangeStatus("None");
+            } else {
+                console.log(
+                    "Data For Updation:",
+                    selectedHabitData.prevRecord[0]._id,
+                    "Not Done",
+                    changeVal
+                );
+                changeTaskStatus(
+                    selectedHabitData.prevRecord[0]._id,
+                    "Not Done",
+                    changeVal
+                );
+                setChangeStatus("Not Done");
+            }
         }
+        // const updateHabit = () => {
+
+        return;
+        //   };
     }, [changeVal]);
 
     if (!selectedHabitData) {
@@ -126,15 +185,19 @@ const HabitDetail = () => {
 
     console.log("Selected Habit Dataasdsadaqw:", selectedHabitData);
     // For Ant D chart
-    
+
     const increase = () => {
         setChangeVal((prevValue) => {
             if (prevValue === totalIterationCount) {
-                changeTaskStatus(selectedHabitData.prevRecord[0]._id,"Done",totalIterationCount)
+                console.log("Target Completed!-------------~~!!!!!!!!!!!");
+
                 return totalIterationCount;
             }
             return prevValue + 1;
         });
+
+        // updateHabit();
+
         setPercent((prevPercent) => {
             const newPercent = parseFloat(
                 (prevPercent + 100 / totalIterationCount).toFixed(2)
@@ -148,12 +211,21 @@ const HabitDetail = () => {
     const decline = () => {
         setChangeVal((prevValue) => {
             if (prevValue === 0) {
-                changeTaskStatus(selectedHabitData.prevRecord[0]._id,"None",0)
+                // changeTaskStatus(selectedHabitData.prevRecord[0]._id,"None",0)
 
                 return 0;
             }
             return prevValue - 1;
         });
+
+        // updateHabit();
+        // if(changeVal > 0 && changeVal < totalIterationCount){
+        //     console.log("Data befire updation:",selectedHabitData.prevRecord[0]._id,"Not Done",changeVal);
+        //     changeTaskStatus(selectedHabitData.prevRecord[0]._id,"Not Done",changeVal)
+        // }else{
+        //     console.log("Data befire updation:",selectedHabitData.prevRecord[0]._id,"None",changeVal);
+        //     changeTaskStatus(selectedHabitData.prevRecord[0]._id,"None",0)
+        // }
         setPercent((prevPercent) => {
             const newPercent = parseFloat(
                 (prevPercent - 100 / totalIterationCount).toFixed(2)
@@ -166,7 +238,6 @@ const HabitDetail = () => {
         });
     };
 
-    let baseUrl = "http://127.0.0.1:8080";
     const deleteHabit = async (habitId) => {
         try {
             let response = await axios.get(
@@ -197,7 +268,7 @@ const HabitDetail = () => {
                 // Updating the stored redux
                 // dispatch(selectedHabitDetail(response.data));
                 // Updating myHbaits
-                if(response.data){
+                if (response.data) {
                     dispatch(userHabits(response.data));
                 }
             }
@@ -353,12 +424,26 @@ const HabitDetail = () => {
                         <div className="current-task-status">
                             Status:
                             <Select
-                                defaultValue={selectedHabitData.prevRecord[0].status}
+                                defaultValue={
+                                    changeStatus
+                                        ? changeStatus
+                                        : "Fetching..."
+                                }
                                 className="todays-habit-status"
                                 onChange={(value) => {
                                     value === "Done" ? setPercent(100) : setPercent(0);
-                                    value === "Done" && setChangeVal(totalIterationCount)
-                                    changeTaskStatus(selectedHabitData.prevRecord[0]._id, value);
+                                    value === "Done" && setChangeVal(totalIterationCount);
+                                    console.log(
+                                        "Data For Updation Status:",
+                                        selectedHabitData.prevRecord[0]._id,
+                                        value,
+                                        value === "None" ? 0 : changeVal
+                                    );
+                                    changeTaskStatus(
+                                        selectedHabitData.prevRecord[0]._id,
+                                        value,
+                                        value === "None" ? 0 : changeVal
+                                    );
                                 }}
                             >
                                 <Select.Option value="Done">Done</Select.Option>
@@ -375,7 +460,13 @@ const HabitDetail = () => {
                         {selectedHabitData ? (
                             selectedHabitData.prevRecord.map((prevDays, index) => {
                                 if (index > 0) {
-                                    return <PrevDays prevDays={prevDays} key={index} totalIterationCount={totalIterationCount}/>
+                                    return (
+                                        <PrevDays
+                                            prevDays={prevDays}
+                                            key={index}
+                                            totalIterationCount={totalIterationCount}
+                                        />
+                                    );
                                     // Will make sure that latest task should not be present in the list of previous days
                                     // return (
                                     //     <div className="previous-day" key={index}>

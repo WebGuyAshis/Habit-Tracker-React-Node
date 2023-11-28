@@ -3,8 +3,8 @@ import signUpImg from '../../assets/images/signup.jpg'
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
+import { getConfig } from "../../config.js";
 
-let baseUrl = "http://localhost:8080";
 
 const SignUp = () => {
   // handle form Submission
@@ -19,7 +19,7 @@ const SignUp = () => {
   const handleFormSubmission = async (e) => {
     e.preventDefault();
     console.log("signupFormData:", signupFormData);
-
+    let baseUrl = getConfig();
     try {
       let response = await axios.post(
         `${baseUrl}/api/v1/user/create-user`,

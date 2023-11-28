@@ -8,8 +8,10 @@ import { createHabit } from "../../actions";
 import { Button, Input, InputNumber, Select, Switch } from "antd";
 import { closeCreateHabit } from "../../actions";
 import axios from 'axios';
+import { getConfig } from "../../config.js";
 
 const CreateTask = () => {
+    let baseUrl = getConfig();
 
     // const userData = useSelector((state)=>state.userAuth)
     const fetchUserHabits = useSelector((state)=>state.userHabits)
@@ -31,24 +33,16 @@ const CreateTask = () => {
         habitGoalCount: 0,
         habitAlert: true,
     });
-    // const habitDataState = useSelector((state)=>state.createHabit)
-    // const closeCreateBox = useSelector((state)=>state.closeCreateHabit)
 
-    // useEffect(() => {
-    //     console.log("Updated Habit Data:", habitDataState);
-    //   }, [habitDataState]);
 
     const handleFormSubmission = async(e) => {
         e.preventDefault();
         // setlocalHabitData({...localhabitData,habitUser:4567})
-        console.log("Meowwww");
         dispatch(createHabit(localhabitData))
-        console.log("Meowwww2222222");
 
         dispatch(closeCreateHabit());
 
         // Saving data in DB
-        let baseUrl = "http://localhost:8080";
 
         try{
             let response = await axios.post(
@@ -56,9 +50,6 @@ const CreateTask = () => {
                 localhabitData
             );
                 if(response.status===200){
-                    console.log("Habit Saved in Database!");
-                    console.log("User Habits Fetch::::", fetchUserHabits);
-                    console.log("Active USer Before Refresh:", activeUser);
                     fetchUserHabits()
                     return;
                 }

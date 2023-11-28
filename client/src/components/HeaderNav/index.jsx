@@ -10,22 +10,21 @@ import { logoutUser, setUserData } from '../../actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import coin from '../../assets/images/coin.png'
+import { getConfig } from '../../config.js';
 const HeaderNav = () => {
+    let baseUrl = getConfig();
     const showNotification = useSelector((state)=>state.showNotification);
     const activeUser = useSelector((state)=>state.userAuth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    let baseUrl = "http://127.0.0.1:8080"
-    console.log(activeUser, "Active User----------------------------------------------------------");
     
     const logOutUser = async(req,res)=>{
-        console.log("Lets logout user");
+
         try {
             let response = await axios.get(`${baseUrl}/api/v1/user/sign-out`,{
                 withCredentials:'include',
             });
             if(response.status===200){
-                console.log("Successfully Logout!");
                 showNotification('success','SuccessFully Logged Out!!','')
                 navigate('/')
                 // dispatch(setUserData(null))

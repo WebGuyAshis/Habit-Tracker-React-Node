@@ -7,8 +7,17 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+// import { baseUrl } from "../../../baseUrl.js";
+import { getConfig } from "../../config.js";
+
 const Community = () => {
-    const activeUser = useSelector((state) => state.userAuth);
+    let baseUrl = getConfig();
+
+    let activeUser = useSelector((state) => state.userAuth);
+    if(!activeUser){
+        activeUser = JSON.parse(localStorage.getItem('activeUser'))
+    }
+    
     const navigate = useNavigate();
     const [isNewsActive, setIsNewsActive] = useState(true);
     const [statusData, setStatusData] = useState({
@@ -28,6 +37,8 @@ const Community = () => {
     useEffect(() => {
         fetchPosts()
     }, []);
+
+    console.log("active User from Community!", activeUser);
 
       //   For Greet Fetching
   function getGreetingBasedOnTime() {
@@ -49,13 +60,10 @@ const Community = () => {
   }
   const greeting = getGreetingBasedOnTime();
 
-    let baseUrl = "http://127.0.0.1:8080";
-
     async function fetchPosts(){
         try {
             let response = await axios.get(`${baseUrl}/api/v1/user/fetchPosts`);
         if(response.status === 200){
-            console.log("Feed Updated!", response.data);
             setAllPosts(response.data);
         }
         } catch (error) {
@@ -68,7 +76,6 @@ const Community = () => {
         try {
             let response = await axios.post(`${baseUrl}/api/v1/user/createPost`, statusData);
             if (response.status === 200) {
-                console.log("Posted!", response.data);
                 fetchPosts()
             } else if (response.status === 401) {
                 console.log("User Session expired!");
@@ -89,6 +96,7 @@ const Community = () => {
                         setIsNewsActive(true);
                     }}
                 >
+                    
                     News Feed
                 </div>
                 <div

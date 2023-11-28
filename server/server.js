@@ -6,6 +6,9 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+// import path from 'path';
 dotenv.config();
 
 // Using Passport js
@@ -14,14 +17,17 @@ import passportLocal from "./config/passport-local-strategy.js";
 
 const app = express();
 
-// app.use(cors());
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+app.use(cors());
 
 const corsOptions = {
-  origin: "http://localhost:3000", // Replace with your frontend URL
+  origin: "http://127.0.0.1:3000", // Replace with your frontend URL
   credentials: true,
 };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 // we basically dont need urlencoded because we are parsing data usning express.json
 // app.use(urlencoded({extended:true}))
@@ -35,10 +41,14 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 24 * 60 * 60 * 2000,// 2 day=============
+      maxAge: 24 * 60 * 60 * 2000, // 2 days
+      // secure: true,
+      // sameSite: "none",
+      // domain: '.onrender.com',
     },
   })
 );
+
 
 // app.use((req, res, next) => {
 //   console.log("Request Session ID:", req.sessionID);
@@ -70,7 +80,16 @@ app.get("/protected-route", (req, res) => {
   }
 });
 
+
 app.use("/", route);
+
+// const publicPath = join(__dirname, 'frontend', 'build');
+
+// app.use(express.static(publicPath));
+
+// app.get('*', (req, res) => {
+//   res.sendFile(join(publicPath, 'index.html'));
+// });
 
 app.listen(8080, (err) => {
   if (err) {

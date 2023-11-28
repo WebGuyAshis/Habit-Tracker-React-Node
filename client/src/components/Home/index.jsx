@@ -14,7 +14,8 @@ import CreateTask from "../CreateTask";
 // import confettiAnimation from '../../assets/animation/confetti.json'
 import axios from "axios";
 // import { faL } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
+import { getConfig } from "../../config.js";
 
 import noDataGif from "../../assets/images/noData.gif";
 import studyImg from "../../assets/images/study.png";
@@ -106,7 +107,7 @@ const Home = () => {
     }
   }, [completionPercent]);
   //   const [activeUserData, setactiveUserData] = useState(null);
-  let baseUrl = "http://localhost:8080";
+  let baseUrl = getConfig()
 
 
 
@@ -119,21 +120,29 @@ const Home = () => {
 
   const checkSession = async () => {
     try {
-      console.log("Checking User Session");
-      const response = await axios.get(`${baseUrl}/protected-route`, {
-        withCredentials: true,
-      });
+      // const response = await axios.get(`${baseUrl}/protected-route`, {
+      //   withCredentials: true,
+      // });
 
-      if (response.status === 200) {
-        console.log("User session exists.", response.data);
-        // setactiveUserData(response.data);
-        dispatch(setUserData(response.data));
+      let localUser = JSON.parse(localStorage.getItem('activeUser'));
+      console.log("Local User from the application:", localUser);
+      if(localUser){
+        console.log("User session exists.", localUser);
+        dispatch(setUserData(localUser));
+        return;
       }
-      if (response.status === 401) {
-        console.log("User Session Expired!");
-        // setactiveUserData(null);
-        dispatch(setUserData(null));
-      }
+      console.log("User Session Expired!");
+      dispatch(setUserData(null));
+      // if (response.status === 200) {
+      //   console.log("User session exists.", response.data);
+      //   // setactiveUserData(response.data);
+      //   dispatch(setUserData(response.data));
+      // }
+      // if (response.status === 401) {
+      //   console.log("User Session Expired!");
+      //   // setactiveUserData(null);
+      //   dispatch(setUserData(null));
+      // }
     } catch (error) {
       console.log("User session not found.");
       navigate("/");
@@ -146,13 +155,7 @@ const Home = () => {
     checkSession();
   }, []);
 
-  // checkSession();
 
-  // const createBoxState = useSelector((state)=> state.openDialogueBoxes);
-  // const myHabits  = useSelector((state)=>state.createHabit)
-
-  //   console.log("My Habits Initially:", myHabits);
-  console.log("Active User:", activeUser);
 
   function getCurrentFormattedDate() {
     const currentDate = new Date();
@@ -202,19 +205,11 @@ const Home = () => {
   }
   const greeting = getGreetingBasedOnTime();
 
-  // const showHabitDetails = (habitId) => {
-  //   let selectedHabit = myHabits.filter((habit) => habit._id === habitId);
-  //   console.log("Selected Habit:", selectedHabit[0]);
-  //   dispatch(selectedHabitDetail(selectedHabit[0]));
-
-  //   navigate("/user/habit-detail");
-  // };
-
+  
   // Fetching User HAbit List
   async function fetchUserHabits() {
     console.log("ACtive USer DAta++++++++++++++++", activeUser);
     try {
-      console.log("Fetching Habits!!!!!!!!!!!!!!!!!!");
       let response = await axios.get(
         `${baseUrl}/api/v1/user/fetch_habits/${activeUser._id}`
       );
@@ -238,16 +233,7 @@ const Home = () => {
     createBoxState && dispatch(fetchUserHabitsFunction(fetchUserHabits));
   }, [createBoxState]);
 
-  // setInterval(() => {
-  //     console.log("MyHabit!!!", myHabits);
-  // }, 10000);
-  console.log("My Habits:", myHabits);
-
-//   if(!activeUser){
-//     console.log("User Lost");
-//     navigate('/');
-//     return null;
-// }
+  
   return (
     <div className="home-container">
       {/* <div className="confetti-file">

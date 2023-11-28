@@ -142,7 +142,7 @@ export const fetch_habits = async (req, res) => {
     const habits = await Habit.find({ habitUser: userId });
 
     if (habits) {
-      console.log("Found Habits of User!", habits);
+      // console.log("Found Habits of User!", habits);
 
       // Get today's formatted date
       const currentDate = getCurrentFormattedDate();
@@ -219,7 +219,8 @@ export const habit_update = async (req, res) => {
     const updateHabit = await Habit.findById(habitId);
     const userId = updateHabit.habitUser;
     const user = await User.findById(userId);
-
+    let habits = await Habit.find({ habitUser:userId });
+    
     if (!updateHabit || !user) {
       return res.status(404).json({ error: "Habit Not Found!" });
     }
@@ -237,19 +238,20 @@ export const habit_update = async (req, res) => {
 
     if(prevRecordToUpdate.status === status && prevRecordToUpdate.countCompleted === totalCount ){//no changes made
 
-      return res.status(200).json({message:"No Change in Data!"})
+      return res.status(200).json(habits)
     }
-    console.log("Data Chnaged or updated");
+
     if(prevRecordToUpdate.status !== status){
-      console.log("Update points");
       if (status === "Done") {
+        console.log("increaseing Points");
         user.totalPoints += 50;
+        
       } else {
         if(user.totalPoints <= 0){
            user.totalPoints = 0;
         }
         else{
-          console.log("Inised Else");
+        console.log("Decreasing Points");
           user.totalPoints -= 50;
         }
       }
@@ -262,9 +264,9 @@ export const habit_update = async (req, res) => {
     await updateHabit.save();
     await user.save();
 
-    let habits = await Habit.find({ habitUser:userId });
-    console.log("This is the updated Habit!", updateHabit);
-    return res.status(200).json(habits);
+    let updatedHabits = await Habit.find({ habitUser:userId });
+
+    return res.status(200).json(updatedHabits);
   } catch (error) {
     console.log("Error Updating!", error);
     return res.status(500).json({ error: "Internal Server Error!" });
@@ -272,22 +274,18 @@ export const habit_update = async (req, res) => {
 };
 
 export const userLogout = (req, res) => {
-  console.log("Lets Throw User Out");
   req.logout((err) => {
     if (err) {
       console.log("Error logging Out!", err);
-      console.log("Users Session", req.session);
 
       return res.status(500).json({ error: "Internal Server Error!" });
     }
-    console.log("Successfully Logged out!");
     return res.status(200).json({ message: "Successfullly Logged Out!" });
   });
 };
 
 export const createPost = async (req, res) => {
   const { status, userId } = req.body;
-  console.log("Datat to be Posted!", req.body);
 
   try {
     const post = await Post.create({
@@ -295,7 +293,6 @@ export const createPost = async (req, res) => {
       userData: userId,
     });
     if (post) {
-      console.log("Post Created Successfully!", post);
       return res.status(200).send(post);
     }
   } catch (error) {
@@ -305,17 +302,13 @@ export const createPost = async (req, res) => {
 };
 
 export const fetchPosts = async (req, res) => {
-  console.log("Getch Inside");
   try {
-    console.log("Let's Fetch Posts!");
     let allPosts = await Post.find()
       .populate("userData")
       .sort({ createdAt: -1 });
 
-    console.log("All Posts:", allPosts);
     return res.status(200).send(allPosts);
   } catch (error) {
-    console.log("Error Fetching!", error);
     return res.status(500).json({ error: "Error Occurred while Fetching!" });
   }
 };
@@ -337,7 +330,6 @@ export const fetchUserPoints = async (req, res) => {
         totalPoints: user.totalPoints,
       };
     });
-    console.log("Sorted User Array!", sortedArr);
     return res.status(200).send(sortedArr);
   } catch (error) {
     return res.status(500).json({ error: "Internal Server Error!" });

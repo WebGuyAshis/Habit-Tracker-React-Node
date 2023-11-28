@@ -7,19 +7,25 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import coin from "../../../assets/images/coin.png";
 import { Progress } from "antd";
+import { getConfig } from "../../../config";
 
 const Habit = ({ habit, imgSrc }) => {
+  let baseUrl = getConfig();
+
   const myHabits = useSelector((state) => state.userHabitData);
   const showNotification = useSelector((state) => state.showNotification);
   const activeUser = useSelector((state) => state.userAuth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let baseUrl = "http://127.0.0.1:8080";
+  let totalIterationCount =
+    habit.habitGoalDurationNum > 0
+      ? habit.habitGoalDurationNum
+      : habit.habitGoalCount;
+
   // To show habit details on click
   const showHabitDetails = (habitId) => {
     let selectedHabit = myHabits.filter((habit) => habit._id === habitId);
-    console.log("Selected Habit:", selectedHabit[0]);
     dispatch(selectedHabitDetail(selectedHabit[0]));
 
     navigate("/user/habit-detail");
@@ -33,7 +39,6 @@ const Habit = ({ habit, imgSrc }) => {
   useEffect(() => {
     let tempStatus = habit.prevRecord[0].status === "Done";
     setIsChecked(tempStatus);
-    console.log("My Habits--------After Update!", myHabits);
   }, []);
 
   // Change STatus
@@ -41,8 +46,15 @@ const Habit = ({ habit, imgSrc }) => {
     let status = habit.prevRecord[0].status;
     let prevHabitId = habit.prevRecord[0]._id;
     // let totalPoints = status==="Done" ?   ;
-    status === "Done" ? (status = "None") : (status = "Done");
+    // status === "Done" ? (status = "None") : (status = "Done");
     console.log("Previous Habit Id:", habitId, status);
+    if(status === "Done"){
+      status = "None";
+      totalCount = 0;
+    }else{
+      status = "Done"
+      totalCount = totalIterationCount
+    }
 
     try {
       let updateData = { prevHabitId, status,totalCount };
@@ -69,16 +81,13 @@ const Habit = ({ habit, imgSrc }) => {
         "Habit Updation Failed!"
       );
 
-      console.log("Error Updating Habit!");
+      console.log("Error Updating Habit!",error);
     }
     // Update Finished Tasks Count
     return;
   }
 
-  let totalIterationCount =
-    habit.habitGoalDurationNum > 0
-      ? habit.habitGoalDurationNum
-      : habit.habitGoalCount;
+
 
   return (
     <div className="habit-list-items">

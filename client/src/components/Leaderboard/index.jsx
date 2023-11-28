@@ -9,13 +9,16 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { getConfig } from '../../config';
 
 const Leaderboard = () => {
+    let baseUrl = getConfig();
+
     const navigate = useNavigate();
     // const activeUser = useSelector((state)=>state.userAuth);
     let [leadData, setLeadData] = useState([]);
 
-    let baseUrl = 'http://127.0.0.1:8080'
+
     const fetchUsersPoints = async()=>{
         try {
             let response = await axios.get(`${baseUrl}/api/v1/user/fetchUserPoints`)

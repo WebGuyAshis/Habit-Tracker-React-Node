@@ -8,10 +8,8 @@ import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
 import Home from "./components/Home";
 import HabitDetail from "./components/HabitDetail";
-// import { useSelector } from "react-redux";
-// import AccessDeniedPage from "./components/AccessDeniedPage";
-// Move to .env
-// let baseURL = "http://localhost:8080";
+
+
 import {notification } from 'antd';
 import { useDispatch } from "react-redux";
 import { showNotification } from "./actions";
@@ -24,10 +22,7 @@ import Leaderboard from "./components/Leaderboard";
 // const ContextData = createContext();
 function App() {
   const dispatch = useDispatch();
-  // let navigate = useNavigate();
 
-  // const userData = useSelector((state)=>state.userAuth);
-  // console.log("User Data:", userData);
   const openNotification = (type, title, description) => {
     notification[type]({
       message: title,
